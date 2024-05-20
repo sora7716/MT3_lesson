@@ -14,6 +14,15 @@
     <Filter Include="KamataEngine\Adapter">
       <UniqueIdentifier>{c6468eb4-788b-4a83-b207-a5f4804e56c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{4588997b-98e4-4ca1-9847-1a47387adc0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\cppファイル">
+      <UniqueIdentifier>{00424f88-485b-4707-bae9-0ad32b101ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\ヘッダーファイル">
+      <UniqueIdentifier>{bbb04746-7b87-4f9f-b7c0-7ef387f95f7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -39,10 +48,10 @@
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
     <ClCompile Include="func\Math.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル</Filter>
     </ClCompile>
     <ClCompile Include="func\ScreenPrintf.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,8 +126,14 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="func\Math.h" />
-    <ClInclude Include="func\ScreenPrintf.h" />
-    <ClInclude Include="func\Aithmetic.h" />
+    <ClInclude Include="func\Math.h">
+      <Filter>scene\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="func\ScreenPrintf.h">
+      <Filter>scene\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="func\Aithmetic.h">
+      <Filter>scene\ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
