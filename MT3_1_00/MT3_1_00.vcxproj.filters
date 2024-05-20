@@ -119,5 +119,6 @@
     </ClInclude>
     <ClInclude Include="func\Math.h" />
     <ClInclude Include="func\ScreenPrintf.h" />
+    <ClInclude Include="func\Aithmetic.h" />
   </ItemGroup>
 </Project>

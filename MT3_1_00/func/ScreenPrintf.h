@@ -12,7 +12,7 @@ public:
 	/// <param name="y">y座標</param>
 	/// <param name="matrix">表示したいマトリックス</param>
 	/// <param name="type">名前</param>
-	static void MatrixScreenPrintf(int x, int y, Matrix4x4 matrix, const char* label);
+	static void MatrixScreenPrintf(int x, int y, MyMatrix4x4 matrix, const char* label);
 
 	/// <summary>
 	/// ベクトルのスクリーンプリント
@@ -21,6 +21,6 @@ public:
 	/// <param name="y">y座標</param>
 	/// <param name="vector">表示したいベクトル</param>
 	/// <param name="label">名前</param>
-	static void VectorScreenPrintf(int x, int y, const Vector3& vector, const char* label);
+	static void VectorScreenPrintf(int x, int y, MyVector3 vector, const char* label);
 };
 
