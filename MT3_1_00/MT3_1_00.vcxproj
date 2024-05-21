@@ -120,6 +120,9 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="scene\func\Math.cpp" />
     <ClCompile Include="scene\func\ScreenPrintf.cpp" />
     <ClCompile Include="scene\GameLoop.cpp" />
+    <ClCompile Include="scene\gameObject\camera\Camera.cpp" />
+    <ClCompile Include="scene\gameObject\GameObject.cpp" />
+    <ClCompile Include="scene\gameObject\triangle\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
@@ -153,6 +156,9 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="scene\func\Math.h" />
     <ClInclude Include="scene\func\ScreenPrintf.h" />
     <ClInclude Include="scene\GameLoop.h" />
+    <ClInclude Include="scene\gameObject\camera\Camera.h" />
+    <ClInclude Include="scene\gameObject\GameObject.h" />
+    <ClInclude Include="scene\gameObject\triangle\Triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

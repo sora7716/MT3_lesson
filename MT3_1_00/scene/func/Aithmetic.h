@@ -2,8 +2,7 @@
 #include <Vector3.h>
 #include <Matrix4x4.h>
 
-class MyVector3
-{
+class MyVector3{
 private:
 	Vector3 vector;
 public:

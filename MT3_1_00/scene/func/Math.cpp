@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cmath>
 #include "Math.h"
+#define cont(theta) (1.0f/tanf(theta)) 
 using namespace std;
 
 //転置行列
@@ -122,8 +123,8 @@ MyMatrix4x4 Math::MakeOrthographicMatrix(float left, float top, float right, flo
 //透視投影行列
 MyMatrix4x4 Math::MakePerspectiveFovMatrix(float fovY, float aspectRation, float nearClip, float farClip) {
 	Matrix4x4 result{
-		1.0f / aspectRation * 1.0f / tan(fovY / 2.0f),0.0f,0.0f,0.0f,
-		0.0f,1.0f / tan(fovY / 2.0f),0.0f,0.0f,
+		1.0f / aspectRation * cont(fovY / 2.0f),0.0f,0.0f,0.0f,
+		0.0f,cont(fovY / 2.0f),0.0f,0.0f,
 		0.0f,0.0f,farClip / (farClip - nearClip),1.0f,
 		0.0f,0.0f,-(nearClip * farClip) / (farClip - nearClip),0.0f
 	};

@@ -23,6 +23,18 @@
     <Filter Include="scene\ヘッダーファイル">
       <UniqueIdentifier>{bbb04746-7b87-4f9f-b7c0-7ef387f95f7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene\cppファイル\gameObject">
+      <UniqueIdentifier>{ce735e96-1a23-4fd4-8a23-cc509113d234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\ヘッダーファイル\gameObject">
+      <UniqueIdentifier>{88f1c989-c8c7-4983-82ff-0b3f2217de43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\cppファイル\process">
+      <UniqueIdentifier>{3fdbdf16-1164-4605-8e59-563838de9f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\ヘッダーファイル\process">
+      <UniqueIdentifier>{c7526081-f1fc-4ad4-8780-1a99ab1f06e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -47,11 +59,23 @@
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\StringUtility.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="func\Math.cpp">
-      <Filter>scene\cppファイル</Filter>
+    <ClCompile Include="scene\GameLoop.cpp">
+      <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="func\ScreenPrintf.cpp">
-      <Filter>scene\cppファイル</Filter>
+    <ClCompile Include="scene\gameObject\camera\Camera.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\GameObject.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\triangle\Triangle.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\func\Math.cpp">
+      <Filter>scene\cppファイル\process</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\func\ScreenPrintf.cpp">
+      <Filter>scene\cppファイル\process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,18 +146,32 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector2.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector3.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\math\Vector4.h" />
-    <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="func\Math.h">
-      <Filter>scene\ヘッダーファイル</Filter>
+    <ClInclude Include="scene\GameLoop.h">
+      <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="func\ScreenPrintf.h">
-      <Filter>scene\ヘッダーファイル</Filter>
+    <ClInclude Include="scene\gameObject\camera\Camera.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="func\Aithmetic.h">
-      <Filter>scene\ヘッダーファイル</Filter>
+    <ClInclude Include="scene\gameObject\GameObject.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\triangle\Triangle.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\func\Aithmetic.h">
+      <Filter>scene\ヘッダーファイル\process</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\func\Math.h">
+      <Filter>scene\ヘッダーファイル\process</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\func\ScreenPrintf.h">
+      <Filter>scene\ヘッダーファイル\process</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
+      <Filter>KamataEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

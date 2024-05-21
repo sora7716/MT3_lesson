@@ -1,13 +1,9 @@
 ﻿#pragma once
-#include <Novice.h>
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include "scene/func/Math.h"
-#include "scene/func/ScreenPrintf.h"
-#include "scene/func/Aithmetic.h"
+#include "scene/gameObject/GameObject.h"
+#include"scene/gameObject/camera/Camera.h"
+#include"scene/gameObject/triangle/Triangle.h"
 
-class GameLoop
-{
+class GameLoop{
 public://メンバ関数
 
 	/// <summary>
@@ -46,27 +42,9 @@ public://静的メンバ変数
 	static inline const int kWindowHeight    =  720;//画面の縦幅
 
 private://メンバ変数
-	char keys[kKeysNums]    = { 0 };
-	char preKeys[kKeysNums] = { 0 };
-
-	MyVector3 v1_ = {};//ベクトル1
-	MyVector3 v2_ = {};//ベクトル2
-
-	MyVector3 scale_[2]     = {};//倍率
-	MyVector3 rotate_[2]    = {};//角度
-	MyVector3 translate_[2] = {};//ポジション
-	MyVector3 theta[2]      = {};//回転速度
-
-	MyVector3 cross = {};//クロス積
-
-	MyVector3 kLocalVertices_[3] = {};//ローカル座標
-	MyVector3 screenVertices_[3] = {};//スクリーン座標
-
-	MyMatrix4x4 worldMatrix               = {};//ワールドマトリックス
-	MyMatrix4x4 cameraMatrix              = {};//カメラマトリックス
-	MyMatrix4x4 viewMatrix                = {};//ビューマトリックス
-	MyMatrix4x4 projectionMatrix          = {};//同次クリップ空間
-	MyMatrix4x4 worldViewProjectionMatrix = {};//wvpマトリックス
-	MyMatrix4x4 viewportMatrix            = {};//ビューポートマトリックス
+	char keys_[kKeysNums]    = { 0 };
+	char preKeys_[kKeysNums] = { 0 };
+	Camera* camera_     = nullptr;
+	Triangle* triangle_ = nullptr;
 };
 

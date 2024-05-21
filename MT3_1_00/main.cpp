@@ -8,6 +8,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameLoop->Loop();
 	
 	delete gameLoop;
+
 	// ライブラリの終了
 	Novice::Finalize();
 	return 0;
