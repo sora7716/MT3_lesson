@@ -116,9 +116,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\TextureManager.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
-    <ClCompile Include="func\Math.cpp" />
-    <ClCompile Include="func\ScreenPrintf.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\func\Math.cpp" />
+    <ClCompile Include="scene\func\ScreenPrintf.cpp" />
+    <ClCompile Include="scene\GameLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
@@ -148,9 +149,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
-    <ClInclude Include="func\Aithmetic.h" />
-    <ClInclude Include="func\Math.h" />
-    <ClInclude Include="func\ScreenPrintf.h" />
+    <ClInclude Include="scene\func\Aithmetic.h" />
+    <ClInclude Include="scene\func\Math.h" />
+    <ClInclude Include="scene\func\ScreenPrintf.h" />
+    <ClInclude Include="scene\GameLoop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

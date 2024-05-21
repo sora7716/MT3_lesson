@@ -1,16 +1,9 @@
 #pragma once
-#include "func/Aithmetic.h"
+#include "scene/func/Aithmetic.h"
 
 class Math {
 public:
 	
-	/// <summary>
-	/// 逆行列
-	/// </summary>
-	/// <param name="m">matrix</param>
-	/// <returns>matrixの逆行列</returns>
-	static MyMatrix4x4 Inverse(MyMatrix4x4 m);
-
 	/// <summary>
 	/// 転置行列
 	/// </summary>
@@ -29,14 +22,14 @@ public:
 	/// </summary>
 	/// <param name="scale">倍率</param>
 	/// <returns>倍率のmatrix</returns>
-	static MyMatrix4x4 MakeScaleMatrix(const Vector3& scale);
+	static MyMatrix4x4 MakeScaleMatrix(MyVector3 scale);
 
 	/// <summary>
 	/// 平行移動
 	/// </summary>
 	/// <param name="translate">移動</param>
 	/// <returns>移動のmatrix</returns>
-	static MyMatrix4x4 MakeTranslateMatrix(const Vector3& translate);
+	static MyMatrix4x4 MakeTranslateMatrix(MyVector3 translate);
 
 	/// <summary>
 	/// 同次座標系で計算し、デカルト座標系で返す
@@ -44,7 +37,7 @@ public:
 	/// <param name="vector">vector</param>
 	/// <param name="matrix">matrix</param>
 	/// <returns>デカルト座標系</returns>
-	static Vector3 Transform(const Vector3& vector, MyMatrix4x4 matrix);
+	static MyVector3 Transform(MyVector3 vector, MyMatrix4x4 matrix);
 
 	/// <summary>
 	/// x座標を軸に回転
@@ -72,7 +65,7 @@ public:
 	/// </summary>
 	/// <param name="radian">角度</param>
 	/// <returns>回転</returns>
-	static MyMatrix4x4 MakeRotateXYZMatrix(Vector3 radian);
+	static MyMatrix4x4 MakeRotateXYZMatrix(MyVector3 radian);
 
 	/// <summary>
 	/// アフィン関数

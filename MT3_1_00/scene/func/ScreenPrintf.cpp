@@ -1,5 +1,5 @@
 #include <Novice.h>
-#include"func/Aithmetic.h"
+#include"scene/func/Aithmetic.h"
 #include "ScreenPrintf.h"
 
 //マトリックスのスクリーンプリント
