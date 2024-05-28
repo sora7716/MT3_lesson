@@ -62,13 +62,7 @@
     <ClCompile Include="scene\GameLoop.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="scene\gameObject\camera\Camera.cpp">
-      <Filter>scene\cppファイル\gameObject</Filter>
-    </ClCompile>
     <ClCompile Include="scene\gameObject\GameObject.cpp">
-      <Filter>scene\cppファイル\gameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="scene\gameObject\triangle\Triangle.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
     <ClCompile Include="scene\func\Math.cpp">
@@ -76,6 +70,15 @@
     </ClCompile>
     <ClCompile Include="scene\func\ScreenPrintf.cpp">
       <Filter>scene\cppファイル\process</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\triangle\Triangle.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\camera\Camera.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\Character.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,9 +161,6 @@
     <ClInclude Include="scene\gameObject\GameObject.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="scene\gameObject\triangle\Triangle.h">
-      <Filter>scene\ヘッダーファイル\gameObject</Filter>
-    </ClInclude>
     <ClInclude Include="scene\func\Aithmetic.h">
       <Filter>scene\ヘッダーファイル\process</Filter>
     </ClInclude>
@@ -172,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
       <Filter>KamataEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\triangle\Triangle.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\Character.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

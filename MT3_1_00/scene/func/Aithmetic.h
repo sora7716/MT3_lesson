@@ -3,8 +3,6 @@
 #include <Matrix4x4.h>
 
 class MyVector3{
-private:
-	Vector3 vector;
 public:
 	/// <summary>
 	/// デフォルトコンストラクター
@@ -57,6 +55,18 @@ public:
 		result.vector.y = vector.y - num.vector.y;
 		result.vector.z = vector.z - num.vector.z;
 		return result;
+	}
+
+	/// <summary>
+	/// 引き算(複合)
+	/// </summary>
+	/// <param name="num"></param>
+	/// <returns></returns>
+	MyVector3& operator-=(const MyVector3& num) {
+		vector.x -= num.vector.x;
+		vector.y -= num.vector.y;
+		vector.z -= num.vector.z;
+		return *this;
 	}
 
 	/// <summary>
@@ -113,11 +123,11 @@ public:
 		vector = num;
 	}
 
+private:
+	Vector3 vector;
 };
 
 class MyMatrix4x4 {
-private:
-	Matrix4x4 matrix4x4;
 public:
 
 	/// <summary>
@@ -379,5 +389,8 @@ public:
 	void SetMatrix4x4(Matrix4x4 num) {
 		matrix4x4 = num;
 	}
+
+private:
+	Matrix4x4 matrix4x4;
 };
 

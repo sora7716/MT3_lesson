@@ -15,34 +15,17 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="keys"></param>
 	/// <param name="preKeys"></param>
-	void Update(char* keys, char* preKeys)override;
-
-	/// <summary>
-	/// 拡縮
-	/// </summary>
-	void Scale(char* keys, char* preKeys)override;
-
-	/// <summary>
-	/// 回転
-	/// </summary>
-	void Rotation()override;
-
-	/// <summary>
-	/// 移動
-	/// </summary>
-	/// <param name="keys"></param>
-	/// <param name="preKeys"></param>
-	void Transfer(char* keys, char* preKeys)override;
+	void Update(char* keys, char* preKeys);
 
 	/// <summary>
 	/// レンダリングパイプライン
 	/// </summary>
-	void RenderingPipeline()override;
+	void RenderingPipeline();
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw()override;
+	void Draw();
 
 	/// <summary>
 	/// ビュープロジェクションマトリックスのゲッター
@@ -55,6 +38,26 @@ public://メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	MyMatrix4x4 GetViewportMatrix() { return viewportMatrix_; };
+
+	/// <summary>
+	/// scale_のゲッター
+	/// </summary>
+	/// <returns></returns>
+	MyVector3 GetScale() { return scale_; };
+
+	/// <summary>
+	/// rotate_のゲッター
+	/// </summary>
+	/// <returns></returns>
+	MyVector3 GetRotate() { return rotate_; };
+
+	/// <summary>
+	/// translate_のゲッター
+	/// </summary>
+	/// <returns></returns>
+	MyVector3 GetTranslate() { return translate_; };
+
+
 
 private://メンバ変数
 

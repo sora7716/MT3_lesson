@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Novice.h>
 #include <cmath>
+#include <array>
 #define _USE_MATH_DEFINES
 #include "scene/func/Math.h"
 #include "scene/func/ScreenPrintf.h"
@@ -11,43 +12,28 @@ class GameObject
 protected://メンバ関数
 
 	/// <summary>
-	/// 初期化処理
+	/// 倍率
 	/// </summary>
-	virtual void Initialize();
-
-	/// <summary>
-	/// 更新処理
-	/// </summary>
-	/// <param name="keys"></param>
-	/// <param name="preKeys"></param>
-	virtual void Update(char*keys,char*preKeys);
-	
-	/// <summary>
-	/// 拡縮
-	/// </summary>
-	virtual void Scale(char* keys, char* preKeys);
+	/// <param name="front"></param>
+	/// <param name="preFront"></param>
+	/// <param name="behind"></param>
+	/// <param name="preBehind"></param>
+	void Scale(char front, char preFront, char behind, char preBehind);
 
 	/// <summary>
 	/// 回転
 	/// </summary>
-	virtual void Rotation();
-
-	/// <summary>
-	/// レンダリングパイプライン
-	/// </summary>
-	virtual void RenderingPipeline();
+	void Rotate();
 
 	/// <summary>
 	/// 移動
 	/// </summary>
-	/// <param name="keys"></param>
-	/// <param name="preKeys"></param>
-	virtual void Transfer(char*keys,char*preKeys);
-
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	virtual void Draw();
+	/// <param name="left"></param>
+	/// <param name="preLeft"></param>
+	/// <param name="right"></param>
+	/// <param name="preRight"></param>
+	/// <param name="direction"></param>
+	void Translate(char left, char preLeft, char right, char preRight, float direction);
 
 protected:
 	int windowWidth_ = 0;//横幅

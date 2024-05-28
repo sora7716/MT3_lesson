@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "scene/gameObject/GameObject.h"
 #include"scene/gameObject/camera/Camera.h"
-#include"scene/gameObject/triangle/Triangle.h"
+#include"scene/gameObject/character/triangle/Triangle.h"
 
 class GameLoop{
 public://メンバ関数

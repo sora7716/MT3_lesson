@@ -24,7 +24,7 @@ void GameLoop::Update(){
 	// キー入力を受け取る
 	memcpy(preKeys_, keys_, 256);
 	Novice::GetHitKeyStateAll(keys_);
-	
+	camera_->Update(keys_,preKeys_);
 	triangle_->Update(keys_,preKeys_);
 }
 

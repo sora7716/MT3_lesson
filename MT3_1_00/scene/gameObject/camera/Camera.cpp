@@ -10,46 +10,9 @@ void Camera::Initialize(int kWindowWidth, int kWindowHeight){
 }
 
 //更新処理
-void Camera::Update(char* keys, char* preKeys){
-	Transfer(keys, preKeys);
+void Camera::Update(char *keys,char *preKeys){
+	GameObject::Translate(keys[DIK_LEFT], preKeys[DIK_LEFT], keys[DIK_RIGHT], preKeys[DIK_RIGHT],-1.0f);
 	RenderingPipeline();
-}
-
-//拡大
-void Camera::Scale(char* keys, char* preKeys){
-	if (keys[DIK_A]) {
-		if (preKeys[DIK_A]) {
-
-		}
-	}
-}
-
-//回転
-void Camera::Rotation(){
-}
-
-//移動
-void Camera::Transfer(char* keys, char* preKeys){
-	translate_ += velocity_;//移動
-	//キー入力
-	if (keys[DIK_LEFT] && preKeys[DIK_LEFT]) {
-		velocity_.x = -2.0f / 60.0f;
-	}
-	else if (keys[DIK_RIGHT] && preKeys[DIK_RIGHT]) {
-		velocity_.x = 2.0f / 60.0f;
-	}
-	else {
-		velocity_.x = 0.0f;
-	}
-	if (keys[DIK_UP] && preKeys[DIK_UP]) {
-		velocity_.y = 2.0f / 60.0f;
-	}
-	else if (keys[DIK_DOWN] && preKeys[DIK_DOWN]) {
-		velocity_.y = -2.0f / 60.0f;
-	}
-	else {
-		velocity_.y = 0.0f;
-	}
 }
 
 //レンダリングパイプライン

@@ -1,38 +1,37 @@
-#include"GameObject.h"
+﻿#include"GameObject.h"
 
-
-void GameObject::Initialize(){
-}
-
-void GameObject::Update(char* keys, char* preKeys){
-	if (keys[DIK_A]) {
-		if (preKeys[DIK_A]) {
-
-		}
+//倍率
+void GameObject::Scale(char front, char preFront, char behind, char preBehind){
+	scale_ += velocity_;//拡縮
+	//キー入力
+	if (front && preFront) {
+		velocity_.z = 5.0f / 60.0f;
 	}
-}
-
-void GameObject::Scale(char* keys, char* preKeys){
-	if (keys[DIK_A]) {
-		if (preKeys[DIK_A]) {
-
-		}
+	else if (behind && preBehind && scale_.GetVector().x > 0.5f) {
+		velocity_.z = -5.0f / 60.0f;
 	}
+	else { velocity_.z = 0.0f; }
+
 }
 
-void GameObject::Rotation(){
+//回転
+void GameObject::Rotate(){
+	rotate_ += radian_;//回転
+	Novice::ScreenPrintf(0, 20, "%f", rotate_.GetVector().y);
 }
 
-void GameObject::RenderingPipeline(){
-}
-
-void GameObject::Transfer(char* keys, char* preKeys){
-	if (keys[DIK_A]) {
-		if (preKeys[DIK_A]) {
-
-		}
+//移動
+void GameObject::Translate(char left, char preLeft,char right,char preRight,float direction){
+	translate_ += velocity_;//移動
+	//キー入力
+	if (left && preLeft) {
+		velocity_.x = -5.0f / 60.0f * direction;
 	}
+	else if (right && preRight) {
+		velocity_.x = 5.0f / 60.0f * direction;
+	}
+	else { velocity_.x = 0.0f; }
 }
 
-void GameObject::Draw(){
-}
+
+
