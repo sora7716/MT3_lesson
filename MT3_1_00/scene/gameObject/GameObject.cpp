@@ -2,7 +2,7 @@
 
 //倍率
 void GameObject::Scale(char front, char preFront, char behind, char preBehind){
-	scale_ += velocity_;//拡縮
+	scale_.SetVector({ scale_.GetVector().x+velocity_.z,scale_.GetVector().y + velocity_.z,scale_.GetVector().z + velocity_.z });
 	//キー入力
 	if (front && preFront) {
 		velocity_.z = 5.0f / 60.0f;
