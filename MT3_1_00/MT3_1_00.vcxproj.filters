@@ -80,6 +80,9 @@
     <ClCompile Include="scene\gameObject\character\Character.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="scene\func\Aithmetic.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">

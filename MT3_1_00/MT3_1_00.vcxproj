@@ -117,6 +117,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\func\Aithmetic.cpp" />
     <ClCompile Include="scene\func\Math.cpp" />
     <ClCompile Include="scene\func\ScreenPrintf.cpp" />
     <ClCompile Include="scene\GameLoop.cpp" />
