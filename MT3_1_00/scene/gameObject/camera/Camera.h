@@ -57,7 +57,7 @@ public://メンバ関数
 	/// <returns></returns>
 	MyVector3 GetTranslate() { return translate_; };
 
-private://メンバ変数
+public://メンバ変数
 
 	MyMatrix4x4 cameraMatrix_         = {};//カメラマトリックス
 	MyMatrix4x4 viewMatrix_           = {};//ビューマトリックス

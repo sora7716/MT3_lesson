@@ -318,3 +318,11 @@ Matrix4x4 MyMatrix4x4::GetMatrix4x4() { return matrix4x4; }
 void MyMatrix4x4::SetMatrix4x4(Matrix4x4 num) {
 	matrix4x4 = num;
 }
+
+const Vector3 operator+=(const Vector3& num1,const Vector3& num2){
+	Vector3 result{};
+	result.x = num1.x + num2.x;
+	result.y = num1.y + num2.y;
+	result.z = num1.z + num2.z;
+	return result;
+}

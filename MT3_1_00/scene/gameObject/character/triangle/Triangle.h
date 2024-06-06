@@ -34,5 +34,12 @@ private://メンバ変数
 	MyVector3 normalize_ = {};
 	MyVector3 viewVector_ = {};
 	float disappear_ = 0;
+
+	MyVector3 kLocalVertices_[3] = {};//ローカル座標
+	MyVector3 screenVertices_[3] = {};//スクリーン座標
+
+	MyMatrix4x4 worldMatrix_ = {};//ワールドマトリックス
+	MyMatrix4x4 worldViewProjectionMatrix_ = {};//wvpマトリックス
+	MyVector3   ndcVertex_ = {};//正規化デバイス座標系
 };
 

@@ -6,12 +6,15 @@ void Camera::Initialize(int kWindowWidth, int kWindowHeight){
 	windowHeight_ = kWindowHeight;//縦幅
 	//カメラ
 	scale_.SetVector({ 1.0f,1.0f,1.0f });     //倍率
-	translate_.SetVector({ 0.0f,0.0f,-5.0f });//ポジション
+	rotate_.SetVector({0.26f,0.0f,0.0f});
+	translate_.SetVector({ 0.0f,1.9f,-6.49f });//ポジション
 }
 
 //更新処理
 void Camera::Update(char *keys,char *preKeys){
-	GameObject::Translate(keys[DIK_LEFT], preKeys[DIK_LEFT], keys[DIK_RIGHT], preKeys[DIK_RIGHT],-1.0f);
+	bool left = keys[DIK_LEFT] && preKeys[DIK_LEFT];
+	bool right = keys[DIK_RIGHT]&&preKeys[DIK_RIGHT];
+	GameObject::Translate(left, right,-1.0f);
 	RenderingPipeline();
 }
 

@@ -76,9 +76,11 @@ public:
 	/// <param name="num"></param>
 	void SetVector(Vector3 num);
 
-private:
+public:
 	Vector3 vector;
 };
+
+const Vector3 operator+=(const Vector3& num1,const Vector3& num2);
 
 class MyMatrix4x4 {
 public:

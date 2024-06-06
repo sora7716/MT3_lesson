@@ -80,8 +80,11 @@
     <ClCompile Include="scene\gameObject\character\Character.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="scene\gameObject\character\grid\Grid.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
     <ClCompile Include="scene\func\Aithmetic.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル\process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +183,9 @@
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
     <ClInclude Include="scene\gameObject\character\Character.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\grid\Grid.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>

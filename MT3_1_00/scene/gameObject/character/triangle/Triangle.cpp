@@ -29,15 +29,19 @@ void Triangle::Update(char *keys, char *preKeys) {
 	cross_ = Math::Cross(v1_, v2_);//クロス積の計算
 
 	camera_->Update(keys,preKeys);//カメラの更新処理
-	ScreenTransform(camera_);
-	GameObject::Scale(keys[DIK_W], preKeys[DIK_W], keys[DIK_S], preKeys[DIK_S]);//拡縮
+	ScreenTransform(camera_, worldMatrix_,worldViewProjectionMatrix_,kLocalVertices_,ndcVertex_,screenVertices_,3);
+	bool left = keys[DIK_A] && preKeys[DIK_A];
+	bool right = keys[DIK_D] && preKeys[DIK_D];
+	bool front = keys[DIK_S]&&preKeys[DIK_S];
+	bool behind = keys[DIK_W]&&preKeys[DIK_W];
+	GameObject::Scale(behind,front);//拡縮
 	GameObject::Rotate();//回転
-	GameObject::Translate(keys[DIK_A], preKeys[DIK_A], keys[DIK_D], preKeys[DIK_D],1.0f);//移動
+	GameObject::Translate(left, right,1.0f);//移動
 }
 
 void Triangle::Draw() {
 	//クロス積
-	ScreenPrintf::VectorScreenPrintf(0, 0, cross_, "Cross");
+	//ScreenPrintf::VectorScreenPrintf(0, 0, cross_, "Cross");
 	//三角ポリゴン
 	Novice::DrawTriangle(
 		int(screenVertices_[left].GetVector().x),  int(screenVertices_[left].GetVector().y ),

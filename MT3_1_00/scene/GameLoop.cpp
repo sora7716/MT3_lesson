@@ -1,4 +1,5 @@
 ﻿#include "GameLoop.h"
+#include"Imgui.h"
 
 //コンストラクター
 GameLoop::GameLoop(){
@@ -8,6 +9,7 @@ GameLoop::GameLoop(){
 GameLoop::~GameLoop(){
 	delete triangle_;
 	delete camera_;
+	delete grid_;
 }
 
 //初期化処理
@@ -16,6 +18,8 @@ void GameLoop::Initialize() {
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 	camera_ = new Camera();
 	triangle_ = new Triangle();
+	grid_ = new Grid();
+	grid_->Initialize(camera_);
 	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
 }
 
@@ -26,11 +30,15 @@ void GameLoop::Update(){
 	Novice::GetHitKeyStateAll(keys_);
 	camera_->Update(keys_,preKeys_);
 	triangle_->Update(keys_,preKeys_);
+	ImGui::Begin("window");
+	ImGui::DragFloat3("cameraTranslate", &camera_->translate_.vector.x, 0.01f);
+	ImGui::End();
 }
 
 //描画処理
 void GameLoop::Draw(){
 	triangle_->Draw();
+	grid_->Draw();
 }
 
 //ゲームループ
