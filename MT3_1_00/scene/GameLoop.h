@@ -2,6 +2,8 @@
 #include "scene/gameObject/GameObject.h"
 #include"scene/gameObject/camera/Camera.h"
 #include"scene/gameObject/character/triangle/Triangle.h"
+#include"scene/gameObject/character/grid/Grid.h"
+#include "scene/gameObject/character/sphere/Sphere.h"
 
 class GameLoop{
 public://メンバ関数
@@ -15,21 +17,6 @@ public://メンバ関数
 	/// デストラクター
 	/// </summary>
 	~GameLoop();
-
-	/// <summary>
-	/// 初期化処理
-	/// </summary>
-	void Initialize();
-	
-	/// <summary>
-	/// 更新処理
-	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw();
 
 	/// <summary>
 	/// ゲームループ
@@ -46,5 +33,29 @@ private://メンバ変数
 	char preKeys_[kKeysNums] = { 0 };
 	Camera* camera_     = nullptr;
 	Triangle* triangle_ = nullptr;
+	Grid* grid_ = nullptr;
+	Sphere* shpere_ = nullptr;
+
+private://メンバ関数
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw();
+
+	/// <summary>
+	/// デバックテキスト
+	/// </summary>
+	void DebugText();
 };
 
