@@ -16,12 +16,15 @@ void Grid::Draw() {
 	for (uint32_t xIndex = 0; xIndex <= kSubdivision; ++xIndex) {
 		localStart_[xIndex].x = (-(float)kSubdivision/2.0f + (float)xIndex) * kGridEvery;
 		localStart_[xIndex].z = -kGridHalfWidth;
+		
 		end_[xIndex].x = (-(float)kSubdivision / 2.0f + (float)xIndex) * kGridEvery;
 		end_[xIndex].z = kGridHalfWidth;
-		ndcVertexStart_[xIndex] = Math::Transform(localStart_[xIndex], camera_->GetViewProjectionMatrix());
-		ndcVertexEnd_[xIndex] = Math::Transform(end_[xIndex], camera_->GetViewProjectionMatrix());
-		screenStart_[xIndex] = Math::Transform(ndcVertexStart_[xIndex], camera_->GetViewportMatrix());
-		screenEnd_[xIndex] = Math::Transform(ndcVertexEnd_[xIndex], camera_->GetViewportMatrix());
+		
+		ndcVertexStart_[xIndex] = Math::Transform(localStart_[xIndex],     camera_->GetViewProjectionMatrix());
+		ndcVertexEnd_[xIndex]   = Math::Transform(end_[xIndex],            camera_->GetViewProjectionMatrix());
+		screenStart_[xIndex]    = Math::Transform(ndcVertexStart_[xIndex], camera_->GetViewportMatrix());
+		screenEnd_[xIndex]      = Math::Transform(ndcVertexEnd_[xIndex],   camera_->GetViewportMatrix());
+		
 		Novice::DrawLine(
 			(int)screenStart_[xIndex].x, (int)screenStart_[xIndex].y,
 			(int)screenEnd_[xIndex].x, (int)screenEnd_[xIndex].y,

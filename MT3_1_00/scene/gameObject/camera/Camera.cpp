@@ -7,7 +7,7 @@ void Camera::Initialize(int kWindowWidth, int kWindowHeight){
 	//カメラ
 	scale_ = { 1.0f,1.0f,1.0f };     //倍率
 	rotate_ = {0.26f,0.0f,0.0f};
-	translate_ = { 0.0f,1.9f,-6.49f };//ポジション
+	translate_ = { 0.0f,2.04f,-5.93f };//ポジション
 }
 
 //更新処理

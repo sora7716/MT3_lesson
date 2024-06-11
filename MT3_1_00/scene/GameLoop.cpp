@@ -13,6 +13,32 @@ GameLoop::~GameLoop(){
 	delete shpere_;
 }
 
+//ゲームループ
+void GameLoop::Loop() {
+
+	Initialize();//初期化処理
+
+	// ウィンドウの×ボタンが押されるまでループ
+	while (Novice::ProcessMessage() == 0) {
+		// フレームの開始
+		Novice::BeginFrame();
+
+		Update();//更新処理
+
+		Draw();  //描画処理
+
+		// フレームの終了
+		Novice::EndFrame();
+
+		// ESCキーが押されたらループを抜ける
+		if (preKeys_[DIK_ESCAPE] == 0 && keys_[DIK_ESCAPE] != 0) {
+			break;
+		}
+	}
+
+}
+
+
 //初期化処理
 void GameLoop::Initialize() {
 	// ライブラリの初期化
@@ -32,42 +58,25 @@ void GameLoop::Update(){
 	// キー入力を受け取る
 	memcpy(preKeys_, keys_, 256);
 	Novice::GetHitKeyStateAll(keys_);
-	triangle_->Update(keys_,preKeys_);
+	DebugText();//デバックテキスト
+
+	//triangle_->Update(keys_,preKeys_);
 	camera_->Update(keys_,preKeys_);
-	ImGui::Begin("debug");
-	camera_->DebugText();
-    shpere_->DebugText();
-	ImGui::End();
+	shpere_->Update();
+	
 }
 
 //描画処理
 void GameLoop::Draw(){
-	//triangle_->Draw();
+	triangle_->Draw();
 	grid_->Draw();
 	shpere_->Draw();
 }
 
-//ゲームループ
-void GameLoop::Loop(){
-
-	Initialize();//初期化処理
-
-	// ウィンドウの×ボタンが押されるまでループ
-	while (Novice::ProcessMessage() == 0) {
-		// フレームの開始
-		Novice::BeginFrame();
-		
-		Update();//更新処理
-
-		Draw();  //描画処理
-
-		// フレームの終了
-		Novice::EndFrame();
-
-		// ESCキーが押されたらループを抜ける
-		if (preKeys_[DIK_ESCAPE] == 0 && keys_[DIK_ESCAPE] != 0) {
-			break;
-		}
-	}
-
+//デバックテキスト
+void GameLoop::DebugText(){
+	ImGui::Begin("window");
+	camera_->DebugText();
+	shpere_->DebugText();
+	ImGui::End();
 }

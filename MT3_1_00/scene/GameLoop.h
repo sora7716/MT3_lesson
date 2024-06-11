@@ -19,21 +19,6 @@ public://メンバ関数
 	~GameLoop();
 
 	/// <summary>
-	/// 初期化処理
-	/// </summary>
-	void Initialize();
-	
-	/// <summary>
-	/// 更新処理
-	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw();
-
-	/// <summary>
 	/// ゲームループ
 	/// </summary>
 	void Loop();
@@ -50,5 +35,27 @@ private://メンバ変数
 	Triangle* triangle_ = nullptr;
 	Grid* grid_ = nullptr;
 	Sphere* shpere_ = nullptr;
+
+private://メンバ関数
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw();
+
+	/// <summary>
+	/// デバックテキスト
+	/// </summary>
+	void DebugText();
 };
 

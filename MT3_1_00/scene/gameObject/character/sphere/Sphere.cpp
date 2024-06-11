@@ -8,8 +8,14 @@ using namespace std;
 
 void Sphere::Initialize(Camera* camera){
 	camera_ = camera;
-	center_ = {0.0f,-40,162};
-	radius_ = 30;
+	center_ = {0.0f,0.0f,0.0f};
+	radius_ = 1.0f;
+	scale_ = { 1.0f,1.0f,1.0f };
+	translate_ = { 0.0f,1.0f,0.0f };
+}
+
+void Sphere::Update(){
+	WvpMatrix(camera_);
 }
 
 void Sphere::DebugText(){
@@ -23,14 +29,14 @@ void Sphere::Draw() {
 	const float kLonEvery  = 2.0f*pi/float(kSubdivision);//緯度分割1つ分の角度(φd)
 
 	for (uint32_t latIndex = 0; latIndex < kSubdivision; latIndex++) {
-		float lat = -float(pi) / 2.0f + kLatEvery * latIndex;//θ
+		float lat = -pi / 2.0f + kLatEvery * latIndex;//θ
 		for (uint32_t lonIndex = 0; lonIndex < kSubdivision; ++lonIndex) {
 			float lon = lonIndex * kLonEvery;//φ
 			Vector3 a, b, c;//ローカル座標
 			a = {
-				center_.x+radius_*cos(lat) * cos(lon),
-				center_.y+radius_*sin(lat),
-				center_.z+radius_*cos(lat) * sin(lon)
+				center_.x + radius_ * cos(lat) * cos(lon),
+				center_.y + radius_ * sin(lat),
+				center_.z + radius_ * cos(lat) * sin(lon)
 			};
 
 			b = {
@@ -44,10 +50,11 @@ void Sphere::Draw() {
 				center_.y+radius_*sin(lat),
 				center_.z+radius_*cos(lat) * sin(lon + kLonEvery)
 			};
+
 			//スクリーン座標を求める
-			screenA_ = Math::Transform(Math::Transform(a, camera_->GetViewProjectionMatrix()),camera_->GetViewportMatrix());
-			screenB_ = Math::Transform(Math::Transform(b, camera_->GetViewProjectionMatrix()),camera_->GetViewportMatrix());
-			screenC_ = Math::Transform(Math::Transform(c, camera_->GetViewProjectionMatrix()),camera_->GetViewportMatrix());
+			ScreenTransform(camera_, a, screenA_);
+			ScreenTransform(camera_, b, screenB_);
+			ScreenTransform(camera_, c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(
@@ -57,7 +64,7 @@ void Sphere::Draw() {
 			);
 			//横の線の描画
 			Novice::DrawLine(
-				(int)screenA_.x, (int)screenA_.y,
+				(int)screenB_.x, (int)screenB_.y,
 				(int)screenC_.x, (int)screenC_.y,
 				BLACK
 			);
