@@ -1,18 +1,18 @@
 ﻿#pragma once
-#include "scene/gameObject/character/Character.h"
+#include "scene/gameObject/GameObject.h"
 
 //前方宣言
 class Camera;
 
-class Grid :public Character{
+class Grid :public GameObject {
 
-public:
+public://メンバ関数
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="camera">カメラ</param>
-	void Initialize(Camera *camera);
+	void Initialize(Camera* camera);
 
 	/// <summary>
 	/// 更新処理
@@ -24,14 +24,24 @@ public:
 	/// </summary>
 	void Draw();
 
-private:
+private://メンバ変数
+
+	static inline const uint32_t kElementCount = 11;//線の要素数
+
 	Camera* camera_ = nullptr;//カメラ
-	Vector3 start_[11] = {};
-	Vector3 end_[11] = {};
-	MyVector3 ndcVertexStart_[11] = {};
-	MyVector3 ndcVertexEnd_[11] = {};
-	MyVector3 screenStart_[11] ={};
-	MyVector3 screenEnd_[11] ={};
-	
+	//線の始点↓
+	Vector3 localStart_[kElementCount] = {};  //位置
+	Vector3 ndcVertexStart_[kElementCount] = {};//正規化デバイス座標
+	Vector3 screenStart_[kElementCount] = {};//スクリーン座標
+	//線の始点↑
+
+	//線の終点↓
+	Vector3 end_[kElementCount] = {};    //位置
+	Vector3 ndcVertexEnd_[kElementCount] = {};//正規化デバイス座標
+	Vector3 screenEnd_[kElementCount] = {};//スクリーン座標
+	//線の終点↑
+
+	uint32_t color = 0xFFFFFFFF;//線の色
+
 };
 

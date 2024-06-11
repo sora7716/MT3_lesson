@@ -3,6 +3,7 @@
 #include"scene/gameObject/camera/Camera.h"
 #include"scene/gameObject/character/triangle/Triangle.h"
 #include"scene/gameObject/character/grid/Grid.h"
+#include "scene/gameObject/character/sphere/Sphere.h"
 
 class GameLoop{
 public://メンバ関数
@@ -48,5 +49,6 @@ private://メンバ変数
 	Camera* camera_     = nullptr;
 	Triangle* triangle_ = nullptr;
 	Grid* grid_ = nullptr;
+	Sphere* shpere_ = nullptr;
 };
 

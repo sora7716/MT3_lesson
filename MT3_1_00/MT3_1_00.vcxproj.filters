@@ -86,6 +86,9 @@
     <ClCompile Include="scene\func\Aithmetic.cpp">
       <Filter>scene\cppファイル\process</Filter>
     </ClCompile>
+    <ClCompile Include="scene\gameObject\character\sphere\Sphere.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -186,6 +189,9 @@
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
     <ClInclude Include="scene\gameObject\character\grid\Grid.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\sphere\Sphere.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>

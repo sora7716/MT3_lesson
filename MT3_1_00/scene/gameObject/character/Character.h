@@ -5,19 +5,24 @@ class Character:public GameObject{
 
 protected://メンバ関数
 	
-	/// <summary>
-    /// ローカル座標をスクリーン座標に変換
+    /// <summary>
+    /// world*viewProjectionを求める
     /// </summary>
     /// <param name="camera">カメラ</param>
-    /// <param name="worldMatrix">ワールドマトリックス</param>
-    /// <param name="worldViewProjectionMatrix">ワールドビューマトリックス</param>
-    /// <param name="kLocalVertices">ローカル座標</param>
-    /// <param name="ndcVertex">ndcVertex</param>
-    /// <param name="screenVertices">スクリーンの頂点</param>
-	/// <param name="verticesNum">頂点の数</param>
-	void ScreenTransform(Camera* camera, MyMatrix4x4& worldMatrix, MyMatrix4x4& worldViewProjectionMatrix, const MyVector3* kLocalVertices, MyVector3& ndcVertex, MyVector3* screenVertices, uint32_t verticesNum);
+    void WvpMatrix(Camera* camera);
+
+	/// <summary>
+	/// ローカル座標をスクリーン座標に変換
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="kLocalVertices">ローカル座標</param>
+	/// <param name="screenVertices">スクリーン座標</param>
+	/// <param name="elementCount">ローカルとスクリーンの要素数</param>
+	void ScreenTransform(Camera* camera, const Vector3* kLocalVertices, Vector3* screenVertices, uint32_t elementCount);
 
 protected://メンバ変数
-	
+    Matrix4x4 worldMatrix_ = {};//ワールドマトリックス
+    Matrix4x4 worldViewProjectionMatrix_ = {};//wvpマトリックス
+    Vector3   ndcVertex_ = {};//正規化デバイス座標系
 };
 

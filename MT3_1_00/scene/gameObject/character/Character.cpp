@@ -1,15 +1,20 @@
 ﻿#include "Character.h"
 
-//ローカルをスクリーンに座標変換
-void Character::ScreenTransform(Camera*camera,MyMatrix4x4& worldMatrix,MyMatrix4x4& worldViewProjectionMatrix,const MyVector3*kLocalVertices,MyVector3&ndcVertex,MyVector3* screenVertices,uint32_t verticesNum) {
+void Character::WvpMatrix(Camera* camera){
 	//ワールド座標系
-	worldMatrix = Math::MakeAffineMatrix(scale_.GetVector(), rotate_.GetVector(), translate_.GetVector());
+	worldMatrix_ = Math::MakeAffineMatrix(scale_,rotate_, translate_);
 	//wvpマトリックス
-	worldViewProjectionMatrix = worldMatrix * camera->GetViewProjectionMatrix();
-	for (uint32_t i = 0; i < verticesNum; ++i) {
+	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
+}
+
+//ローカルをスクリーンに座標変換
+void Character::ScreenTransform(Camera*camera,const Vector3*kLocalVertices,Vector3* screenVertices,uint32_t elementCount) {
+	WvpMatrix(camera);
+	for (uint32_t i = 0; i < elementCount; ++i) {
 		//正規化デバイス座標系
-		ndcVertex = Math::Transform(kLocalVertices[i], worldViewProjectionMatrix);
+		ndcVertex_ = Math::Transform(kLocalVertices[i], worldViewProjectionMatrix_);
 		//スクリーン座標
-		screenVertices[i] = Math::Transform(ndcVertex, camera->GetViewportMatrix());
+		screenVertices[i] = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
 	}
 }
+

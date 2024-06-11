@@ -10,6 +10,7 @@ GameLoop::~GameLoop(){
 	delete triangle_;
 	delete camera_;
 	delete grid_;
+	delete shpere_;
 }
 
 //初期化処理
@@ -21,6 +22,9 @@ void GameLoop::Initialize() {
 	grid_ = new Grid();
 	grid_->Initialize(camera_);
 	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
+	shpere_ = new Sphere();
+	shpere_->Initialize(camera_);
+
 }
 
 //更新処理
@@ -28,17 +32,19 @@ void GameLoop::Update(){
 	// キー入力を受け取る
 	memcpy(preKeys_, keys_, 256);
 	Novice::GetHitKeyStateAll(keys_);
-	camera_->Update(keys_,preKeys_);
 	triangle_->Update(keys_,preKeys_);
-	ImGui::Begin("window");
-	ImGui::DragFloat3("cameraTranslate", &camera_->translate_.vector.x, 0.01f);
+	camera_->Update(keys_,preKeys_);
+	ImGui::Begin("debug");
+	camera_->DebugText();
+    shpere_->DebugText();
 	ImGui::End();
 }
 
 //描画処理
 void GameLoop::Draw(){
-	triangle_->Draw();
+	//triangle_->Draw();
 	grid_->Draw();
+	shpere_->Draw();
 }
 
 //ゲームループ

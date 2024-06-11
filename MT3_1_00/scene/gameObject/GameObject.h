@@ -3,6 +3,7 @@
 #include <cmath>
 #include <array>
 #define _USE_MATH_DEFINES
+#include <ImGui.h>
 #include "scene/func/Math.h"
 #include "scene/func/ScreenPrintf.h"
 #include "scene/func/Aithmetic.h"
@@ -31,13 +32,13 @@ protected://メンバ関数
 	/// <param name="direction">進んでほしい方向</param>
 	void Translate(bool left, bool right, float direction);
 
-public:
+protected:
 	int windowWidth_ = 0;//横幅
 	int windowHeight_ = 0;//縦幅
 
-	MyVector3 scale_     = {};//倍率
-	MyVector3 rotate_    = {};//角度
-	MyVector3 translate_ = {};//ポジション
+	Vector3 scale_     = {};//倍率
+	Vector3 rotate_    = {};//角度
+	Vector3 translate_ = {};//ポジション
 	
 	Vector3   scaling_   = {};//拡縮
 	Vector3   radian_    = {};//回転
