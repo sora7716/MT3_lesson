@@ -13,7 +13,8 @@ void Sphere::Initialize(Camera* camera){
 }
 
 void Sphere::DebugText(){
-	ImGui::DragFloat3("center", &center_.x, 0.1f);
+	ImGui::DragFloat3("SpherCenter", &center_.x, 0.1f);
+	ImGui::DragFloat("SpherRadius", &radius_, 0.1f);
 }
 
 void Sphere::Draw() {
