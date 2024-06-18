@@ -2,6 +2,9 @@
 #include "scene/gameObject/GameObject.h"
 #include"scene/gameObject/camera/Camera.h"
 #include"scene/gameObject/character/triangle/Triangle.h"
+#include"scene/gameObject/character/grid/Grid.h"
+#include "scene/gameObject/character/sphere/Sphere.h"
+#include "scene/gameObject/character/point/Point.h"
 
 class GameLoop{
 public://メンバ関数
@@ -17,21 +20,6 @@ public://メンバ関数
 	~GameLoop();
 
 	/// <summary>
-	/// 初期化処理
-	/// </summary>
-	void Initialize();
-	
-	/// <summary>
-	/// 更新処理
-	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw();
-
-	/// <summary>
 	/// ゲームループ
 	/// </summary>
 	void Loop();
@@ -42,9 +30,42 @@ public://静的メンバ変数
 	static inline const int kWindowHeight    =  720;//画面の縦幅
 
 private://メンバ変数
-	char keys_[kKeysNums]    = { 0 };
-	char preKeys_[kKeysNums] = { 0 };
-	Camera* camera_     = nullptr;
-	Triangle* triangle_ = nullptr;
+	char keys_[kKeysNums];
+	char preKeys_[kKeysNums];
+	Camera* camera_;
+	Triangle* triangle_;
+	Grid* grid_;
+	Sphere* shpere_;
+
+	Sphere* point1_;
+	Sphere* point2_;
+	Point* point_;
+
+private://メンバ関数
+
+	/// <summary>
+	/// 生成
+	/// </summary>
+	void Create();
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// デバックテキスト
+	/// </summary>
+	void DebugText();
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw();
 };
 

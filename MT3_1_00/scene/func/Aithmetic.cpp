@@ -1,320 +1,312 @@
 ﻿#include "Aithmetic.h"
 
-//デフォルトコンストラクター
-MyVector3::MyVector3() {
-	vector = {};
-}
-
-//コンストラクター
-MyVector3::MyVector3(Vector3 num) {
-	vector = num;
-}
-
-//加算
-MyVector3 MyVector3::operator+(const MyVector3& num) {
-	MyVector3 result{};
-	result.vector.x = vector.x + num.vector.x;
-	result.vector.y = vector.y + num.vector.y;
-	result.vector.z = vector.z + num.vector.z;
+const Vector3 operator+(const Vector3& num1,const Vector3& num2){
+	Vector3 result{};
+	result.x = num1.x + num2.x;
+	result.y = num1.y + num2.y;
+	result.z = num1.z + num2.z;
 	return result;
 }
 
-//加算(複合)
-MyVector3& MyVector3::operator+=(const MyVector3& num) {
-	vector.x += num.vector.x;
-	vector.y += num.vector.y;
-	vector.z += num.vector.z;
-	return *this;
+const Vector3& operator+=(Vector3& num1, const Vector3& num2){
+	// TODO: return ステートメントをここに挿入します
+	num1.x += num2.x;
+	num1.y += num2.y;
+	num1.z += num2.z;
+	return num1;
 }
 
-//減算
-MyVector3 MyVector3::operator-(const MyVector3& num) {
-	MyVector3 result{};
-	result.vector.x = vector.x - num.vector.x;
-	result.vector.y = vector.y - num.vector.y;
-	result.vector.z = vector.z - num.vector.z;
+const Vector3 operator-(const Vector3& num1, const Vector3& num2){
+	Vector3 result{};
+	result.x = num1.x +- num2.x;
+	result.y = num1.y +- num2.y;
+	result.z = num1.z +- num2.z;
 	return result;
 }
 
-//減算(複合)
-MyVector3& MyVector3::operator-=(const MyVector3& num) {
-	vector.x -= num.vector.x;
-	vector.y -= num.vector.y;
-	vector.z -= num.vector.z;
-	return *this;
+const Vector3& operator-=(Vector3& num1, const Vector3& num2){
+	// TODO: return ステートメントをここに挿入します
+	num1.x -= num2.x;
+	num1.y -= num2.y;
+	num1.z -= num2.z;
+	return num1;
 }
 
 //スカラー倍
-MyVector3 MyVector3::operator*(const float& k) {
-	MyVector3 result{};
-	result.vector.x = vector.x * k;
-	result.vector.y = vector.y * k;
-	result.vector.z = vector.z * k;
+const Vector3 operator*(const Vector3& num, const float& k){
+	Vector3 result{};
+	result.x = num.x * k;
+	result.y = num.y * k;
+	result.z = num.z * k;
 	return result;
 }
 
-//掛け算
-MyVector3 MyVector3::operator*(const MyVector3& num) {
-	MyVector3 result{};
-	result.vector.x = vector.x * num.vector.x;
-	result.vector.y = vector.y * num.vector.y;
-	result.vector.z = vector.z * num.vector.z;
+const Vector3& operator*=(Vector3& num, const float& k) {
+	// TODO: return ステートメントをここに挿入します
+	num.x *= k;
+	num.y *= k;
+	num.z *= k;
+	return num;
+}
+
+const Vector3 operator*(const Vector3& num1, const Vector3& num2){
+	Vector3 result{};
+	result.x = num1.x * num2.x;
+	result.y = num1.y * num2.y;
+	result.z = num1.z * num2.z;
 	return result;
 }
 
-//正規化
-MyVector3& MyVector3::operator/=(const float& len) {
+const Vector3& operator*=(Vector3& num1, const Vector3& num2){
+	// TODO: return ステートメントをここに挿入します
+	num1.x *= num2.x;
+	num1.y *= num2.y;
+	num1.z *= num2.z;
+	return num1;
+}
+
+const Vector3& operator/=(Vector3& num, const float& len){
+	// TODO: return ステートメントをここに挿入します
 	if (len != 0.0f) {
-		vector.x /= len;
-		vector.y /= len;
-		vector.z /= len;
+		num.x /= len;
+		num.y /= len;
+		num.z /= len;
 	}
-	return *this;
+	return num;
 }
 
-//ベクトルのゲッター
-Vector3 MyVector3::GetVector() { return vector; }
-
-//セッター
-void MyVector3::SetVector(Vector3 num) {
-	vector = num;
+const Vector3 operator/(const Vector3& num, const float& len){
+	Vector3 result{};
+	if (len != 0.0f) {
+		result.x = num.x / len;
+		result.y = num.y / len;
+		result.z = num.z / len;
+	}
+	return result;
 }
 
-//デフォルトコンストラクター
-MyMatrix4x4::MyMatrix4x4() {
-	matrix4x4 = {};
+const Vector3 operator*(const float& num1, const Vector3& num2){
+	Vector3 result{};
+	result.x = num1 * num2.x;
+	result.y = num1 * num2.y;
+	result.z = num1 * num2.z;
+	return result;
 }
 
-//コンストラクター
-MyMatrix4x4::MyMatrix4x4(Matrix4x4 num) {
-	matrix4x4 = num;
-}
-
-//加算
-MyMatrix4x4 MyMatrix4x4::operator+(const MyMatrix4x4& num) {
+const Matrix4x4 operator+(const Matrix4x4& num1, const Matrix4x4& num2){
 	Matrix4x4 result = {};
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			result.m[i][j] = matrix4x4.m[i][j] + num.matrix4x4.m[i][j];
+			result.m[i][j] = num1.m[i][j] + num2.m[i][j];
 		}
 	}
 	return result;
 }
 
-//加算(複合)
-MyMatrix4x4& MyMatrix4x4::operator+=(const MyMatrix4x4& num) {
+const Matrix4x4& operator+=(Matrix4x4& num1, const Matrix4x4& num2){
+	// TODO: return ステートメントをここに挿入します
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			matrix4x4.m[i][j] += num.matrix4x4.m[i][j];
+			num1.m[i][j] += num2.m[i][j];
 		}
 	}
-	return *this;
+	return num1;
 }
 
-//減算
-MyMatrix4x4 MyMatrix4x4::operator-(const MyMatrix4x4& num) {
+const Matrix4x4 operator-(const Matrix4x4& num1, const Matrix4x4& num2){
 	Matrix4x4 result = {};
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			result.m[i][j] = matrix4x4.m[i][j] - num.matrix4x4.m[i][j];
+			result.m[i][j] = num1.m[i][j] - num2.m[i][j];
 		}
 	}
 	return result;
 }
 
-//減算(複合)
-MyMatrix4x4& MyMatrix4x4::operator-=(const MyMatrix4x4& num) {
+const Matrix4x4& operator-=(Matrix4x4& num1, const Matrix4x4& num2){
+	// TODO: return ステートメントをここに挿入します
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			matrix4x4.m[i][j] -= num.matrix4x4.m[i][j];
+			num1.m[i][j] -= num2.m[i][j];
 		}
 	}
-	return *this;
+	return num1;
 }
 
-//掛け算
-MyMatrix4x4 MyMatrix4x4::operator*(const MyMatrix4x4& num) {
+const Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2){
 	Matrix4x4 result;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			result.m[i][j] = 0;
 			for (int k = 0; k < 4; k++) {
-				result.m[i][j] += matrix4x4.m[i][k] * num.matrix4x4.m[k][j];
+				result.m[i][j] += num1.m[i][k] * num2.m[k][j];
 			}
 		}
 	}
 	return result;
 }
 
-//逆行列
-MyMatrix4x4 MyMatrix4x4::operator~() {
+const Matrix4x4 operator~(const Matrix4x4& num){
 	Matrix4x4 result{};
-	float determinant = matrix4x4.m[0][0] * (matrix4x4.m[1][1] * matrix4x4.m[2][2] * matrix4x4.m[3][3] +
-		matrix4x4.m[2][1] * matrix4x4.m[3][2] * matrix4x4.m[1][3] +
-		matrix4x4.m[3][1] * matrix4x4.m[1][2] * matrix4x4.m[2][3] -
-		matrix4x4.m[3][1] * matrix4x4.m[2][2] * matrix4x4.m[1][3] -
-		matrix4x4.m[2][1] * matrix4x4.m[1][2] * matrix4x4.m[3][3] -
-		matrix4x4.m[1][1] * matrix4x4.m[3][2] * matrix4x4.m[2][3]) -
-		matrix4x4.m[0][1] * (matrix4x4.m[1][0] * matrix4x4.m[2][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][2] * matrix4x4.m[1][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[1][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[3][2] * matrix4x4.m[2][3]) +
-		matrix4x4.m[0][2] * (matrix4x4.m[1][0] * matrix4x4.m[2][1] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][1] * matrix4x4.m[1][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[1][1] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][1] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][1] * matrix4x4.m[3][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[3][1] * matrix4x4.m[2][3]) -
-		matrix4x4.m[0][3] * (matrix4x4.m[1][0] * matrix4x4.m[2][1] * matrix4x4.m[3][2] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][1] * matrix4x4.m[1][2] +
-			matrix4x4.m[3][0] * matrix4x4.m[1][1] * matrix4x4.m[2][2] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][1] * matrix4x4.m[1][2] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][1] * matrix4x4.m[3][2] -
-			matrix4x4.m[1][0] * matrix4x4.m[3][1] * matrix4x4.m[2][2]);
+	float determinant = num.m[0][0] * (num.m[1][1] * num.m[2][2] * num.m[3][3] +
+		num.m[2][1] * num.m[3][2] * num.m[1][3] +
+		num.m[3][1] * num.m[1][2] * num.m[2][3] -
+		num.m[3][1] * num.m[2][2] * num.m[1][3] -
+		num.m[2][1] * num.m[1][2] * num.m[3][3] -
+		num.m[1][1] * num.m[3][2] * num.m[2][3]) -
+		num.m[0][1] * (num.m[1][0] * num.m[2][2] * num.m[3][3] +
+			num.m[2][0] * num.m[3][2] * num.m[1][3] +
+			num.m[3][0] * num.m[1][2] * num.m[2][3] -
+			num.m[3][0] * num.m[2][2] * num.m[1][3] -
+			num.m[2][0] * num.m[1][2] * num.m[3][3] -
+			num.m[1][0] * num.m[3][2] * num.m[2][3]) +
+		num.m[0][2] * (num.m[1][0] * num.m[2][1] * num.m[3][3] +
+			num.m[2][0] * num.m[3][1] * num.m[1][3] +
+			num.m[3][0] * num.m[1][1] * num.m[2][3] -
+			num.m[3][0] * num.m[2][1] * num.m[1][3] -
+			num.m[2][0] * num.m[1][1] * num.m[3][3] -
+			num.m[1][0] * num.m[3][1] * num.m[2][3]) -
+		num.m[0][3] * (num.m[1][0] * num.m[2][1] * num.m[3][2] +
+			num.m[2][0] * num.m[3][1] * num.m[1][2] +
+			num.m[3][0] * num.m[1][1] * num.m[2][2] -
+			num.m[3][0] * num.m[2][1] * num.m[1][2] -
+			num.m[2][0] * num.m[1][1] * num.m[3][2] -
+			num.m[1][0] * num.m[3][1] * num.m[2][2]);
 
 
 
 	if (determinant != 0) {
-		result.m[0][0] = (matrix4x4.m[1][1] * matrix4x4.m[2][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][1] * matrix4x4.m[3][2] * matrix4x4.m[1][3] +
-			matrix4x4.m[3][1] * matrix4x4.m[1][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][1] * matrix4x4.m[2][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][1] * matrix4x4.m[1][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[1][1] * matrix4x4.m[3][2] * matrix4x4.m[2][3]) /
+		result.m[0][0] = (num.m[1][1] * num.m[2][2] * num.m[3][3] +
+			num.m[2][1] * num.m[3][2] * num.m[1][3] +
+			num.m[3][1] * num.m[1][2] * num.m[2][3] -
+			num.m[3][1] * num.m[2][2] * num.m[1][3] -
+			num.m[2][1] * num.m[1][2] * num.m[3][3] -
+			num.m[1][1] * num.m[3][2] * num.m[2][3]) /
 			determinant;
 
-		result.m[0][1] = -(matrix4x4.m[0][1] * matrix4x4.m[2][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][1] * matrix4x4.m[3][2] * matrix4x4.m[0][3] +
-			matrix4x4.m[3][1] * matrix4x4.m[0][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][1] * matrix4x4.m[2][2] * matrix4x4.m[0][3] -
-			matrix4x4.m[2][1] * matrix4x4.m[0][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[0][1] * matrix4x4.m[3][2] * matrix4x4.m[2][3]) /
+		result.m[0][1] = -(num.m[0][1] * num.m[2][2] * num.m[3][3] +
+			num.m[2][1] * num.m[3][2] * num.m[0][3] +
+			num.m[3][1] * num.m[0][2] * num.m[2][3] -
+			num.m[3][1] * num.m[2][2] * num.m[0][3] -
+			num.m[2][1] * num.m[0][2] * num.m[3][3] -
+			num.m[0][1] * num.m[3][2] * num.m[2][3]) /
 			determinant;
 
-		result.m[0][2] = (matrix4x4.m[0][1] * matrix4x4.m[1][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[1][1] * matrix4x4.m[3][2] * matrix4x4.m[0][3] +
-			matrix4x4.m[3][1] * matrix4x4.m[0][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[3][1] * matrix4x4.m[1][2] * matrix4x4.m[0][3] -
-			matrix4x4.m[1][1] * matrix4x4.m[0][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[0][1] * matrix4x4.m[3][2] * matrix4x4.m[1][3]) /
+		result.m[0][2] = (num.m[0][1] * num.m[1][2] * num.m[3][3] +
+			num.m[1][1] * num.m[3][2] * num.m[0][3] +
+			num.m[3][1] * num.m[0][2] * num.m[1][3] -
+			num.m[3][1] * num.m[1][2] * num.m[0][3] -
+			num.m[1][1] * num.m[0][2] * num.m[3][3] -
+			num.m[0][1] * num.m[3][2] * num.m[1][3]) /
 			determinant;
 
-		result.m[0][3] = -(matrix4x4.m[0][1] * matrix4x4.m[1][2] * matrix4x4.m[2][3] +
-			matrix4x4.m[1][1] * matrix4x4.m[2][2] * matrix4x4.m[0][3] +
-			matrix4x4.m[2][1] * matrix4x4.m[0][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][1] * matrix4x4.m[1][2] * matrix4x4.m[0][3] -
-			matrix4x4.m[1][1] * matrix4x4.m[0][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[0][1] * matrix4x4.m[2][2] * matrix4x4.m[1][3]) /
-			determinant;
-
-
-		result.m[1][0] = -(matrix4x4.m[1][0] * matrix4x4.m[2][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][2] * matrix4x4.m[1][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[1][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[3][2] * matrix4x4.m[2][3]) /
-			determinant;
-
-		result.m[1][1] = (matrix4x4.m[0][0] * matrix4x4.m[2][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][2] * matrix4x4.m[0][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[0][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][2] * matrix4x4.m[0][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[0][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[0][0] * matrix4x4.m[3][2] * matrix4x4.m[2][3]) /
-			determinant;
-
-		result.m[1][2] = -(matrix4x4.m[0][0] * matrix4x4.m[1][2] * matrix4x4.m[3][3] +
-			matrix4x4.m[1][0] * matrix4x4.m[3][2] * matrix4x4.m[0][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[0][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[1][2] * matrix4x4.m[0][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[0][2] * matrix4x4.m[3][3] -
-			matrix4x4.m[0][0] * matrix4x4.m[3][2] * matrix4x4.m[1][3]) /
-			determinant;
-
-		result.m[1][3] = (matrix4x4.m[0][0] * matrix4x4.m[1][2] * matrix4x4.m[2][3] +
-			matrix4x4.m[1][0] * matrix4x4.m[2][2] * matrix4x4.m[0][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[0][2] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][2] * matrix4x4.m[0][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[0][2] * matrix4x4.m[2][3] -
-			matrix4x4.m[0][0] * matrix4x4.m[2][2] * matrix4x4.m[1][3]) /
+		result.m[0][3] = -(num.m[0][1] * num.m[1][2] * num.m[2][3] +
+			num.m[1][1] * num.m[2][2] * num.m[0][3] +
+			num.m[2][1] * num.m[0][2] * num.m[1][3] -
+			num.m[2][1] * num.m[1][2] * num.m[0][3] -
+			num.m[1][1] * num.m[0][2] * num.m[2][3] -
+			num.m[0][1] * num.m[2][2] * num.m[1][3]) /
 			determinant;
 
 
-		result.m[2][0] = (matrix4x4.m[1][0] * matrix4x4.m[2][1] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][1] * matrix4x4.m[1][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[1][1] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][1] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][1] * matrix4x4.m[3][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[3][1] * matrix4x4.m[2][3]) /
+		result.m[1][0] = -(num.m[1][0] * num.m[2][2] * num.m[3][3] +
+			num.m[2][0] * num.m[3][2] * num.m[1][3] +
+			num.m[3][0] * num.m[1][2] * num.m[2][3] -
+			num.m[3][0] * num.m[2][2] * num.m[1][3] -
+			num.m[2][0] * num.m[1][2] * num.m[3][3] -
+			num.m[1][0] * num.m[3][2] * num.m[2][3]) /
 			determinant;
 
-		result.m[2][1] = -(matrix4x4.m[0][0] * matrix4x4.m[2][1] * matrix4x4.m[3][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][1] * matrix4x4.m[0][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[0][1] * matrix4x4.m[2][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][1] * matrix4x4.m[0][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[0][1] * matrix4x4.m[3][3] -
-			matrix4x4.m[0][0] * matrix4x4.m[3][1] * matrix4x4.m[2][3]) /
+		result.m[1][1] = (num.m[0][0] * num.m[2][2] * num.m[3][3] +
+			num.m[2][0] * num.m[3][2] * num.m[0][3] +
+			num.m[3][0] * num.m[0][2] * num.m[2][3] -
+			num.m[3][0] * num.m[2][2] * num.m[0][3] -
+			num.m[2][0] * num.m[0][2] * num.m[3][3] -
+			num.m[0][0] * num.m[3][2] * num.m[2][3]) /
 			determinant;
 
-		result.m[2][2] = (matrix4x4.m[0][0] * matrix4x4.m[1][1] * matrix4x4.m[3][3] +
-			matrix4x4.m[1][0] * matrix4x4.m[3][1] * matrix4x4.m[0][3] +
-			matrix4x4.m[3][0] * matrix4x4.m[0][1] * matrix4x4.m[1][3] -
-			matrix4x4.m[3][0] * matrix4x4.m[1][1] * matrix4x4.m[0][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[0][1] * matrix4x4.m[3][3] -
-			matrix4x4.m[0][0] * matrix4x4.m[3][1] * matrix4x4.m[1][3]) /
+		result.m[1][2] = -(num.m[0][0] * num.m[1][2] * num.m[3][3] +
+			num.m[1][0] * num.m[3][2] * num.m[0][3] +
+			num.m[3][0] * num.m[0][2] * num.m[1][3] -
+			num.m[3][0] * num.m[1][2] * num.m[0][3] -
+			num.m[1][0] * num.m[0][2] * num.m[3][3] -
+			num.m[0][0] * num.m[3][2] * num.m[1][3]) /
 			determinant;
 
-		result.m[2][3] = -(matrix4x4.m[0][0] * matrix4x4.m[1][1] * matrix4x4.m[2][3] +
-			matrix4x4.m[1][0] * matrix4x4.m[2][1] * matrix4x4.m[0][3] +
-			matrix4x4.m[2][0] * matrix4x4.m[0][1] * matrix4x4.m[1][3] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][1] * matrix4x4.m[0][3] -
-			matrix4x4.m[1][0] * matrix4x4.m[0][1] * matrix4x4.m[2][3] -
-			matrix4x4.m[0][0] * matrix4x4.m[2][1] * matrix4x4.m[1][3]) /
+		result.m[1][3] = (num.m[0][0] * num.m[1][2] * num.m[2][3] +
+			num.m[1][0] * num.m[2][2] * num.m[0][3] +
+			num.m[2][0] * num.m[0][2] * num.m[1][3] -
+			num.m[2][0] * num.m[1][2] * num.m[0][3] -
+			num.m[1][0] * num.m[0][2] * num.m[2][3] -
+			num.m[0][0] * num.m[2][2] * num.m[1][3]) /
 			determinant;
 
-		result.m[3][0] = -(matrix4x4.m[1][0] * matrix4x4.m[2][1] * matrix4x4.m[3][2] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][1] * matrix4x4.m[1][2] +
-			matrix4x4.m[3][0] * matrix4x4.m[1][1] * matrix4x4.m[2][2] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][1] * matrix4x4.m[1][2] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][1] * matrix4x4.m[3][2] -
-			matrix4x4.m[1][0] * matrix4x4.m[3][1] * matrix4x4.m[2][2]) /
+
+		result.m[2][0] = (num.m[1][0] * num.m[2][1] * num.m[3][3] +
+			num.m[2][0] * num.m[3][1] * num.m[1][3] +
+			num.m[3][0] * num.m[1][1] * num.m[2][3] -
+			num.m[3][0] * num.m[2][1] * num.m[1][3] -
+			num.m[2][0] * num.m[1][1] * num.m[3][3] -
+			num.m[1][0] * num.m[3][1] * num.m[2][3]) /
 			determinant;
 
-		result.m[3][1] = (matrix4x4.m[0][0] * matrix4x4.m[2][1] * matrix4x4.m[3][2] +
-			matrix4x4.m[2][0] * matrix4x4.m[3][1] * matrix4x4.m[0][2] +
-			matrix4x4.m[3][0] * matrix4x4.m[0][1] * matrix4x4.m[2][2] -
-			matrix4x4.m[3][0] * matrix4x4.m[2][1] * matrix4x4.m[0][2] -
-			matrix4x4.m[2][0] * matrix4x4.m[0][1] * matrix4x4.m[3][2] -
-			matrix4x4.m[0][0] * matrix4x4.m[3][1] * matrix4x4.m[2][2]) /
+		result.m[2][1] = -(num.m[0][0] * num.m[2][1] * num.m[3][3] +
+			num.m[2][0] * num.m[3][1] * num.m[0][3] +
+			num.m[3][0] * num.m[0][1] * num.m[2][3] -
+			num.m[3][0] * num.m[2][1] * num.m[0][3] -
+			num.m[2][0] * num.m[0][1] * num.m[3][3] -
+			num.m[0][0] * num.m[3][1] * num.m[2][3]) /
 			determinant;
 
-		result.m[3][2] = -(matrix4x4.m[0][0] * matrix4x4.m[1][1] * matrix4x4.m[3][2] +
-			matrix4x4.m[1][0] * matrix4x4.m[3][1] * matrix4x4.m[0][2] +
-			matrix4x4.m[3][0] * matrix4x4.m[0][1] * matrix4x4.m[1][2] -
-			matrix4x4.m[3][0] * matrix4x4.m[1][1] * matrix4x4.m[0][2] -
-			matrix4x4.m[1][0] * matrix4x4.m[0][1] * matrix4x4.m[3][2] -
-			matrix4x4.m[0][0] * matrix4x4.m[3][1] * matrix4x4.m[1][2]) /
+		result.m[2][2] = (num.m[0][0] * num.m[1][1] * num.m[3][3] +
+			num.m[1][0] * num.m[3][1] * num.m[0][3] +
+			num.m[3][0] * num.m[0][1] * num.m[1][3] -
+			num.m[3][0] * num.m[1][1] * num.m[0][3] -
+			num.m[1][0] * num.m[0][1] * num.m[3][3] -
+			num.m[0][0] * num.m[3][1] * num.m[1][3]) /
 			determinant;
 
-		result.m[3][3] = (matrix4x4.m[0][0] * matrix4x4.m[1][1] * matrix4x4.m[2][2] +
-			matrix4x4.m[1][0] * matrix4x4.m[2][1] * matrix4x4.m[0][2] +
-			matrix4x4.m[2][0] * matrix4x4.m[0][1] * matrix4x4.m[1][2] -
-			matrix4x4.m[2][0] * matrix4x4.m[1][1] * matrix4x4.m[0][2] -
-			matrix4x4.m[1][0] * matrix4x4.m[0][1] * matrix4x4.m[2][2] -
-			matrix4x4.m[0][0] * matrix4x4.m[2][1] * matrix4x4.m[1][2]) /
+		result.m[2][3] = -(num.m[0][0] * num.m[1][1] * num.m[2][3] +
+			num.m[1][0] * num.m[2][1] * num.m[0][3] +
+			num.m[2][0] * num.m[0][1] * num.m[1][3] -
+			num.m[2][0] * num.m[1][1] * num.m[0][3] -
+			num.m[1][0] * num.m[0][1] * num.m[2][3] -
+			num.m[0][0] * num.m[2][1] * num.m[1][3]) /
+			determinant;
+
+		result.m[3][0] = -(num.m[1][0] * num.m[2][1] * num.m[3][2] +
+			num.m[2][0] * num.m[3][1] * num.m[1][2] +
+			num.m[3][0] * num.m[1][1] * num.m[2][2] -
+			num.m[3][0] * num.m[2][1] * num.m[1][2] -
+			num.m[2][0] * num.m[1][1] * num.m[3][2] -
+			num.m[1][0] * num.m[3][1] * num.m[2][2]) /
+			determinant;
+
+		result.m[3][1] = (num.m[0][0] * num.m[2][1] * num.m[3][2] +
+			num.m[2][0] * num.m[3][1] * num.m[0][2] +
+			num.m[3][0] * num.m[0][1] * num.m[2][2] -
+			num.m[3][0] * num.m[2][1] * num.m[0][2] -
+			num.m[2][0] * num.m[0][1] * num.m[3][2] -
+			num.m[0][0] * num.m[3][1] * num.m[2][2]) /
+			determinant;
+
+		result.m[3][2] = -(num.m[0][0] * num.m[1][1] * num.m[3][2] +
+			num.m[1][0] * num.m[3][1] * num.m[0][2] +
+			num.m[3][0] * num.m[0][1] * num.m[1][2] -
+			num.m[3][0] * num.m[1][1] * num.m[0][2] -
+			num.m[1][0] * num.m[0][1] * num.m[3][2] -
+			num.m[0][0] * num.m[3][1] * num.m[1][2]) /
+			determinant;
+
+		result.m[3][3] = (num.m[0][0] * num.m[1][1] * num.m[2][2] +
+			num.m[1][0] * num.m[2][1] * num.m[0][2] +
+			num.m[2][0] * num.m[0][1] * num.m[1][2] -
+			num.m[2][0] * num.m[1][1] * num.m[0][2] -
+			num.m[1][0] * num.m[0][1] * num.m[2][2] -
+			num.m[0][0] * num.m[2][1] * num.m[1][2]) /
 			determinant;
 	}
 
 	return result;
-}
 
-//マトリックスのゲッター
-Matrix4x4 MyMatrix4x4::GetMatrix4x4() { return matrix4x4; }
-
-//マトリックスのセッター
-void MyMatrix4x4::SetMatrix4x4(Matrix4x4 num) {
-	matrix4x4 = num;
 }
