@@ -6,10 +6,9 @@
 #define pi numbers::pi_v<float>
 using namespace std;
 
-void Sphere::Initialize(Camera* camera){
+void Sphere::Initialize(Camera* camera, Material sphere){
 	camera_ = camera;
-	center_ = {0.0f,0.0f,0.0f};
-	radius_ = 1.0f;
+	sphere_ = sphere;
 	scale_ = { 1.0f,1.0f,1.0f };
 	translate_ = { 0.0f,1.0f,0.0f };
 }
@@ -19,8 +18,9 @@ void Sphere::Update(){
 }
 
 void Sphere::DebugText(){
-	ImGui::DragFloat3("SpherCenter", &center_.x, 0.1f);
-	ImGui::DragFloat("SpherRadius", &radius_, 0.1f);
+	ImGui::DragFloat3("SpherCenter", &sphere_.center.x, 0.1f);
+	ImGui::DragFloat("SpherRadius", &sphere_.radius, 0.1f);
+	ImGui::DragFloat3("SpherRadius", &rotate_.x, 0.1f);
 }
 
 void Sphere::Draw() {
@@ -34,21 +34,21 @@ void Sphere::Draw() {
 			float lon = lonIndex * kLonEvery;//φ
 			Vector3 a, b, c;//ローカル座標
 			a = {
-				center_.x + radius_ * cos(lat) * cos(lon),
-				center_.y + radius_ * sin(lat),
-				center_.z + radius_ * cos(lat) * sin(lon)
+				sphere_.center.x + sphere_.radius * cos(lat) * cos(lon),
+				sphere_.center.y + sphere_.radius * sin(lat),
+				sphere_.center.z + sphere_.radius * cos(lat) * sin(lon)
 			};
 
 			b = {
-				center_.x+radius_*cos(lat + kLatEvery) * cos(lon),
-				center_.y+radius_*sin(lat + kLatEvery),
-				center_.z+radius_*cos(lat + kLatEvery) * sin(lon)
+				sphere_.center.x + sphere_.radius * cos(lat + kLatEvery) * cos(lon),
+				sphere_.center.y + sphere_.radius * sin(lat + kLatEvery),
+				sphere_.center.z + sphere_.radius*cos(lat + kLatEvery) * sin(lon)
 			};
 
 			c = {
-				center_.x+radius_*cos(lat) * cos(lon + kLonEvery),
-				center_.y+radius_*sin(lat),
-				center_.z+radius_*cos(lat) * sin(lon + kLonEvery)
+				sphere_.center.x + sphere_.radius * cos(lat) * cos(lon + kLonEvery),
+				sphere_.center.y + sphere_.radius * sin(lat),
+				sphere_.center.z + sphere_.radius * cos(lat) * sin(lon + kLonEvery)
 			};
 
 			//スクリーン座標を求める

@@ -36,8 +36,17 @@ protected://メンバ関数
 	/// <param name="camera">カメラ</param>
 	/// <param name="kLocalVertices">ローカル座標</param>
 	/// <param name="screenVertices">スクリーン座標</param>
-	/// <param name="elementCount">ローカルとスクリーンの要素数</param>
 	void ScreenTransform(Camera* camera, const Vector3& kLocalVertices, Vector3& screenVertices);
+
+    /// <summary>
+    /// ローカル座標をスクリーン座標に変換
+    /// </summary>
+    /// <param name="camera">カメラ</param>
+    /// <param name="ndcVertex">正規化デバイス</param>
+    /// <param name="kLocalVertices">ローカル座標</param>
+    /// <param name="screenVertices">スクリーン座標</param>
+    void CameraScreenTransform(Camera* camera,const Vector3& kLocalVertices, Vector3& screenVertices);
+
 
 protected://メンバ変数
     Matrix4x4 worldMatrix_ = {};//ワールドマトリックス

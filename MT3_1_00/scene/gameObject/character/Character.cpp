@@ -34,3 +34,10 @@ void Character::ScreenTransform(Camera*camera,const Vector3&kLocalVertices,Vecto
 	screenVertices = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
 }
 
+//ローカルをスクリーンに変換
+void Character::CameraScreenTransform(Camera* camera, const Vector3& kLocalVertices, Vector3& screenVertices) {
+	//正規化デバイス座標系
+	ndcVertex_ = Math::Transform(kLocalVertices, camera->GetViewProjectionMatrix());
+	//スクリーン座標
+	screenVertices = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
+}

@@ -39,6 +39,11 @@ private://メンバ変数
 private://メンバ関数
 
 	/// <summary>
+	/// 生成
+	/// </summary>
+	void Create();
+
+	/// <summary>
 	/// 初期化処理
 	/// </summary>
 	void Initialize();
@@ -49,13 +54,13 @@ private://メンバ関数
 	void Update();
 
 	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw();
-
-	/// <summary>
 	/// デバックテキスト
 	/// </summary>
 	void DebugText();
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw();
 };
 

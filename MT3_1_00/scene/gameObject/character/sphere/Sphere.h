@@ -6,7 +6,11 @@ class Camera;//前方宣言
 class Sphere:Character{
 
 public://メンバ関数
-	void Initialize(Camera *camera);
+	typedef struct Material {
+		Vector3 center;
+		float radius;
+	}Material;
+	void Initialize(Camera *camera, Material sphere);
 
 	void Update();
 
@@ -15,12 +19,10 @@ public://メンバ関数
 	void Draw();
 
 private://メンバ変数
+	
+	Material sphere_ = {};//スフィアの素材
 
-	Vector3 center_ = {};
-
-	float radius_ = 0;
-
-	Camera *camera_ = nullptr;
+	Camera *camera_ = nullptr;//カメラ
 
 	Vector3 screenA_= {};//スクリーン座標
 	Vector3 screenB_ = {};//スクリーン座標

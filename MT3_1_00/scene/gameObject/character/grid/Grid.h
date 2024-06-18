@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "scene/gameObject/GameObject.h"
+#include "scene/gameObject/character/Character.h"
 
 //前方宣言
 class Camera;
 
-class Grid :public GameObject {
+class Grid :public Character {
 
 public://メンバ関数
 
@@ -36,7 +36,7 @@ private://メンバ変数
 	//線の始点↑
 
 	//線の終点↓
-	Vector3 end_[kElementCount] = {};    //位置
+	Vector3 locakEnd_[kElementCount] = {};    //位置
 	Vector3 ndcVertexEnd_[kElementCount] = {};//正規化デバイス座標
 	Vector3 screenEnd_[kElementCount] = {};//スクリーン座標
 	//線の終点↑

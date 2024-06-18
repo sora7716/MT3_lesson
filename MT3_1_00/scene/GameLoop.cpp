@@ -3,6 +3,7 @@
 
 //コンストラクター
 GameLoop::GameLoop(){
+
 }
 
 //デストラクター
@@ -38,18 +39,22 @@ void GameLoop::Loop() {
 
 }
 
+//生成
+void GameLoop::Create(){
+	camera_ = new Camera();
+	grid_ = new Grid();
+	triangle_ = new Triangle();
+	shpere_ = new Sphere();
+}
 
 //初期化処理
 void GameLoop::Initialize() {
 	// ライブラリの初期化
+	Create();
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
-	camera_ = new Camera();
-	triangle_ = new Triangle();
-	grid_ = new Grid();
 	grid_->Initialize(camera_);
-	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
-	shpere_ = new Sphere();
-	shpere_->Initialize(camera_);
+	//triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
+	//shpere_->Initialize(camera_, { 0.0f,0.0f,0.0f,{1.0f}});
 
 }
 
@@ -60,23 +65,22 @@ void GameLoop::Update(){
 	Novice::GetHitKeyStateAll(keys_);
 	DebugText();//デバックテキスト
 
-	//triangle_->Update(keys_,preKeys_);
 	camera_->Update(keys_,preKeys_);
-	shpere_->Update();
-	
-}
-
-//描画処理
-void GameLoop::Draw(){
-	triangle_->Draw();
-	grid_->Draw();
-	shpere_->Draw();
+	//triangle_->Update(keys_,preKeys_);//三角形
+	//shpere_->Update();//スフィア
 }
 
 //デバックテキスト
 void GameLoop::DebugText(){
 	ImGui::Begin("window");
 	camera_->DebugText();
-	shpere_->DebugText();
+	//shpere_->DebugText();
 	ImGui::End();
+}
+
+//描画処理
+void GameLoop::Draw() {
+	grid_->Draw();
+	//triangle_->Draw();
+	//shpere_->Draw();
 }
