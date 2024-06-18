@@ -33,7 +33,7 @@ const Vector3& operator-=(Vector3& num1, const Vector3& num2){
 }
 
 //スカラー倍
-Vector3 operator*(const Vector3& num, const float& k){
+const Vector3 operator*(const Vector3& num, const float& k){
 	Vector3 result{};
 	result.x = num.x * k;
 	result.y = num.y * k;
@@ -41,14 +41,15 @@ Vector3 operator*(const Vector3& num, const float& k){
 	return result;
 }
 
-Vector3 operator*=(Vector3& num, const float& k) {
+const Vector3& operator*=(Vector3& num, const float& k) {
+	// TODO: return ステートメントをここに挿入します
 	num.x *= k;
 	num.y *= k;
 	num.z *= k;
 	return num;
 }
 
-Vector3 operator*(const Vector3& num1, const Vector3& num2){
+const Vector3 operator*(const Vector3& num1, const Vector3& num2){
 	Vector3 result{};
 	result.x = num1.x * num2.x;
 	result.y = num1.y * num2.y;
@@ -56,14 +57,15 @@ Vector3 operator*(const Vector3& num1, const Vector3& num2){
 	return result;
 }
 
-Vector3 operator*=(Vector3& num1, const Vector3& num2){
+const Vector3& operator*=(Vector3& num1, const Vector3& num2){
+	// TODO: return ステートメントをここに挿入します
 	num1.x *= num2.x;
 	num1.y *= num2.y;
 	num1.z *= num2.z;
 	return num1;
 }
 
-Vector3& operator/=(Vector3& num, const float& len){
+const Vector3& operator/=(Vector3& num, const float& len){
 	// TODO: return ステートメントをここに挿入します
 	if (len != 0.0f) {
 		num.x /= len;
@@ -73,7 +75,25 @@ Vector3& operator/=(Vector3& num, const float& len){
 	return num;
 }
 
-Matrix4x4 operator+(const Matrix4x4& num1, const Matrix4x4& num2){
+const Vector3 operator/(const Vector3& num, const float& len){
+	Vector3 result{};
+	if (len != 0.0f) {
+		result.x = num.x / len;
+		result.y = num.y / len;
+		result.z = num.z / len;
+	}
+	return result;
+}
+
+const Vector3 operator*(const float& num1, const Vector3& num2){
+	Vector3 result{};
+	result.x = num1 * num2.x;
+	result.y = num1 * num2.y;
+	result.z = num1 * num2.z;
+	return result;
+}
+
+const Matrix4x4 operator+(const Matrix4x4& num1, const Matrix4x4& num2){
 	Matrix4x4 result = {};
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -83,7 +103,7 @@ Matrix4x4 operator+(const Matrix4x4& num1, const Matrix4x4& num2){
 	return result;
 }
 
-Matrix4x4& operator+=(Matrix4x4& num1, const Matrix4x4& num2){
+const Matrix4x4& operator+=(Matrix4x4& num1, const Matrix4x4& num2){
 	// TODO: return ステートメントをここに挿入します
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -93,7 +113,7 @@ Matrix4x4& operator+=(Matrix4x4& num1, const Matrix4x4& num2){
 	return num1;
 }
 
-Matrix4x4 operator-(const Matrix4x4& num1, const Matrix4x4& num2){
+const Matrix4x4 operator-(const Matrix4x4& num1, const Matrix4x4& num2){
 	Matrix4x4 result = {};
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -103,7 +123,7 @@ Matrix4x4 operator-(const Matrix4x4& num1, const Matrix4x4& num2){
 	return result;
 }
 
-Matrix4x4& operator-=(Matrix4x4& num1, const Matrix4x4& num2){
+const Matrix4x4& operator-=(Matrix4x4& num1, const Matrix4x4& num2){
 	// TODO: return ステートメントをここに挿入します
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -113,7 +133,7 @@ Matrix4x4& operator-=(Matrix4x4& num1, const Matrix4x4& num2){
 	return num1;
 }
 
-Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2){
+const Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2){
 	Matrix4x4 result;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -126,7 +146,7 @@ Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2){
 	return result;
 }
 
-Matrix4x4 operator~(const Matrix4x4& num){
+const Matrix4x4 operator~(const Matrix4x4& num){
 	Matrix4x4 result{};
 	float determinant = num.m[0][0] * (num.m[1][1] * num.m[2][2] * num.m[3][3] +
 		num.m[2][1] * num.m[3][2] * num.m[1][3] +

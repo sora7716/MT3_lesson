@@ -29,7 +29,7 @@ void Grid::Draw() {
 			color
 		);
 		if (xIndex == kSubdivision / 2 - 1) {
-			color = 0x00000088;
+			color = BLACK;
 		}
 		else {
 			color = 0xFFFFFF88;
@@ -52,7 +52,7 @@ void Grid::Draw() {
 		);
 
 		if (zIndex == kSubdivision / 2 - 1) {
-			color = 0x00000088;  
+			color = BLACK;
 		}
 		else {
 			color = 0xFFFFFF88;

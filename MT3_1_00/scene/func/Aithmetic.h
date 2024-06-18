@@ -39,75 +39,84 @@ const Vector3& operator-=(Vector3& num1, const Vector3& num2);
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Vector3 operator*(const Vector3& num, const float& k);
+const Vector3 operator*(const Vector3& num, const float& k);
 
 /// <summary>
 /// スカラー倍(複合)
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Vector3 operator*=(Vector3& num, const float& k);
+const Vector3& operator*=(Vector3& num, const float& k);
 
 /// <summary>
 /// 掛け算
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Vector3 operator*(const Vector3& num1, const Vector3& num2);
+const Vector3 operator*(const Vector3& num1, const Vector3& num2);
 
 /// <summary>
 /// 掛け算(複合)
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Vector3 operator*=(Vector3& num1, const Vector3& num2);
+const Vector3& operator*=(Vector3& num1, const Vector3& num2);
 
 /// <summary>
-/// 単位ベクトル
+/// 割り算(float と Vector3の複合)
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Vector3& operator/=(Vector3& num, const float& len);
+const Vector3& operator/=(Vector3& num, const float& len);
 
+/// <summary>
+/// 割り算(float と Vector3)
+/// </summary>
+/// <param name="num"></param>
+/// <param name="len"></param>
+/// <returns></returns>
+const Vector3 operator/(const Vector3& num, const float& len);
+
+const Vector3 operator* (const float& num1, const Vector3& num2);
 
 /// <summary>
 /// 加算
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Matrix4x4 operator+(const Matrix4x4& num1,const Matrix4x4& num2);
+const Matrix4x4 operator+(const Matrix4x4& num1,const Matrix4x4& num2);
 
 /// <summary>
 ///加算(複合) 
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Matrix4x4& operator+=(Matrix4x4& num1, const Matrix4x4& num2);
+const Matrix4x4& operator+=(Matrix4x4& num1, const Matrix4x4& num2);
 
 /// <summary>
 /// 減算
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Matrix4x4 operator-(const Matrix4x4& num1, const Matrix4x4& num2);
+const Matrix4x4 operator-(const Matrix4x4& num1, const Matrix4x4& num2);
 
 /// <summary>
 /// 減算(複合)
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Matrix4x4& operator-=(Matrix4x4& num1, const Matrix4x4& num2);
+const Matrix4x4& operator-=(Matrix4x4& num1, const Matrix4x4& num2);
 
 /// <summary>
 /// 掛け算
 /// </summary>
 /// <param name="num"></param>
 /// <returns></returns>
-Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2);
+const Matrix4x4 operator*(const Matrix4x4& num1, const Matrix4x4& num2);
 
 /// <summary>
 /// 逆行列
 /// </summary>
 /// <returns></returns>
-Matrix4x4 operator~(const Matrix4x4& num);
+const Matrix4x4 operator~(const Matrix4x4& num);
 

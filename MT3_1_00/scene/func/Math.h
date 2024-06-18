@@ -138,5 +138,5 @@ public:
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <returns></returns>
-	static Vector3 Normalize(Vector3& v);
+	static Vector3 Normalize(const Vector3& v);
 };

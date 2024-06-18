@@ -169,9 +169,10 @@ float Math::Length(const Vector3& v) {
 }
 
 //単位ベクトル
-Vector3 Math::Normalize(Vector3& v) {
+Vector3 Math::Normalize(const Vector3& v) {
 	float len = Length(v);
-	v /= len;
+	Vector3 result{};
+	result = v / len;
 	return v;
 }
 

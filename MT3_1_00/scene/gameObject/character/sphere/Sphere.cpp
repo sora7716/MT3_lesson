@@ -6,6 +6,7 @@
 #define pi numbers::pi_v<float>
 using namespace std;
 
+//初期化
 void Sphere::Initialize(Camera* camera, Material sphere){
 	camera_ = camera;
 	sphere_ = sphere;
@@ -13,17 +14,20 @@ void Sphere::Initialize(Camera* camera, Material sphere){
 	translate_ = { 0.0f,1.0f,0.0f };
 }
 
+//更新処理
 void Sphere::Update(){
 	WvpMatrix(camera_);
 }
 
+//デバックテキスト
 void Sphere::DebugText(){
 	ImGui::DragFloat3("SpherCenter", &sphere_.center.x, 0.1f);
 	ImGui::DragFloat("SpherRadius", &sphere_.radius, 0.1f);
 	ImGui::DragFloat3("SpherRadius", &rotate_.x, 0.1f);
 }
 
-void Sphere::Draw() {
+//描画
+void Sphere::Draw(uint32_t color) {
 	const uint32_t kSubdivision = 12;//分割数
 	const float kLatEvery  = pi/float(kSubdivision);//経度分割1つ分の角度(θd)
 	const float kLonEvery  = 2.0f*pi/float(kSubdivision);//緯度分割1つ分の角度(φd)
@@ -60,13 +64,13 @@ void Sphere::Draw() {
 			Novice::DrawLine(
 				(int)screenA_.x, (int)screenA_.y,
 				(int)screenB_.x, (int)screenB_.y,
-				BLACK
+				color
 			);
 			//横の線の描画
 			Novice::DrawLine(
 				(int)screenB_.x, (int)screenB_.y,
 				(int)screenC_.x, (int)screenC_.y,
-				BLACK
+				color
 			);
 		}
 	}

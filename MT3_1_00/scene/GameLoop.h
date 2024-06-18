@@ -4,6 +4,7 @@
 #include"scene/gameObject/character/triangle/Triangle.h"
 #include"scene/gameObject/character/grid/Grid.h"
 #include "scene/gameObject/character/sphere/Sphere.h"
+#include "scene/gameObject/character/line/Line.h"
 
 class GameLoop{
 public://メンバ関数
@@ -29,12 +30,16 @@ public://静的メンバ変数
 	static inline const int kWindowHeight    =  720;//画面の縦幅
 
 private://メンバ変数
-	char keys_[kKeysNums]    = { 0 };
-	char preKeys_[kKeysNums] = { 0 };
-	Camera* camera_     = nullptr;
-	Triangle* triangle_ = nullptr;
-	Grid* grid_ = nullptr;
-	Sphere* shpere_ = nullptr;
+	char keys_[kKeysNums];
+	char preKeys_[kKeysNums];
+	Camera* camera_;
+	Triangle* triangle_;
+	Grid* grid_;
+	Sphere* shpere_;
+
+	Sphere* point1_;
+	Sphere* point2_;
+	Line* line_;
 
 private://メンバ関数
 
