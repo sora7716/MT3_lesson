@@ -7,11 +7,11 @@ GameLoop::GameLoop(){
 		keys_[i]    = { 0 };
 		preKeys_[i] = { 0 };
 	}
-	//camera_   = nullptr;
+	camera_   = nullptr;
 	triangle_ = nullptr;
 	grid_     = nullptr;
 	shpere_   = nullptr;
-	line_     = nullptr;
+	point_    = nullptr;
 	point1_   = nullptr;
 	point2_   = nullptr;
 }
@@ -22,7 +22,7 @@ GameLoop::~GameLoop(){
 	delete camera_;
 	delete grid_;
 	delete shpere_;
-	delete line_;
+	delete point_;
 	delete point1_;
 	delete point2_;
 }
@@ -58,7 +58,7 @@ void GameLoop::Create(){
 	grid_     = new Grid();
 	triangle_ = new Triangle();
 	shpere_   = new Sphere();
-	line_     = new Line();
+	point_    = new Point();
 	point1_   = new Sphere();
 	point2_   = new Sphere();
 }
@@ -70,13 +70,11 @@ void GameLoop::Initialize() {
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 	camera_->Initialize(kWindowWidth, kWindowHeight);
 	grid_->Initialize(camera_);
-	line_->Initialize();
-	line_->SetSegment({ {-2.0f,-1.0f,0.0f},{3.0f,2.0f,2.0f} });
-	line_->SetPoint({-1.5f,0.6f,0.6f});
-	point1_->Initialize(camera_, { line_->GetPoint(), 0.01f});
-	point2_->Initialize(camera_, { line_->GetClosestPoint(), 0.01f});
-	//triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
-	//shpere_->Initialize(camera_, { 0.0f,0.0f,0.0f,{1.0f}});
+	point_->Initialize(camera_);
+	point_->SetSegment({ {-2.0f,-1.0f,0.0f},{3.0f,2.0f,2.0f} });
+	point_->SetPoint({ -1.5f,0.6f,0.6f });
+	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
+	shpere_->Initialize(camera_, { 0.0f,0.0f,0.0f,{1.0f}});
 
 }
 
@@ -87,16 +85,19 @@ void GameLoop::Update(){
 	Novice::GetHitKeyStateAll(keys_);
 	DebugText();//デバックテキスト
 
-	camera_->Update(keys_,preKeys_);
-	line_->Update();
-	//triangle_->Update(keys_,preKeys_);//三角形
-	//shpere_->Update();//スフィア
+	camera_->Update(keys_, preKeys_);
+	point1_->Initialize(camera_, { point_->GetPoint(), 0.01f });
+	point2_->Initialize(camera_, { point_->GetClosestPoint(), 0.01f });
+	point_->Update();
+	triangle_->Update(keys_, preKeys_);//三角形
+	shpere_->Update();//スフィア
 }
 
 //デバックテキスト
 void GameLoop::DebugText(){
 	ImGui::Begin("window");
 	camera_->DebugText();
+	point_->DebugText();
 	//shpere_->DebugText();
 	ImGui::End();
 }
@@ -104,8 +105,9 @@ void GameLoop::DebugText(){
 //描画処理
 void GameLoop::Draw() {
 	grid_->Draw();
+	point_->Draw();
 	point1_->Draw(RED);
 	point2_->Draw(BLACK);
 	//triangle_->Draw();
-	//shpere_->Draw();
+	//shpere_->Draw(BLACK);
 }

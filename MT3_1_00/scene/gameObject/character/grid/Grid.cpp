@@ -28,12 +28,8 @@ void Grid::Draw() {
 			(int)screenEnd_[xIndex].x, (int)screenEnd_[xIndex].y,
 			color
 		);
-		if (xIndex == kSubdivision / 2 - 1) {
-			color = BLACK;
-		}
-		else {
-			color = 0xFFFFFF88;
-		}
+		//中心だけ黒
+		color = (xIndex == kSubdivision / 2 - 1) ? BLACK : 0xFFFFFF88;
 	}
 
 	for (uint32_t zIndex = 0; zIndex <= kSubdivision; ++zIndex) {
@@ -51,11 +47,8 @@ void Grid::Draw() {
 			color
 		);
 
-		if (zIndex == kSubdivision / 2 - 1) {
-			color = BLACK;
-		}
-		else {
-			color = 0xFFFFFF88;
-		}
+		//中心だけ黒
+		color = (zIndex == kSubdivision / 2 - 1) ? BLACK : 0xFFFFFF88;
+
 	}
 }

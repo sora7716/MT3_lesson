@@ -1,6 +1,10 @@
 ﻿#pragma once
 #include "scene/gameObject/character/Character.h"
-class Line:public Character{
+
+//前方宣言
+class Camera;
+
+class Point:public Character{
 public://メンバ関数
 
 	//直線
@@ -24,22 +28,28 @@ public://メンバ関数
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Line();
+	Point();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Line();
+	~Point();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(Camera*camera);
 
 	/// <summary>
 	/// 更新処理
 	/// </summary>
 	void Update();
+
+
+	/// <summary>
+	/// デバックテキスト
+	/// </summary>
+	void DebugText();
 
 	/// <summary>
 	/// 描画処理
@@ -92,5 +102,6 @@ private://メンバ変数
 	Vector3 closestPoint_;//最近接点
 	Vector3 point_;//原点
 	Segment segment_;//線分
+	Camera* camera_;//カメラ
 };
 

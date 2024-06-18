@@ -22,6 +22,7 @@ void Camera::Update(char *keys,char *preKeys){
 void Camera::DebugText(){
 	ImGui::DragFloat3("CameraTranslate", &translate_.x, 0.01f);
 	ImGui::DragFloat3("CamereRotate", &rotate_.x, 0.01f);
+	ImGui::DragFloat3("CamereScale", &scale_.x, 0.01f);
 }
 
 //レンダリングパイプライン

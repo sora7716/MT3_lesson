@@ -4,7 +4,7 @@
 #include"scene/gameObject/character/triangle/Triangle.h"
 #include"scene/gameObject/character/grid/Grid.h"
 #include "scene/gameObject/character/sphere/Sphere.h"
-#include "scene/gameObject/character/line/Line.h"
+#include "scene/gameObject/character/point/Point.h"
 
 class GameLoop{
 public://メンバ関数
@@ -39,7 +39,7 @@ private://メンバ変数
 
 	Sphere* point1_;
 	Sphere* point2_;
-	Line* line_;
+	Point* point_;
 
 private://メンバ関数
 

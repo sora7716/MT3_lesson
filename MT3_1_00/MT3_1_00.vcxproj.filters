@@ -89,8 +89,8 @@
     <ClCompile Include="scene\gameObject\character\sphere\Sphere.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="scene\gameObject\character\line\Line.cpp">
-      <Filter>KamataEngine</Filter>
+    <ClCompile Include="scene\gameObject\character\point\Point.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +197,8 @@
     <ClInclude Include="scene\gameObject\character\sphere\Sphere.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="scene\gameObject\character\line\Line.h" />
+    <ClInclude Include="scene\gameObject\character\point\Point.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

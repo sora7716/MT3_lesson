@@ -11,12 +11,11 @@ void Sphere::Initialize(Camera* camera, Material sphere){
 	camera_ = camera;
 	sphere_ = sphere;
 	scale_ = { 1.0f,1.0f,1.0f };
-	translate_ = { 0.0f,1.0f,0.0f };
 }
 
 //更新処理
 void Sphere::Update(){
-	WvpMatrix(camera_);
+	WvpMatrix(camera_,scale_,rotate_,sphere_.center);
 }
 
 //デバックテキスト
