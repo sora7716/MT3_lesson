@@ -39,7 +39,7 @@ private://メンバ変数
 
 	Sphere* point1_;
 	Sphere* point2_;
-	Point* point_;
+	Point*  point_;
 
 private://メンバ関数
 

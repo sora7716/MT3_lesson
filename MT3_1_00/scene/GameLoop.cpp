@@ -75,7 +75,6 @@ void GameLoop::Initialize() {
 	point_->SetPoint({ -1.5f,0.6f,0.6f });
 	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
 	shpere_->Initialize(camera_, { 0.0f,0.0f,0.0f,{1.0f}});
-
 }
 
 //更新処理

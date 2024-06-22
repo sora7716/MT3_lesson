@@ -37,17 +37,13 @@ void Point::DebugText(){
 	ImGui::DragFloat3("segment origin", &segment_.origin.x,0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x,0.1f);
 	ImGui::InputFloat3("Project", &project_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
-	ImGui::InputFloat3("Project", &closestPoint_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 }
 
 //描画処理
 void Point::Draw(){
 	Vector3 start = Math::Transform(Math::Transform(segment_.origin, camera_->GetViewProjectionMatrix()), camera_->GetViewportMatrix());
 	Vector3 end = Math::Transform(Math::Transform(segment_.origin + segment_.diff, camera_->GetViewProjectionMatrix()), camera_->GetViewportMatrix());
-	ImGui::Begin("Line");
-	ImGui::InputFloat3("start", &start.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
-	ImGui::InputFloat3("end", &end.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
-	ImGui::End();
+
 	Novice::DrawLine(
 		(int)start.x,(int)start.y,
 		(int)end.x, (int)end.y,
@@ -79,12 +75,12 @@ void Point::Project(const Vector3&v1, const Vector3& v2){
 	float dot1 = Math::Dot(v1, v2);
 	float dot2 = Math::Dot(v2, v2);
 	project_ = dot1 / dot2 * v2;
-	//t_ = dot1 / dot2;
+	t_ = dot1 / dot2;
 }
 
 
 void Point::ClosestPoint(){
-	//t_ = clamp(t_, 0.0f, 1.0f);
-	closestPoint_ = project_ + segment_.origin;
+	t_ = clamp(t_, 0.0f, 1.0f);
+	closestPoint_ = segment_.origin + segment_.diff * t_;
 }
 
