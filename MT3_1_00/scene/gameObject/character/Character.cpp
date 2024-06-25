@@ -8,14 +8,6 @@ void Character::WvpMatrix(Camera* camera){
 	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
 }
 
-//ワールドビュープロジェクション(拡縮回転移動)
-void Character::WvpMatrix(Camera* camera, Vector3 scale, Vector3 rotate, Vector3 translate){
-	//ワールド座標系
-	worldMatrix_ = Math::MakeAffineMatrix(scale, rotate, translate);
-	//wvpマトリックス
-	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
-}
-
 //ワールドビュープロジェクション戻り値あり
 Matrix4x4 Character::WorldViewProjectionMatrix(Camera* camera, Vector3 scale, Vector3 rotate, Vector3 translate) {
 	//ワールド座標系

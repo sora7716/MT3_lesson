@@ -12,15 +12,6 @@ protected://メンバ関数
     void WvpMatrix(Camera* camera);
 
     /// <summary>
-    /// world*viewProjectionを求める(拡縮回転移動を宣言)
-    /// </summary>
-    /// <param name="camera">カメラ</param>
-    /// <param name="scele">倍率</param>
-    /// <param name="rotate">角度</param>
-    /// <param name="translate">移動</param>
-    void WvpMatrix(Camera* camera,Vector3 scale,Vector3 rotate,Vector3 translate);
-
-    /// <summary>
     /// world*viewProjectionを求める(拡縮回転移動を宣言)戻り値あり
     /// </summary>
     /// <param name="camera">カメラ</param>

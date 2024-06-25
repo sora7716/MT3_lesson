@@ -3,8 +3,21 @@
 #include <cmath>
 #define _USE_MATH_DEFINES
 #include <numbers>
-#define pi numbers::pi_v<float>
+#define pi_f numbers::pi_v<float>
 using namespace std;
+
+Sphere::Sphere(){
+	sphere_ = {};//スフィアの素材
+
+	camera_ = nullptr;//カメラ
+
+	screenA_ = {};//スクリーン座標
+	screenB_ = {};//スクリーン座標
+	screenC_ = {};//スクリーン座標
+}
+
+Sphere::~Sphere(){
+}
 
 //初期化
 void Sphere::Initialize(Camera* camera, Material sphere){
@@ -15,7 +28,8 @@ void Sphere::Initialize(Camera* camera, Material sphere){
 
 //更新処理
 void Sphere::Update(){
-	WvpMatrix(camera_,scale_,rotate_,sphere_.center);
+	translate_ = sphere_.center;
+	WvpMatrix(camera_);
 }
 
 //デバックテキスト
@@ -26,13 +40,13 @@ void Sphere::DebugText(){
 }
 
 //描画
-void Sphere::Draw(uint32_t color) {
+void Sphere::Draw() {
 	const uint32_t kSubdivision = 12;//分割数
-	const float kLatEvery  = pi/float(kSubdivision);//経度分割1つ分の角度(θd)
-	const float kLonEvery  = 2.0f*pi/float(kSubdivision);//緯度分割1つ分の角度(φd)
+	const float kLatEvery  = pi_f/float(kSubdivision);//経度分割1つ分の角度(θd)
+	const float kLonEvery  = 2.0f*pi_f/float(kSubdivision);//緯度分割1つ分の角度(φd)
 
 	for (uint32_t latIndex = 0; latIndex < kSubdivision; latIndex++) {
-		float lat = -pi / 2.0f + kLatEvery * latIndex;//θ
+		float lat = -pi_f / 2.0f + kLatEvery * latIndex;//θ
 		for (uint32_t lonIndex = 0; lonIndex < kSubdivision; ++lonIndex) {
 			float lon = lonIndex * kLonEvery;//φ
 			Vector3 a, b, c;//ローカル座標
@@ -63,15 +77,20 @@ void Sphere::Draw(uint32_t color) {
 			Novice::DrawLine(
 				(int)screenA_.x, (int)screenA_.y,
 				(int)screenB_.x, (int)screenB_.y,
-				color
+				sphere_.color
 			);
 			//横の線の描画
 			Novice::DrawLine(
 				(int)screenB_.x, (int)screenB_.y,
 				(int)screenC_.x, (int)screenC_.y,
-				color
+				sphere_.color
 			);
 		}
 	}
 
+}
+
+//カラーのセッター
+void Sphere::SetColor(uint32_t color){
+	sphere_.color = color;
 }

@@ -82,5 +82,6 @@ void Point::Project(const Vector3&v1, const Vector3& v2){
 void Point::ClosestPoint(){
 	t_ = clamp(t_, 0.0f, 1.0f);
 	closestPoint_ = segment_.origin + segment_.diff * t_;
+	//closestPoint_ = segment_.origin + project_;
 }
 

@@ -5,13 +5,25 @@ class Camera;//前方宣言
 
 class Sphere:Character{
 
-public://メンバ関数
-
-	//スフィアに使う変数
+public://構造体
+	//スフィアに使う構造体
 	typedef struct Material {
 		Vector3 center;
 		float radius;
+		uint32_t color;
 	}Material;
+
+public://メンバ関数
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Sphere();
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Sphere();
 
 	/// <summary>
 	/// 初期化処理
@@ -33,17 +45,22 @@ public://メンバ関数
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw(uint32_t color);
+	void Draw();
+
+	/// <summary>
+	/// カラーのセッター
+	/// </summary>
+	/// <param name="color"></param>
+	void SetColor(uint32_t color);
 
 private://メンバ変数
 	
-	Material sphere_ = {};//スフィアの素材
+	Material sphere_;//スフィアの素材
 
-	Camera *camera_ = nullptr;//カメラ
+	Camera *camera_;//カメラ
 
-	Vector3 screenA_= {};//スクリーン座標
-	Vector3 screenB_ = {};//スクリーン座標
-	Vector3 screenC_ = {};//スクリーン座標
-
+	Vector3 screenA_;//スクリーン座標
+	Vector3 screenB_;//スクリーン座標
+	Vector3 screenC_;//スクリーン座標
 };
 
