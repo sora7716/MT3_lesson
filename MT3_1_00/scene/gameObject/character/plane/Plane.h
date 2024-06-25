@@ -26,6 +26,11 @@ public://メンバ関数
 	/// </summary>
 	~Plane();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="plane">平面の素材{normal,distance,color}</param>
 	void Initialize(Camera* camera, const Material& plane);
 
 	/// <summary>

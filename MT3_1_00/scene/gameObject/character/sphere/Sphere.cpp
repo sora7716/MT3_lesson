@@ -6,9 +6,9 @@
 #define pi_f numbers::pi_v<float>
 using namespace std;
 
-Sphere::Sphere(){
+Sphere::Sphere() {
 	sphere_ = {};//スフィアの素材
-
+	sphere_.color = WHITE;//色
 	camera_ = nullptr;//カメラ
 
 	screenA_ = {};//スクリーン座標
@@ -16,34 +16,34 @@ Sphere::Sphere(){
 	screenC_ = {};//スクリーン座標
 }
 
-Sphere::~Sphere(){
+Sphere::~Sphere() {
 }
 
 //初期化
-void Sphere::Initialize(Camera* camera, Material sphere){
+void Sphere::Initialize(Camera* camera, Material sphere) {
 	camera_ = camera;
 	sphere_ = sphere;
 	scale_ = { 1.0f,1.0f,1.0f };
 }
 
 //更新処理
-void Sphere::Update(){
+void Sphere::Update() {
 	translate_ = sphere_.center;
 	WvpMatrix(camera_);
 }
 
 //デバックテキスト
-void Sphere::DebugText(){
-	ImGui::DragFloat3("SpherCenter", &sphere_.center.x, 0.1f);
-	ImGui::DragFloat("SpherRadius", &sphere_.radius, 0.1f);
-	ImGui::DragFloat3("SpherRadius", &rotate_.x, 0.1f);
+void Sphere::DebugText(const char* label_center, const char* label_radius) {
+	//ImGui::DragFloat3("Spher.rotate", &rotate_.x, 0.1f);
+	ImGui::DragFloat3(label_center, &sphere_.center.x, 0.01f);
+	ImGui::DragFloat(label_radius, &sphere_.radius, 0.01f);
 }
 
 //描画
 void Sphere::Draw() {
-	const uint32_t kSubdivision = 12;//分割数
-	const float kLatEvery  = pi_f/float(kSubdivision);//経度分割1つ分の角度(θd)
-	const float kLonEvery  = 2.0f*pi_f/float(kSubdivision);//緯度分割1つ分の角度(φd)
+	const uint32_t kSubdivision = 16;//分割数
+	const float kLatEvery = pi_f / float(kSubdivision);//経度分割1つ分の角度(θd)
+	const float kLonEvery = 2.0f * pi_f / float(kSubdivision);//緯度分割1つ分の角度(φd)
 
 	for (uint32_t latIndex = 0; latIndex < kSubdivision; latIndex++) {
 		float lat = -pi_f / 2.0f + kLatEvery * latIndex;//θ
@@ -59,7 +59,7 @@ void Sphere::Draw() {
 			b = {
 				sphere_.center.x + sphere_.radius * cos(lat + kLatEvery) * cos(lon),
 				sphere_.center.y + sphere_.radius * sin(lat + kLatEvery),
-				sphere_.center.z + sphere_.radius*cos(lat + kLatEvery) * sin(lon)
+				sphere_.center.z + sphere_.radius * cos(lat + kLatEvery) * sin(lon)
 			};
 
 			c = {
@@ -90,7 +90,39 @@ void Sphere::Draw() {
 
 }
 
+
+
+
+//当たり判定(球と球)
+void Sphere::IsCollision(const Material& sphere) {
+
+	float distance = Math::Length(sphere.center - sphere_.center);
+	if (distance <= sphere_.radius + sphere.radius) {
+		sphere_.isHit = true;
+	}
+	else {
+		sphere_.isHit = false;
+	}
+	ChangeColor();
+}
+
+void Sphere::ChangeColor(){
+	if (sphere_.isHit) {
+		sphere_.color = RED;
+	}
+	else {
+		sphere_.color = WHITE;
+	}
+}
+
 //カラーのセッター
-void Sphere::SetColor(uint32_t color){
+void Sphere::SetColor(uint32_t color) {
 	sphere_.color = color;
 }
+
+//スフィアの素材のゲッター
+Sphere::Material Sphere::GetSphereMaterial() {
+	return sphere_;
+}
+
+

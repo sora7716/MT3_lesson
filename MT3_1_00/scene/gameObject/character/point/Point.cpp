@@ -37,6 +37,7 @@ void Point::DebugText(){
 	ImGui::DragFloat3("segment origin", &segment_.origin.x,0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x,0.1f);
 	ImGui::InputFloat3("Project", &project_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputFloat3("cp", &closestPoint_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 }
 
 //描画処理
@@ -73,9 +74,9 @@ void Point::SetSegment(const Segment& segment){
 //正射影ベクトル
 void Point::Project(const Vector3&v1, const Vector3& v2){
 	float dot1 = Math::Dot(v1, v2);
-	float dot2 = Math::Dot(v2, v2);
-	project_ = dot1 / dot2 * v2;
-	t_ = dot1 / dot2;
+	float length = Math::Dot(v2, v2);
+	project_ = dot1 / length * v2;
+	t_ = dot1 / length;
 }
 
 

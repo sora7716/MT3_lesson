@@ -168,6 +168,7 @@ float Math::Length(const Vector3& v) {
 	return length;
 }
 
+
 //単位ベクトル
 Vector3 Math::Normalize(const Vector3& v) {
 	float len = Length(v);

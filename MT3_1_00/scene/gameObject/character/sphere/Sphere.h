@@ -11,6 +11,7 @@ public://構造体
 		Vector3 center;
 		float radius;
 		uint32_t color;
+		bool isHit;
 	}Material;
 
 public://メンバ関数
@@ -29,7 +30,7 @@ public://メンバ関数
 	/// 初期化処理
 	/// </summary>
 	/// <param name="camera">カメラ</param>
-	/// <param name="sphere">スフィアの素材</param>
+	/// <param name="sphere">スフィアの素材{positon,radius,color}</param>
 	void Initialize(Camera *camera, Material sphere);
 
 	/// <summary>
@@ -40,7 +41,9 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	void DebugText();
+	/// <param name="label_center">centerのラベル</param>
+	/// <param name="label_radius">radiusのラベル</param>
+	void DebugText(const char* label_center, const char* label_radius);
 
 	/// <summary>
 	/// 描画処理
@@ -48,10 +51,27 @@ public://メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// 当たり判定(球と球)
+	/// </summary>
+	/// <param name="sphere">別のスフィア</param>
+	void IsCollision(const Material& sphere);
+
+	/// <summary>
+	/// 色を変える
+	/// </summary>
+	void ChangeColor();
+	
+	/// <summary>
 	/// カラーのセッター
 	/// </summary>
 	/// <param name="color"></param>
 	void SetColor(uint32_t color);
+
+	/// <summary>
+	/// スフィアの素材のゲッター
+	/// </summary>
+	/// <returns></returns>
+	Material GetSphereMaterial();
 
 private://メンバ変数
 	
