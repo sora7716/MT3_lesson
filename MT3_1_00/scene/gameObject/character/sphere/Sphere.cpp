@@ -9,7 +9,6 @@ using namespace std;
 Sphere::Sphere() {
 	sphere_ = {};//スフィアの素材
 	sphere_.color = WHITE;//色
-	camera_ = nullptr;//カメラ
 
 	screenA_ = {};//スクリーン座標
 	screenB_ = {};//スクリーン座標
@@ -20,8 +19,7 @@ Sphere::~Sphere() {
 }
 
 //初期化
-void Sphere::Initialize(Camera* camera, Material sphere) {
-	camera_ = camera;
+void Sphere::Initialize(Material sphere) {
 	sphere_ = sphere;
 	scale_ = { 1.0f,1.0f,1.0f };
 }
@@ -29,18 +27,18 @@ void Sphere::Initialize(Camera* camera, Material sphere) {
 //更新処理
 void Sphere::Update() {
 	translate_ = sphere_.center;
-	WvpMatrix(camera_);
+
 }
 
 //デバックテキスト
-void Sphere::DebugText(const char* label_center, const char* label_radius) {
-	//ImGui::DragFloat3("Spher.rotate", &rotate_.x, 0.1f);
+void Sphere::DebugText(const char* label_center, const char* label_radius, const char* label_Rotate) {
+	ImGui::DragFloat3(label_Rotate, &rotate_.x, 0.1f);
 	ImGui::DragFloat3(label_center, &sphere_.center.x, 0.01f);
 	ImGui::DragFloat(label_radius, &sphere_.radius, 0.01f);
 }
 
 //描画
-void Sphere::Draw() {
+void Sphere::Draw(const Matrix4x4& viewProjection, const Matrix4x4& viewprotMatirx) {
 	const uint32_t kSubdivision = 16;//分割数
 	const float kLatEvery = pi_f / float(kSubdivision);//経度分割1つ分の角度(θd)
 	const float kLonEvery = 2.0f * pi_f / float(kSubdivision);//緯度分割1つ分の角度(φd)
@@ -69,9 +67,9 @@ void Sphere::Draw() {
 			};
 
 			//スクリーン座標を求める
-			ScreenTransform(camera_, a, screenA_);
-			ScreenTransform(camera_, b, screenB_);
-			ScreenTransform(camera_, c, screenC_);
+			ScreenTransform(viewProjection, viewprotMatirx, a, screenA_);
+			ScreenTransform(viewProjection, viewprotMatirx, b, screenB_);
+			ScreenTransform(viewProjection, viewprotMatirx, c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(
@@ -94,25 +92,16 @@ void Sphere::Draw() {
 
 
 //当たり判定(球と球)
-void Sphere::IsCollision(const Material& sphere) {
-
-	float distance = Math::Length(sphere.center - sphere_.center);
-	if (distance <= sphere_.radius + sphere.radius) {
+void Sphere::IsCollision(const Material& sphere, const Vector3& worldPosition) {
+	Vector3 worldVector = { worldMatrix_.m[3][0],worldMatrix_.m[3][1],worldMatrix_.m[3][2] };
+	float distance = Math::Length(worldVector - worldPosition);
+	if (distance <= (sphere_.radius / 2.0f) + (sphere.radius / 2.0f)) {
 		sphere_.isHit = true;
 	}
 	else {
 		sphere_.isHit = false;
 	}
-	ChangeColor();
-}
-
-void Sphere::ChangeColor(){
-	if (sphere_.isHit) {
-		sphere_.color = RED;
-	}
-	else {
-		sphere_.color = WHITE;
-	}
+	ChangeColor();//色を変える
 }
 
 //カラーのセッター
@@ -125,4 +114,12 @@ Sphere::Material Sphere::GetSphereMaterial() {
 	return sphere_;
 }
 
-
+//色を変える
+void Sphere::ChangeColor() {
+	if (sphere_.isHit) {
+		sphere_.color = RED;
+	}
+	else {
+		sphere_.color = WHITE;
+	}
+}

@@ -42,9 +42,10 @@ void Point::DebugText(){
 
 //描画処理
 void Point::Draw(){
-	Vector3 start = Math::Transform(Math::Transform(segment_.origin, camera_->GetViewProjectionMatrix()), camera_->GetViewportMatrix());
-	Vector3 end = Math::Transform(Math::Transform(segment_.origin + segment_.diff, camera_->GetViewProjectionMatrix()), camera_->GetViewportMatrix());
-
+	Vector3 start{};
+	Vector3 end{};
+	CameraScreenTransform(camera_,segment_.origin,start);
+	CameraScreenTransform(camera_, (segment_.origin + segment_.diff), end);
 	Novice::DrawLine(
 		(int)start.x,(int)start.y,
 		(int)end.x, (int)end.y,

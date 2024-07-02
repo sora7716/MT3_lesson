@@ -3,7 +3,7 @@
 
 class Camera;//前方宣言
 
-class Sphere:Character{
+class Sphere:public Character{
 
 public://構造体
 	//スフィアに使う構造体
@@ -31,7 +31,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="sphere">スフィアの素材{positon,radius,color}</param>
-	void Initialize(Camera *camera, Material sphere);
+	void Initialize(Material sphere);
 
 	/// <summary>
 	/// 更新処理
@@ -43,23 +43,18 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="label_center">centerのラベル</param>
 	/// <param name="label_radius">radiusのラベル</param>
-	void DebugText(const char* label_center, const char* label_radius);
+	void DebugText(const char* label_center, const char* label_radius, const char* label_Rotate);
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	void Draw(const Matrix4x4& viewProjection, const Matrix4x4& viewprotMatirx);
 
 	/// <summary>
 	/// 当たり判定(球と球)
 	/// </summary>
 	/// <param name="sphere">別のスフィア</param>
-	void IsCollision(const Material& sphere);
-
-	/// <summary>
-	/// 色を変える
-	/// </summary>
-	void ChangeColor();
+	void IsCollision(const Material& sphere, const Vector3& worldPosition);
 	
 	/// <summary>
 	/// カラーのセッター
@@ -73,11 +68,16 @@ public://メンバ関数
 	/// <returns></returns>
 	Material GetSphereMaterial();
 
+private://メンバ関数
+
+	/// <summary>
+	/// 色を変える
+	/// </summary>
+	void ChangeColor();
+
 private://メンバ変数
 	
 	Material sphere_;//スフィアの素材
-
-	Camera *camera_;//カメラ
 
 	Vector3 screenA_;//スクリーン座標
 	Vector3 screenB_;//スクリーン座標

@@ -54,5 +54,5 @@ void Triangle::Transfar(char* keys, char* preKeys){
 	bool behind = keys[DIK_W] && preKeys[DIK_W];
 	GameObject::Scale(behind, front);//拡縮
 	GameObject::Rotate();//回転
-	GameObject::Translate(left, right, 1.0f);//移動
+	GameObject::TranslateX(left, right, 1.0f);//移動
 }

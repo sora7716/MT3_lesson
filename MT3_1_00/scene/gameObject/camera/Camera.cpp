@@ -1,32 +1,36 @@
 ﻿#include "Camera.h"
 
 //初期化
-void Camera::Initialize(int kWindowWidth, int kWindowHeight){
-	windowWidth_  = kWindowWidth; //横幅
+void Camera::Initialize(int kWindowWidth, int kWindowHeight) {
+	windowWidth_ = kWindowWidth; //横幅
 	windowHeight_ = kWindowHeight;//縦幅
 	//カメラ
 	scale_ = { 1.0f,1.0f,1.0f };     //倍率
-	rotate_ = {0.26f,0.0f,0.0f};
-	translate_ = { 0.0f,2.04f,-5.93f };//ポジション
+	rotate_ = { 0.26f,0.0f,0.0f };
+	translate_ = { 0.0f,2.04f,-5.00f };//ポジション
 }
 
 //更新処理
-void Camera::Update(char *keys,char *preKeys){
-	bool left = keys[DIK_LEFT] && preKeys[DIK_LEFT];
-	bool right = keys[DIK_RIGHT]&&preKeys[DIK_RIGHT];
-	GameObject::Translate(left, right,-1.0f);
+void Camera::Update(char* keys, char* preKeys) {
+	bool left   = keys[DIK_LEFT]  && preKeys[DIK_LEFT];
+	bool right  = keys[DIK_RIGHT] && preKeys[DIK_RIGHT];
+	bool up     = keys[DIK_UP]    && preKeys[DIK_UP]   && !keys[DIK_LSHIFT] && !preKeys[DIK_LSHIFT];
+	bool down   = keys[DIK_DOWN]  && preKeys[DIK_DOWN] && !keys[DIK_LSHIFT] && !preKeys[DIK_LSHIFT];
+	bool front  = keys[DIK_UP]    && preKeys[DIK_UP]   && keys[DIK_LSHIFT]  && preKeys[DIK_LSHIFT];
+	bool behide = keys[DIK_DOWN]  && preKeys[DIK_DOWN] && keys[DIK_LSHIFT]  && preKeys[DIK_LSHIFT];
+	GameObject::Movement(left, right, up, down, front, behide, -1.0f);
 	RenderingPipeline();
 }
 
 //デバックテキスト
-void Camera::DebugText(){
+void Camera::DebugText() {
 	ImGui::DragFloat3("CameraTranslate", &translate_.x, 0.01f);
 	ImGui::DragFloat3("CamereRotate", &rotate_.x, 0.01f);
 	ImGui::DragFloat3("CamereScale", &scale_.x, 0.01f);
 }
 
 //レンダリングパイプライン
-void Camera::RenderingPipeline(){
+void Camera::RenderingPipeline() {
 	//カメラ座標系
 	cameraMatrix_ = Math::MakeAffineMatrix(scale_, rotate_, translate_);
 	//ビュー座標系
@@ -40,16 +44,16 @@ void Camera::RenderingPipeline(){
 }
 
 //描画
-void Camera::Draw(){
+void Camera::Draw() {
 }
 
 // ビュープロジェクションマトリックスのゲッター
-Matrix4x4 Camera::GetViewProjectionMatrix(){
+Matrix4x4 Camera::GetViewProjectionMatrix() {
 	return viewProjectionMatrix_;
 }
 
 //ビューポートマトリックスのゲッター
-Matrix4x4 Camera::GetViewportMatrix(){
+Matrix4x4 Camera::GetViewportMatrix() {
 	return viewportMatrix_;
 }
 
@@ -64,6 +68,6 @@ Vector3 Camera::GetRotate() {
 }
 
 //移動のゲッター
-Vector3 Camera::GetTranslate(){
+Vector3 Camera::GetTranslate() {
 	return translate_;
 };
