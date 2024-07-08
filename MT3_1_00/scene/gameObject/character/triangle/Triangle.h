@@ -14,8 +14,8 @@ public://メンバ関数
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	/// <param name="keys">keys</param>
-	/// <param name="preKeys">preKeys</param>
+	/// <param name="keys">現在の押しているキー</param>
+	/// <param name="preKeys">過去に押しているキー</param>
 	void Update(char *keys,char *preKeys);
 
 	/// <summary>
@@ -27,12 +27,24 @@ private://メンバ変数
 
 	Camera* camera_ = nullptr;
 
-	MyVector3 v1_    = {};//ベクトル1
-	MyVector3 v2_    = {};//ベクトル2
-	MyVector3 cross_ = {};//クロス積
+	Vector3 v1_    = {};//ベクトル1
+	Vector3 v2_    = {};//ベクトル2
+	Vector3 cross_ = {};//クロス積
 	
-	MyVector3 normalize_ = {};
-	MyVector3 viewVector_ = {};
+	Vector3 normalize_ = {};
+	Vector3 viewVector_ = {};
 	float disappear_ = 0;
+
+	Vector3 kLocalVertices_[3] = {};//ローカル座標
+	Vector3 screenVertices_[3] = {};//スクリーン座標
+
+private://メンバ関数
+	/// <summary>
+	/// 動き
+	/// </summary>
+	/// <param name="keys">現在の押しているキー</param>
+	/// <param name="preKeys">過去に押しているキー</param>
+	void Transfar(char *keys,char *preKeys);
+	
 };
 
