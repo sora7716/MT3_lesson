@@ -1,5 +1,7 @@
 ﻿#include "Sphere.h"
 #include "scene/gameObject/camera/Camera.h"
+#include "scene/gameObject/character/plane/Plane.h"
+#include "scene/gameObject/character/grid/Grid.h"
 #include <cmath>
 #define _USE_MATH_DEFINES
 #include <numbers>
@@ -13,15 +15,20 @@ Sphere::Sphere() {
 	screenA_ = {};//スクリーン座標
 	screenB_ = {};//スクリーン座標
 	screenC_ = {};//スクリーン座標
+	plane_ = nullptr;
+	camera_ = nullptr;
+	grid_ = nullptr;
 }
 
 Sphere::~Sphere() {
 }
 
 //初期化
-void Sphere::Initialize(Material sphere) {
+void Sphere::Initialize(Camera* camera, Grid* grid, Material sphere) {
 	sphere_ = sphere;
 	scale_ = { 1.0f,1.0f,1.0f };
+	SetCamera(camera);
+	SetGrid(grid);
 }
 
 //更新処理
@@ -38,7 +45,7 @@ void Sphere::DebugText(const char* label_center, const char* label_radius, const
 }
 
 //描画
-void Sphere::Draw(const Matrix4x4& viewProjection, const Matrix4x4& viewprotMatirx) {
+void Sphere::Draw() {
 	const uint32_t kSubdivision = 16;//分割数
 	const float kLatEvery = pi_f / float(kSubdivision);//経度分割1つ分の角度(θd)
 	const float kLonEvery = 2.0f * pi_f / float(kSubdivision);//緯度分割1つ分の角度(φd)
@@ -67,9 +74,9 @@ void Sphere::Draw(const Matrix4x4& viewProjection, const Matrix4x4& viewprotMati
 			};
 
 			//スクリーン座標を求める
-			ScreenTransform(viewProjection, viewprotMatirx, a, screenA_);
-			ScreenTransform(viewProjection, viewprotMatirx, b, screenB_);
-			ScreenTransform(viewProjection, viewprotMatirx, c, screenC_);
+			ScreenTransform(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix(), a, screenA_);
+			ScreenTransform(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix(), b, screenB_);
+			ScreenTransform(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix(), c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(
@@ -94,8 +101,22 @@ void Sphere::Draw(const Matrix4x4& viewProjection, const Matrix4x4& viewprotMati
 //当たり判定(球と球)
 void Sphere::IsCollision(const Material& sphere, const Vector3& worldPosition) {
 	Vector3 worldVector = { worldMatrix_.m[3][0],worldMatrix_.m[3][1],worldMatrix_.m[3][2] };
-	float distance = Math::Length(worldVector - worldPosition);
-	if (distance <= (sphere_.radius / 2.0f) + (sphere.radius / 2.0f)) {
+	float distance = sqrt(Math::Length(worldVector - worldPosition));
+	if (distance <= sphere_.radius / 2.0f + sphere.radius / 2.0f) {
+		sphere_.isHit = true;
+	}
+	else {
+		sphere_.isHit = false;
+	}
+	ChangeColor();//色を変える
+}
+
+void Sphere::IsCollision(Plane* plane) {
+	SetPlane(plane);
+	Vector3 normal = plane_->GetPlaneMaterial().normal;
+	float distance = plane_->GetPlaneMaterial().distance;
+	float k = fabsf(Math::Dot(normal, sphere_.center) - distance);
+	if (k <= sphere_.radius) {
 		sphere_.isHit = true;
 	}
 	else {
@@ -112,6 +133,21 @@ void Sphere::SetColor(uint32_t color) {
 //スフィアの素材のゲッター
 Sphere::Material Sphere::GetSphereMaterial() {
 	return sphere_;
+}
+
+//平面のセッター
+void Sphere::SetPlane(Plane* plane) {
+	plane_ = plane;
+}
+
+//グリッド線のゲッター
+void Sphere::SetGrid(Grid* grid) {
+	grid_ = grid;
+}
+
+//カメラのゲッター
+void Sphere::SetCamera(Camera* camera) {
+	camera_ = camera;
 }
 
 //色を変える

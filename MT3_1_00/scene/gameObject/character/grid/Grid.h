@@ -41,7 +41,7 @@ public://メンバ関数
 
 private://静的メンバ変数
 	static inline const uint32_t kSubdivision = 30;
-	static inline const float kRotateSpeed = 0.1f;//回転スピード
+	static inline const float kRotateSpeed = 0.05f;//回転スピード
 
 public://静的メンバ変数
 	static inline const uint32_t kElementCount = kSubdivision + 1;//線の要素

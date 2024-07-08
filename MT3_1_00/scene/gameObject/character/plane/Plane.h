@@ -4,6 +4,7 @@
 #include <Vector3.h>
 //カメラの前方宣言
 class Camera;
+class Grid;
 
 class Plane {
 
@@ -31,7 +32,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="plane">平面の素材{normal,distance,color}</param>
-	void Initialize(Camera* camera, const Material& plane);
+	void Initialize(Camera* camera, Grid* grid, const Material& plane);
 
 	/// <summary>
 	/// 更新処理
@@ -48,11 +49,24 @@ public://メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 平面の素材のゲッター
+	/// </summary>
+	/// <returns></returns>
+	const Material& GetPlaneMaterial();
+
 private://メンバ関数
+
+	/// <summary>
+	/// 垂直
+	/// </summary>
+	/// <param name="v"></param>
+	/// <returns></returns>
 	Vector3 Perpendicular(const Vector3& v);
 
 private://メンバ変数
 	Camera* camera_;//カメラ
+	Grid* grid_;//グリッド線
 	Material plane_;//素材
 };
 

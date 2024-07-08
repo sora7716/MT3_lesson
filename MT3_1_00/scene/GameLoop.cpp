@@ -17,7 +17,6 @@ GameLoop::GameLoop() {
 	point1_ = nullptr;
 	point2_ = nullptr;
 	plane_ = nullptr;
-
 }
 
 //デストラクター
@@ -65,8 +64,8 @@ void GameLoop::Create() {
 	for (int i = 0; i < kSphereNum; i++) {
 		sphere_[i] = new Sphere();
 	}
-	/*triangle_ = new Triangle();
-	plane_    = new Plane();*/
+	/*triangle_ = new Triangle();*/
+	plane_ = new Plane();
 	line_ = new Point();
 	point1_ = new Sphere();
 	point2_ = new Sphere();
@@ -79,16 +78,17 @@ void GameLoop::Initialize() {
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 
 	camera_->Initialize(kWindowWidth, kWindowHeight);
-	for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i]->Initialize({ 0.0f + (float)i,0.0f + (float)i,0.0f + (float)i,{1.0f},WHITE });
-	}
 	line_->Initialize(camera_);
 	line_->SetSegment({ {-2.0f,-1.0f,0.0f},{3.0f,2.0f,2.0f} });
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
 	grid_->Initialize(camera_);
 
-	/*triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
-	plane_->Initialize(camera_,{{0.0f,1.0f,0.0f},1,RED});*/
+	for (int i = 0; i < kSphereNum; i++) {
+		sphere_[i]->Initialize(camera_, grid_, { 0.0f + (float)i,0.0f + (float)i,0.0f + (float)i,{1.0f},WHITE });
+	}
+
+	/*triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);*/
+	plane_->Initialize(camera_, grid_, { {0.0f,1.0f,0.0f},1,RED });
 }
 
 //更新処理
@@ -103,11 +103,12 @@ void GameLoop::Update() {
 		sphere_[i]->Update();
 	}
 	grid_->Update(keys_, preKeys_);
-	sphere_[0]->IsCollision(sphere_[1]->GetSphereMaterial(),sphere_[1]->GetWorldPosition());
+	//sphere_[0]->IsCollision(sphere_[1]->GetSphereMaterial(),sphere_[1]->GetWorldPosition());
 	//sphere_[1]->IsCollision(sphere_[0]->GetSphereMaterial());
-	point1_->Initialize({ line_->GetPoint(), 0.01f,RED });
-	point2_->Initialize({ line_->GetClosestPoint(), 0.01f,BLACK });
+	point1_->Initialize(camera_,grid_,{ line_->GetPoint(), 0.01f,RED });
+	point2_->Initialize(camera_,grid_,{ line_->GetClosestPoint(), 0.01f,BLACK });
 	line_->Update();
+	sphere_[0]->IsCollision(plane_);
 	//triangle_->Update(keys_, preKeys_);//三角形
 	//shpere_->Update();//スフィア
 }
@@ -115,14 +116,14 @@ void GameLoop::Update() {
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
+	sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
 	//camera_->DebugText();
-	sphere_[0]->DebugText("sphere[0].center", "sphere[0].radius","sphere[0].rotate");
-	sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
+	//sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
 	//line_->DebugText();
-	//plane_->DebugText();
+	plane_->DebugText();
 	ImGui::End();
 }
 
@@ -130,11 +131,11 @@ void GameLoop::DebugText() {
 void GameLoop::Draw() {
 	grid_->Draw();
 	for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i]->Draw(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix());
+		sphere_[i]->Draw();
 	}
+	plane_->Draw();
 	/*line_->Draw();
 	point1_->Draw();
 	point2_->Draw();*/
-	//plane_->Draw();
 	//triangle_->Draw();
 }

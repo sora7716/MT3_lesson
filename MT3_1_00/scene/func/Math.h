@@ -139,4 +139,11 @@ public:
 	/// <param name="v">vector</param>
 	/// <returns></returns>
 	static Vector3 Normalize(const Vector3& v);
+
+	/// <summary>
+	/// 正規化
+	/// </summary>
+	/// <param name="num">数字</param>
+	/// <returns></returns>
+	static float Normalize(const float& num);
 };

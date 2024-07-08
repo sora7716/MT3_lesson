@@ -1,7 +1,10 @@
 ﻿#pragma once
 #include "scene/gameObject/character/Character.h"
 
-class Camera;//前方宣言
+//前方宣言
+class Camera;
+class Grid;
+class Plane;
 
 class Sphere:public Character{
 
@@ -31,7 +34,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="sphere">スフィアの素材{positon,radius,color}</param>
-	void Initialize(Material sphere);
+	void Initialize(Camera* camera, Grid* grid, Material sphere);
 
 	/// <summary>
 	/// 更新処理
@@ -48,7 +51,7 @@ public://メンバ関数
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw(const Matrix4x4& viewProjection, const Matrix4x4& viewprotMatirx);
+	void Draw();
 
 	/// <summary>
 	/// 当たり判定(球と球)
@@ -56,6 +59,12 @@ public://メンバ関数
 	/// <param name="sphere">別のスフィア</param>
 	void IsCollision(const Material& sphere, const Vector3& worldPosition);
 	
+	/// <summary>
+	/// 当たり判定(球と平面)
+	/// </summary>
+	/// <param name="sphere">別のスフィア</param>
+	void IsCollision(Plane* plane);
+
 	/// <summary>
 	/// カラーのセッター
 	/// </summary>
@@ -68,6 +77,24 @@ public://メンバ関数
 	/// <returns></returns>
 	Material GetSphereMaterial();
 
+	/// <summary>
+	/// 平面のセッター
+	/// </summary>
+	/// <param name="plaen">平面</param>
+	void SetPlane(Plane*plane);
+
+	/// <summary>
+	/// グリッド線のゲッター
+	/// </summary>
+	/// <param name="grid">グリッド線</param>
+	void SetGrid(Grid* grid);
+
+	/// <summary>
+	/// カメラのゲッター
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	void SetCamera(Camera* camera);
+
 private://メンバ関数
 
 	/// <summary>
@@ -77,8 +104,10 @@ private://メンバ関数
 
 private://メンバ変数
 	
+	Camera* camera_;//カメラ
+	Grid* grid_;//グリッド線
 	Material sphere_;//スフィアの素材
-
+	Plane* plane_;//平面
 	Vector3 screenA_;//スクリーン座標
 	Vector3 screenB_;//スクリーン座標
 	Vector3 screenC_;//スクリーン座標

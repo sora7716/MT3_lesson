@@ -7,6 +7,7 @@
 #include "scene/gameObject/character/point/Point.h"
 #include "scene/gameObject/character/plane/Plane.h"
 
+
 class GameLoop {
 public://メンバ関数
 	
@@ -29,7 +30,7 @@ public://静的メンバ変数
 	static inline const int kKeysNums = 256;//読み込むキーの数
 	static inline const int kWindowWidth = 1280;//画面の横幅
 	static inline const int kWindowHeight = 720;//画面の縦幅
-	static inline const int kSphereNum = 2;//スフィアの数
+	static inline const int kSphereNum = 1;//スフィアの数
 private://メンバ変数
 	char keys_[kKeysNums];
 	char preKeys_[kKeysNums];

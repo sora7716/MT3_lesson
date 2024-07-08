@@ -177,5 +177,12 @@ Vector3 Math::Normalize(const Vector3& v) {
 	return v;
 }
 
+//正規化
+float Math::Normalize(const float& num){
+	float len = powf(num,2);
+	float result = num / len;
+	return result;
+}
+
 
 

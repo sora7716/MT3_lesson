@@ -1,10 +1,12 @@
 ﻿#include "Plane.h"
 #include "scene/gameObject/camera/Camera.h"
+#include "scene/gameObject/character/grid/Grid.h"
 //コンストラクタ
 Plane::Plane() {
 	camera_ = nullptr;
 	plane_ = {};
 	plane_.color = WHITE;
+	grid_ = nullptr;
 }
 
 //デストラクタ
@@ -12,8 +14,9 @@ Plane::~Plane() {
 }
 
 //初期化
-void Plane::Initialize(Camera* camera, const Material& plane) {
+void Plane::Initialize(Camera* camera, Grid* grid, const Material& plane) {
 	camera_ = camera;
+	grid_ = grid;
 	plane_ = plane;
 }
 
@@ -41,7 +44,7 @@ void Plane::Draw() {
 	for (int32_t index = 0; index < 4; ++index) {
 		Vector3 extend = 2.0f * perpendiculars[index];
 		Vector3 point = center + extend;
-		points[index] = Math::Transform(Math::Transform(point, camera_->GetViewProjectionMatrix()), camera_->GetViewportMatrix());
+		points[index] = Math::Transform(Math::Transform(point, grid_->GetWorldViewProjection()), camera_->GetViewportMatrix());
 	}
 
 	Novice::DrawLine(
@@ -67,6 +70,13 @@ void Plane::Draw() {
 
 }
 
+//平面の素材のゲッター
+const Plane::Material& Plane::GetPlaneMaterial(){
+	// TODO: return ステートメントをここに挿入します
+	return plane_;
+}
+
+//垂直
 Vector3 Plane::Perpendicular(const Vector3& v) {
 	if (v.x != 0.0f || v.y != 0.0f) {
 		return { -v.y,v.x,0.0f };

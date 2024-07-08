@@ -23,7 +23,7 @@ Grid::Grid() {
 		//線の終点↑
 	}
 	color = 0xFFFFFFFF;//線の色
-
+	rotateSpeed_ = {};
 }
 
 Grid::~Grid() {
@@ -107,7 +107,7 @@ void Grid::Draw() {
 			color
 		);
 		//中心だけ黒
-		color = (xIndex == kSubdivision / 2 - 1) ? BLACK : 0xFFFFFF88;
+		color = (xIndex == kSubdivision / 2 - 1) ? BLUE : 0xFFFFFF88;
 	}
 
 	for (uint32_t zIndex = 0; zIndex <= kSubdivision; ++zIndex) {
@@ -126,7 +126,7 @@ void Grid::Draw() {
 		);
 
 		//中心だけ黒
-		color = (zIndex == kSubdivision / 2 - 1) ? BLACK : 0xFFFFFF88;
+		color = (zIndex == kSubdivision / 2 - 1) ? GREEN : 0xFFFFFF88;
 
 	}
 }

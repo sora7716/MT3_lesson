@@ -93,7 +93,7 @@
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
     <ClCompile Include="scene\gameObject\character\plane\Plane.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
