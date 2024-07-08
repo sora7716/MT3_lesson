@@ -54,10 +54,10 @@ void Character::ScreenTransform(Camera*camera,const Vector3&kLocalVertices,Vecto
 }
 
 void Character::ScreenTransform(const Matrix4x4& viewProjection, const Matrix4x4& viewportMatrix, const Vector3& kLocalVertices, Vector3& screenVertices){
-	//ワールドとワールドビュープロジェクションを求める
-	WvpMatrix(viewProjection);
+	////ワールドとワールドビュープロジェクションを求める
+	//WvpMatrix(viewProjection);
 	//正規化デバイス座標系
-	ndcVertex_ = Math::Transform(kLocalVertices, worldViewProjectionMatrix_);
+	ndcVertex_ = Math::Transform(kLocalVertices, viewProjection);
 	//スクリーン座標
 	screenVertices = Math::Transform(ndcVertex_, viewportMatrix);
 }

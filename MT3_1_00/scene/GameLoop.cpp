@@ -88,7 +88,7 @@ void GameLoop::Initialize() {
 	}
 
 	/*triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);*/
-	plane_->Initialize(camera_, grid_, { {0.0f,1.0f,0.0f},1,RED });
+	plane_->Initialize(camera_, grid_, { {0.0f,1.0f,0.0f},1.0f,RED });
 }
 
 //更新処理
