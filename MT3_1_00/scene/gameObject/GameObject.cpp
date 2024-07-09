@@ -109,6 +109,61 @@ void GameObject::Rotation(bool left, bool right, bool up, bool down, bool front,
 	RotateZ(left, right);
 }
 
+//拡大縮小
+void GameObject::Scaling(){
+	scale_.z += scaling_.z;
+	if (Novice::GetWheel() < -1) {
+		if (scale_.z > 0.4f) {
+			scaling_.z = 1.0f;
+		}
+		else {
+			scaling_.z = 0.0f;
+		}
+	}
+	else if (Novice::GetWheel() >= 1) {
+		scaling_.z = 1.0f;
+	}
+	scaling_.z *= (float)Novice::GetWheel() / 1000.0f;
+}
+
+//回転
+void GameObject::Rotation(){
+	rotate_ += radian_;
+	Novice::GetMousePosition(&mousePos_.x, &mousePos_.y);
+	if (Novice::IsPressMouse(1)) {
+		if (mousePos_.x != preMousePos_.x) {
+			radian_.y = 0.1f;
+			float direction = 0;
+			if (mousePos_.x - preMousePos_.x > 5) {
+				direction = 1;
+			}
+			else if (mousePos_.x - preMousePos_.x <= -5) {
+				direction = -1;
+			}
+			radian_.y *= direction;
+			preMousePos_.x = mousePos_.x;
+		}
+		else {
+			radian_.y = 0;
+		}
+		if (mousePos_.y != preMousePos_.y) {
+			radian_.x = 0.1f;
+			float direction = 0;
+			if (mousePos_.y - preMousePos_.y > 5) {
+				direction = 1;
+			}
+			else if (mousePos_.y - preMousePos_.y <= -5) {
+				direction = -1;
+			}
+			radian_.x *= direction;
+			preMousePos_.y = mousePos_.y;
+		}
+		else {
+			radian_.x = 0;
+		}
+	}
+}
+
 
 
 

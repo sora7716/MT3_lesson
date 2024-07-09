@@ -1,6 +1,7 @@
 ﻿#include "Collision.h"
 #include "scene/gameObject/character/sphere/Sphere.h"
 #include "scene/gameObject/character/plane/Plane.h"
+#include "scene/gameObject/character/point/Point.h"
 
 // 当たり判定(球と球)
 void Collision::IsCollision(Sphere* target,Sphere* sphere){
@@ -26,4 +27,23 @@ void Collision::IsCollision(Sphere* target, Plane* plane){
 		target->SetIsHit(false);
 	}
 	target->OnCollision();//色を変える
+}
+
+void Collision::IsCollision(Point* target, Plane* plane){
+	//垂直判定を行うための、法線と線の内積を求める
+	float dot = Math::Dot(plane->GetPlaneMaterial().normal, target->GetSegment().origin);
+
+	if (dot == 0.0f) {
+		target->SetIsHit(false);
+	}
+
+	float t = (plane->GetPlaneMaterial().distance - Math::Dot(target->GetSegment().origin, plane->GetPlaneMaterial().normal)) / dot;
+	/*if (t >= ) {
+		target->SetIsHit(true);
+	}
+	else {
+		target->SetIsHit(false);
+	}*/
+	target->OnCollision();
+	ImGui::Text("%f", t);
 }

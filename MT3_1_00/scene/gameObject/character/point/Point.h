@@ -57,6 +57,11 @@ public://メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// 衝突した場合の判定
+	/// </summary>
+	void OnCollision();
+
+	/// <summary>
 	/// 最近接点のゲッター
 	/// </summary>
 	/// <returns>最近接点</returns>
@@ -69,6 +74,12 @@ public://メンバ関数
 	Vector3 GetPoint()const;
 
 	/// <summary>
+	/// 線分のゲッター
+	/// </summary>
+	/// <returns></returns>
+	Segment GetSegment()const;
+
+	/// <summary>
 	/// 原点のセッター
 	/// </summary>
 	/// <param name="point">セットしたい値</param>
@@ -79,6 +90,17 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="segment">セットしたい値</param>
 	void SetSegment(const Segment& segment);
+
+	/// <summary>
+	/// 色のセッター
+	/// </summary>
+	void SetColor(uint32_t color);
+
+	/// <summary>
+	/// 衝突判定のセッター
+	/// </summary>
+	/// <param name="isHit"></param>
+	void SetIsHit(bool isHit);
 
 private://メンバ関数
 
@@ -103,5 +125,7 @@ private://メンバ変数
 	Vector3 point_;//原点
 	Segment segment_;//線分
 	Camera* camera_;//カメラ
+	uint32_t color_;
+	bool isHit_;
 };
 

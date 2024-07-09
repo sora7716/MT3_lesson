@@ -81,7 +81,6 @@ void GameLoop::Initialize() {
 
 	camera_->Initialize(kWindowWidth, kWindowHeight);
 	line_->Initialize(camera_);
-	line_->SetSegment({ {0.0f,0.0f,0.0f},{1.0f,0.4f,1.0f} });
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
 	grid_->Initialize(camera_);
 
@@ -93,6 +92,8 @@ void GameLoop::Initialize() {
 	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
 	plane_->Initialize(camera_);
 	plane_->SetPlane({ {0.0f,1.0f,0.0f},1.0f,RED });
+	point1_->Initialize(camera_);
+	point2_->Initialize(camera_);
 }
 
 //更新処理
@@ -107,9 +108,7 @@ void GameLoop::Update() {
 		sphere_[i]->Update();
 	}
 	grid_->Update();
-	point1_->Initialize(camera_);
 	point1_->SetSphere({ line_->GetPoint(), 0.01f,RED });
-	point2_->Initialize(camera_);
 	point2_->SetSphere({ line_->GetClosestPoint(), 0.01f,BLACK });
 	line_->Update();
 	triangle_->Update(keys_, preKeys_);//三角形
@@ -134,6 +133,7 @@ void GameLoop::DebugText() {
 void GameLoop::Collider(){
 	//collision_->IsCollision(sphere_[0],sphere_[1]);
 	//collision_->IsCollision(sphere_[0], plane_);
+	collision_->IsCollision(line_, plane_);
 }
 
 //描画処理

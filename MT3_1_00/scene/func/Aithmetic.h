@@ -77,7 +77,16 @@ const Vector3& operator/=(Vector3& num, const float& len);
 /// <returns></returns>
 const Vector3 operator/(const Vector3& num, const float& len);
 
+/// <summary>
+/// スカラー倍(float*Vector3)
+/// </summary>
+/// <param name="num1"></param>
+/// <param name="num2"></param>
+/// <returns></returns>
 const Vector3 operator* (const float& num1, const Vector3& num2);
+
+//加法(Vector3とfloat)
+const Vector3& operator+=(Vector3& v, const float& num);
 
 /// <summary>
 /// 加算

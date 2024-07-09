@@ -185,8 +185,11 @@ Vector3 Math::Normalize(const Vector3& v) {
 //正規化
 float Math::Normalize(const float& num) {
 	float len = powf(num, 2);
+	if (len != 0.0f) {
 	float result = num / len;
 	return result;
+	}
+	return num;
 }
 
 

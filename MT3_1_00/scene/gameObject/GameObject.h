@@ -10,6 +10,15 @@
 
 class GameObject
 {
+
+public://構造体など
+
+	//ベクトル2の整数型
+	typedef struct Vector2Int {
+		int x;
+		int y;
+	}Vector2Int;
+
 protected://メンバ関数
 
 	/// <summary>
@@ -91,17 +100,29 @@ protected://メンバ関数
 	/// <param name="behind">後ろ</param>
 	void Rotation(bool left, bool right, bool up, bool down, bool front, bool behind);
 
+	/// <summary>
+	/// 拡大縮小
+	/// </summary>
+	void Scaling();
+
+	/// <summary>
+	/// 回転
+	/// </summary>
+	void Rotation();
+
 protected:
 	int windowWidth_ = 0;//横幅
 	int windowHeight_ = 0;//縦幅
 
-	Vector3 scale_     = {};//倍率
-	Vector3 rotate_    = {};//角度
+	Vector3 scale_ = {};//倍率
+	Vector3 rotate_ = {};//角度
 	Vector3 translate_ = {};//ポジション
-	
-	Vector3   scaling_   = {};//拡縮
-	Vector3   radian_    = {};//回転
-	Vector3   velocity_  = {};//移動速度
 
+	Vector3   scaling_ = {};//拡縮
+	Vector3   radian_ = {};//回転
+	Vector3   velocity_ = {};//移動速度
+
+	Vector2Int mousePos_ = {};//マウスのポジション
+	Vector2Int preMousePos_ = {};//前のマウスのポジション
 };
 
