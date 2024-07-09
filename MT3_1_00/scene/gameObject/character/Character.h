@@ -24,13 +24,6 @@ protected://メンバ関数
 	void WvpMatrix(Camera* camera);
 
 	/// <summary>
-	/// world*viewProjectionを求める
-	/// </summary>
-	/// <param name="viewProjection">ビュープロジェクション</param>
-	/// <param name="viewportMatrix">ビューポート</param>
-	void WvpMatrix(const Matrix4x4& viewProjection);
-
-	/// <summary>
 	/// WvpMatirx
 	/// </summary>
 	/// <param name="camera">カメラ</param>
