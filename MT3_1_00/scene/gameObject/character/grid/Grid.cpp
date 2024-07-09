@@ -38,49 +38,8 @@ void Grid::Initialize(Camera* camera) {
 	}
 }
 
-void Grid::Update(char* keys, char* preKeys) {
-	bool press_D = keys[DIK_D] && preKeys[DIK_D];
-	bool press_A = keys[DIK_A] && preKeys[DIK_A];
-	bool press_W = keys[DIK_W] && preKeys[DIK_W];
-	bool press_S = keys[DIK_S] && preKeys[DIK_S];
-	bool press_E = keys[DIK_E] && preKeys[DIK_E];
-	bool press_Q = keys[DIK_Q] && preKeys[DIK_Q];
-	for (int i = 0; i < kElementCount; i++) {
-		gridRotate_[i] += rotateSpeed_;
+void Grid::Update() {
 
-		//Z座標
-		if (press_D) {
-			rotateSpeed_.z = kRotateSpeed;
-		}
-		else if (press_A) {
-			rotateSpeed_.z = -kRotateSpeed;
-		}
-		else {
-			rotateSpeed_.z = 0;
-		}
-
-		//X座標
-		if (press_W) {
-			rotateSpeed_.x = kRotateSpeed;
-		}
-		else if (press_S) {
-			rotateSpeed_.x = -kRotateSpeed;
-		}
-		else {
-			rotateSpeed_.x = 0;
-		}
-
-		//Y座標
-		if (press_E) {
-			rotateSpeed_.y = kRotateSpeed;
-		}
-		else if (press_Q) {
-			rotateSpeed_.y = -kRotateSpeed;
-		}
-		else {
-			rotateSpeed_.y = 0;
-		}
-	}
 }
 
 void Grid::DebugText(int i) {

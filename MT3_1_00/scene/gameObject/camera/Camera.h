@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "scene/gameObject/GameObject.h"
-class Camera:public GameObject{
+class Camera :public GameObject {
 
 public://メンバ関数
 	/// <summary>
@@ -31,13 +31,13 @@ public://メンバ関数
 	/// ビュープロジェクションマトリックスのゲッター
 	/// </summary>
 	/// <returns></returns>
-	Matrix4x4 GetViewProjectionMatrix();
+	Matrix4x4 GetViewProjectionMatrix()const;
 
 	/// <summary>
 	/// ビューポートマトリックスのゲッター
 	/// </summary>
 	/// <returns></returns>
-	Matrix4x4 GetViewportMatrix();
+	Matrix4x4 GetViewportMatrix()const;
 
 	/// <summary>
 	/// scale_のゲッター
@@ -64,11 +64,11 @@ public://メンバ関数
 	const Matrix4x4& GetProjctionMatrix();
 private://メンバ変数
 
-	Matrix4x4 cameraMatrix_         = {};//カメラマトリックス
-	Matrix4x4 viewMatrix_           = {};//ビューマトリックス
-	Matrix4x4 projectionMatrix_     = {};//同次クリップ空間
+	Matrix4x4 cameraMatrix_ = {};//カメラマトリックス
+	Matrix4x4 viewMatrix_ = {};//ビューマトリックス
+	Matrix4x4 projectionMatrix_ = {};//同次クリップ空間
 	Matrix4x4 viewProjectionMatrix_ = {};//wvpマトリックス
-	Matrix4x4 viewportMatrix_       = {};//ビューポートマトリックス
+	Matrix4x4 viewportMatrix_ = {};//ビューポートマトリックス
 
 private://メンバ変数
 	/// <summary>

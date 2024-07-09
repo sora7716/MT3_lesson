@@ -27,7 +27,7 @@ public://メンバ関数
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	void Update(char* keys, char* preKeys);
+	void Update();
 
 	/// <summary>
 	/// デバックテキスト

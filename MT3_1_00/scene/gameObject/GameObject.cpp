@@ -20,7 +20,7 @@ void GameObject::Rotate(){
 	//Novice::ScreenPrintf(0, 20, "%f", rotate_.GetVector().y);
 }
 
-//移動
+//X座標の移動
 void GameObject::TranslateX(bool bottom1,bool bottom2,float type){
 	//キー入力
 	if (bottom1) {
@@ -32,6 +32,7 @@ void GameObject::TranslateX(bool bottom1,bool bottom2,float type){
 	else { velocity_.x = 0.0f; }
 }
 
+//Y座標の移動
 void GameObject::TranslateY(bool bottom1, bool bottom2, float type){
 	if (bottom1) {
 		velocity_.y = 5.0f / 60.0f * type;
@@ -42,6 +43,7 @@ void GameObject::TranslateY(bool bottom1, bool bottom2, float type){
 	else { velocity_.y = 0.0f; }
 }
 
+//Z座標の移動
 void GameObject::TranslateZ(bool bottom1, bool bottom2, float type){
 	if (bottom1) {
 		velocity_.z = 5.0f / 60.0f * type;
@@ -52,12 +54,59 @@ void GameObject::TranslateZ(bool bottom1, bool bottom2, float type){
 	else { velocity_.z = 0.0f; }
 }
 
+//X座標の回転
+void GameObject::RotateX(bool bottom1, bool bottom2){
+	if (bottom1) {
+		radian_.x = 1.0f / 60.0f;
+	}
+	else if (bottom2) {
+		radian_.x = -1.0f / 60.0f;
+	}
+	else {
+		radian_.x = 0.0f;
+	}
+}
+
+//Y座標の回転
+void GameObject::RotateY(bool bottom1, bool bottom2){
+	if (bottom1) {
+		radian_.y= 1.0f / 60.0f;
+	}
+	else if (bottom2) {
+		radian_.y = -1.0f / 60.0f;
+	}
+	else {
+		radian_.y = 0.0f;
+	}
+}
+
+//Z座標の回転
+void GameObject::RotateZ(bool bottom1, bool bottom2){
+	if (bottom1) {
+		radian_.z = 1.0f / 60.0f;
+	}
+	else if (bottom2) {
+		radian_.z = -1.0f / 60.0f;
+	}
+	else {
+		radian_.z = 0.0f;
+	}
+}
+
 //移動をまとめた
 void GameObject::Movement(bool left, bool right, bool up, bool down, bool front, bool behind, float type){
 	translate_ += velocity_;//移動
 	TranslateX(left, right, type);
 	TranslateY(up, down, type);
 	TranslateZ(front, behind, type);
+}
+
+//回転をまとめた
+void GameObject::Rotation(bool left, bool right, bool up, bool down, bool front, bool behind){
+	rotate_ += radian_;
+	RotateX(up, down);
+	RotateY(front, behind);
+	RotateZ(left, right);
 }
 
 

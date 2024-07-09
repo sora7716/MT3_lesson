@@ -46,7 +46,7 @@ protected://メンバ関数
 	/// <param name="scele">倍率</param>
 	/// <param name="rotate">角度</param>
 	/// <param name="translate">移動</param>
-	Matrix4x4 WorldViewProjectionMatrix(Camera* camera, Vector3 scale, Vector3 rotate, Vector3 translate);
+	Matrix4x4 WorldViewProjectionMatrix(Camera* camera, Vector3 scale, Vector3 rotate, Vector3 translate)const;
 
 
 	/// <summary>
@@ -93,9 +93,9 @@ public://メンバ関数
 	const Matrix4x4& GetWorldViewProjection();
 
 	/// <summary>
-    /// ワールドマトリックスのゲッター
-    /// </summary>
-    /// <returns></returns>
+	/// ワールドマトリックスのゲッター
+	/// </summary>
+	/// <returns></returns>
 	const Matrix4x4& GetWorldMatrix();
 
 	/// <summary>

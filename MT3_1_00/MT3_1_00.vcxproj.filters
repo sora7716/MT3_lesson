@@ -95,6 +95,9 @@
     <ClCompile Include="scene\gameObject\character\plane\Plane.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="scene\func\collision\Collision.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -206,5 +209,6 @@
     <ClInclude Include="scene\gameObject\character\plane\Plane.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
+    <ClInclude Include="scene\func\collision\Collision.h" />
   </ItemGroup>
 </Project>

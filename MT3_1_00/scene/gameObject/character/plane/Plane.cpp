@@ -32,13 +32,13 @@ void Plane::DebugText(){
 //描画処理
 void Plane::Draw() {
 	Vector3 center = plane_.distance * plane_.normal;
-	Vector3 perpendiculars[4];
+	Vector3 perpendiculars[4]{};
 	
 	perpendiculars[0] = Math::Normalize(Perpendicular(plane_.normal));//1
 	perpendiculars[1] = { -perpendiculars[0].x,-perpendiculars[0].y,-perpendiculars[0].z };//2
 	perpendiculars[2] = Math::Cross(plane_.normal, perpendiculars[0]);//3
 	perpendiculars[3] = { -perpendiculars[2].x,-perpendiculars[2].y,-perpendiculars[2].z };//4
-	Vector3 points[4];
+	Vector3 points[4]{};
 	for (int32_t index = 0; index < 4; ++index) {
 		Vector3 extend = 2.0f * perpendiculars[index];
 		Vector3 point = center + extend;
@@ -69,13 +69,13 @@ void Plane::Draw() {
 }
 
 //平面の素材のゲッター
-const Plane::Material& Plane::GetPlaneMaterial(){
+const Plane::PlaneMaterial& Plane::GetPlaneMaterial(){
 	// TODO: return ステートメントをここに挿入します
 	return plane_;
 }
 
 //平面の素材のセッター
-void Plane::SetPlane(const Material& material){
+void Plane::SetPlane(const PlaneMaterial& material){
 plane_ = material;
 }
 

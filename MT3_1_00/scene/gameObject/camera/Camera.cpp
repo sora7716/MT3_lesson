@@ -7,18 +7,26 @@ void Camera::Initialize(int kWindowWidth, int kWindowHeight) {
 	//カメラ
 	scale_ = { 1.0f,1.0f,1.0f };     //倍率
 	rotate_ = { 0.26f,0.0f,0.0f };
-	translate_ = { 0.0f,2.0f,-5.0f };//ポジション
+	translate_ = { 0.0f,0.0f,-5.0f };//ポジション
 }
 
 //更新処理
 void Camera::Update(char* keys, char* preKeys) {
-	bool left   = keys[DIK_LEFT]  && preKeys[DIK_LEFT];
-	bool right  = keys[DIK_RIGHT] && preKeys[DIK_RIGHT];
-	bool up     = keys[DIK_UP]    && preKeys[DIK_UP]   && !keys[DIK_LSHIFT] && !preKeys[DIK_LSHIFT];
-	bool down   = keys[DIK_DOWN]  && preKeys[DIK_DOWN] && !keys[DIK_LSHIFT] && !preKeys[DIK_LSHIFT];
-	bool front  = keys[DIK_UP]    && preKeys[DIK_UP]   && keys[DIK_LSHIFT]  && preKeys[DIK_LSHIFT];
-	bool behide = keys[DIK_DOWN]  && preKeys[DIK_DOWN] && keys[DIK_LSHIFT]  && preKeys[DIK_LSHIFT];
+	bool left = keys[DIK_LEFT] && preKeys[DIK_LEFT];
+	bool right = keys[DIK_RIGHT] && preKeys[DIK_RIGHT];
+	bool up = keys[DIK_UP] && preKeys[DIK_UP] && !keys[DIK_LSHIFT] && !preKeys[DIK_LSHIFT];
+	bool down = keys[DIK_DOWN] && preKeys[DIK_DOWN] && !keys[DIK_LSHIFT] && !preKeys[DIK_LSHIFT];
+	bool front = keys[DIK_UP] && preKeys[DIK_UP] && keys[DIK_LSHIFT] && preKeys[DIK_LSHIFT];
+	bool behide = keys[DIK_DOWN] && preKeys[DIK_DOWN] && keys[DIK_LSHIFT] && preKeys[DIK_LSHIFT];
+
+	bool press_D = keys[DIK_D] && preKeys[DIK_D];
+	bool press_A = keys[DIK_A] && preKeys[DIK_A];
+	bool press_W = keys[DIK_W] && preKeys[DIK_W];
+	bool press_S = keys[DIK_S] && preKeys[DIK_S];
+	bool press_E = keys[DIK_E] && preKeys[DIK_E];
+	bool press_Q = keys[DIK_Q] && preKeys[DIK_Q];
 	GameObject::Movement(left, right, up, down, front, behide, -1.0f);
+	GameObject::Rotation(press_D, press_A, press_W, press_S, press_E, press_Q);
 	RenderingPipeline();
 }
 
@@ -47,12 +55,12 @@ void Camera::Draw() {
 }
 
 // ビュープロジェクションマトリックスのゲッター
-Matrix4x4 Camera::GetViewProjectionMatrix() {
+Matrix4x4 Camera::GetViewProjectionMatrix()const {
 	return viewProjectionMatrix_;
 }
 
 //ビューポートマトリックスのゲッター
-Matrix4x4 Camera::GetViewportMatrix() {
+Matrix4x4 Camera::GetViewportMatrix()const {
 	return viewportMatrix_;
 }
 
@@ -72,7 +80,7 @@ Vector3 Camera::GetTranslate() {
 }
 
 //同次クリップ空間のゲッター
-const Matrix4x4& Camera::GetProjctionMatrix(){
+const Matrix4x4& Camera::GetProjctionMatrix() {
 	// TODO: return ステートメントをここに挿入します
 	return projectionMatrix_;
 }

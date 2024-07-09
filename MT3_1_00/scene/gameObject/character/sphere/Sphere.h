@@ -6,16 +6,16 @@ class Camera;
 class Grid;
 class Plane;
 
-class Sphere:public Character{
+class Sphere :public Character {
 
 public://構造体
 	//スフィアに使う構造体
-	typedef struct Material {
+	typedef struct SphereMaterial {
 		Vector3 center;
 		float radius;
 		uint32_t color;
 		bool isHit;
-	}Material;
+	}SphereMaterial;
 
 public://メンバ関数
 
@@ -54,16 +54,9 @@ public://メンバ関数
 	void Draw();
 
 	/// <summary>
-	/// 当たり判定(球と球)
+	/// 当たった時の判定
 	/// </summary>
-	/// <param name="sphere">別のスフィア</param>
-	void IsCollision(const Material& sphere, const Vector3& worldPosition);
-	
-	/// <summary>
-	/// 当たり判定(球と平面)
-	/// </summary>
-	/// <param name="sphere">別のスフィア</param>
-	void IsCollision(Plane* plane);
+	void OnCollision();
 
 	/// <summary>
 	/// カラーのセッター
@@ -75,13 +68,13 @@ public://メンバ関数
 	/// スフィアの素材のゲッター
 	/// </summary>
 	/// <returns></returns>
-	Material GetSphereMaterial();
+	SphereMaterial GetSphereMaterial()const;
 
 	/// <summary>
 	/// 平面のセッター
 	/// </summary>
 	/// <param name="plaen">平面</param>
-	void SetPlane(Plane*plane);
+	void SetPlane(Plane* plane);
 
 	/// <summary>
 	/// カメラのゲッター
@@ -92,7 +85,14 @@ public://メンバ関数
 	/// <summary>
 	/// 球の素材のセッター
 	/// </summary>
-	void SetSphere(const Material& material);
+	/// <param name="material">球の素材</param>
+	void SetSphere(const SphereMaterial& material);
+
+	/// <summary>
+	/// 当たり判定のセッター
+	/// </summary>
+	/// <param name="isHit">hitフラグ</param>
+	void SetIsHit(bool isHit);
 
 private://メンバ関数
 
@@ -102,9 +102,9 @@ private://メンバ関数
 	void ChangeColor();
 
 private://メンバ変数
-	
+
 	Camera* camera_;//カメラ
-	Material sphere_;//スフィアの素材
+	SphereMaterial sphere_;//スフィアの素材
 	Plane* plane_;//平面
 	Vector3 screenA_;//スクリーン座標
 	Vector3 screenB_;//スクリーン座標

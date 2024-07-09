@@ -6,6 +6,7 @@
 #include "scene/gameObject/character/sphere/Sphere.h"
 #include "scene/gameObject/character/point/Point.h"
 #include "scene/gameObject/character/plane/Plane.h"
+#include "scene/func/collision/Collision.h"
 
 
 class GameLoop {
@@ -46,6 +47,8 @@ private://メンバ変数
 
 	Plane* plane_;
 
+	Collision* collision_;
+
 private://メンバ関数
 
 	/// <summary>
@@ -67,6 +70,11 @@ private://メンバ関数
 	/// デバックテキスト
 	/// </summary>
 	void DebugText();
+
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	void Collider();
 
 	/// <summary>
 	/// 描画処理

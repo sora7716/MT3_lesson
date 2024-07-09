@@ -118,6 +118,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene\func\Aithmetic.cpp" />
+    <ClCompile Include="scene\func\collision\Collision.cpp" />
     <ClCompile Include="scene\func\Math.cpp" />
     <ClCompile Include="scene\func\ScreenPrintf.cpp" />
     <ClCompile Include="scene\GameLoop.cpp" />
@@ -159,6 +160,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="scene\func\Aithmetic.h" />
+    <ClInclude Include="scene\func\collision\Collision.h" />
     <ClInclude Include="scene\func\Math.h" />
     <ClInclude Include="scene\func\ScreenPrintf.h" />
     <ClInclude Include="scene\GameLoop.h" />

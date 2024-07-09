@@ -10,11 +10,11 @@ class Plane {
 
 public://構造体
 	//平面の構造体
-	typedef struct Material {
+	typedef struct PlaneMaterial {
 		Vector3 normal;
 		float distance;
 		uint32_t color;
-	}Material;
+	}PlaneMaterial;
 public://メンバ関数
 
 	/// <summary>
@@ -53,12 +53,13 @@ public://メンバ関数
 	/// 平面の素材のゲッター
 	/// </summary>
 	/// <returns></returns>
-	const Material& GetPlaneMaterial();
+	const PlaneMaterial& GetPlaneMaterial();
 
 	/// <summary>
-	/// 平面の素材のセッター
+	///  平面の素材のセッター
 	/// </summary>
-	void SetPlane(const Material&material);
+	/// <param name="material">平面の素材</param>
+	void SetPlane(const PlaneMaterial&material);
 
 private://メンバ関数
 
@@ -71,6 +72,6 @@ private://メンバ関数
 
 private://メンバ変数
 	Camera* camera_;//カメラ
-	Material plane_;//素材
+	PlaneMaterial plane_;//素材
 };
 

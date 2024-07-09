@@ -24,7 +24,7 @@ Sphere::~Sphere() {
 
 //初期化
 void Sphere::Initialize(Camera* camera) {
-	sphere_ = { {0,0,0},1.0f ,WHITE};
+	sphere_ = { {0,0,0},1.0f ,WHITE };
 	scale_ = { 1.0f,1.0f,1.0f };
 	SetCamera(camera);
 }
@@ -96,34 +96,9 @@ void Sphere::Draw() {
 
 
 
-//当たり判定(球と球)
-void Sphere::IsCollision(const Material& sphere, const Vector3& worldPosition) {
-	Vector3 worldVector = { worldMatrix_.m[3][0],worldMatrix_.m[3][1],worldMatrix_.m[3][2] };
-	float distance = sqrt(Math::Length(worldVector - worldPosition));
-	if (distance <= sphere_.radius / 2.0f + sphere.radius / 2.0f) {
-		sphere_.isHit = true;
-	}
-	else {
-		sphere_.isHit = false;
-	}
+//当たった時の判定
+void Sphere::OnCollision() {
 
-	ChangeColor();//色を変える
-}
-
-//当たり判定(平面と球)
-void Sphere::IsCollision(Plane* plane) {
-	SetPlane(plane);
-	Vector3 normal = plane_->GetPlaneMaterial().normal;
-	float distance = plane_->GetPlaneMaterial().distance;
-	//normal = Math::Normalize(normal);
-	float k = fabsf(Math::Dot(normal, sphere_.center) - distance);
-	if (k <= sphere_.radius) {
-		sphere_.isHit = true;
-	}
-	else {
-		sphere_.isHit = false;
-	}
-	ImGui::Text("%f", k);
 	ChangeColor();//色を変える
 }
 
@@ -133,7 +108,7 @@ void Sphere::SetColor(uint32_t color) {
 }
 
 //スフィアの素材のゲッター
-Sphere::Material Sphere::GetSphereMaterial() {
+Sphere::SphereMaterial Sphere::GetSphereMaterial()const {
 	return sphere_;
 }
 
@@ -148,8 +123,13 @@ void Sphere::SetCamera(Camera* camera) {
 }
 
 //球の素材のセッター
-void Sphere::SetSphere(const Material& material) {
+void Sphere::SetSphere(const SphereMaterial& material) {
 	sphere_ = material;
+}
+
+//当たり判定のセッター
+void Sphere::SetIsHit(bool isHit) {
+	sphere_.isHit = isHit;
 }
 
 //色を変える

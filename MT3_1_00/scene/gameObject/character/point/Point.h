@@ -4,7 +4,7 @@
 //前方宣言
 class Camera;
 
-class Point:public Character{
+class Point :public Character {
 public://メンバ関数
 
 	//直線
@@ -38,7 +38,7 @@ public://メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Camera*camera);
+	void Initialize(Camera* camera);
 
 	/// <summary>
 	/// 更新処理
@@ -60,20 +60,20 @@ public://メンバ関数
 	/// 最近接点のゲッター
 	/// </summary>
 	/// <returns>最近接点</returns>
-	Vector3 GetClosestPoint();
+	Vector3 GetClosestPoint()const;
 
 	/// <summary>
 	/// 原点のセッター
 	/// </summary>
 	/// <returns>原点</returns>
-	Vector3 GetPoint();
+	Vector3 GetPoint()const;
 
 	/// <summary>
 	/// 原点のセッター
 	/// </summary>
 	/// <param name="point">セットしたい値</param>
 	void SetPoint(const Vector3& point);
-	
+
 	/// <summary>
 	/// 線分のセッター
 	/// </summary>
@@ -81,7 +81,7 @@ public://メンバ関数
 	void SetSegment(const Segment& segment);
 
 private://メンバ関数
-	
+
 	/// <summary>
 	/// 正射影ベクトル
 	/// </summary>

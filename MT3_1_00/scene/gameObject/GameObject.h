@@ -49,6 +49,27 @@ protected://メンバ関数
 	void TranslateZ(bool bottom1, bool bottom2, float type);
 
 	/// <summary>
+	/// X座標の回転
+	/// </summary>
+	/// <param name="bottom1"></param>
+	/// <param name="bottom2"></param>
+	void RotateX(bool bottom1, bool bottom2);
+
+	/// <summary>
+	/// Y座標の回転
+	/// </summary>
+	/// <param name="bottom1"></param>
+	/// <param name="bottom2"></param>
+	void RotateY(bool bottom1, bool bottom2);
+
+	/// <summary>
+	/// Z座標の回転
+	/// </summary>
+	/// <param name="bottom1"></param>
+	/// <param name="bottom2"></param>
+	void RotateZ(bool bottom1, bool bottom2);
+
+	/// <summary>
 	/// 移動をまとめた
 	/// </summary>
 	/// <param name="left">左</param>
@@ -59,6 +80,16 @@ protected://メンバ関数
 	/// <param name="behind">後ろ</param>
 	/// <param name="type"></param>
 	void Movement(bool left, bool right, bool up, bool down, bool front, bool behind, float type);
+
+	/// <summary>
+	/// 回転をまとめた
+	/// <param name="left">左</param>
+	/// <param name="right">右</param>
+	/// <param name="up">上</param>
+	/// <param name="down">下</param>
+	/// <param name="front">前</param>
+	/// <param name="behind">後ろ</param>
+	void Rotation(bool left, bool right, bool up, bool down, bool front, bool behind);
 
 protected:
 	int windowWidth_ = 0;//横幅
