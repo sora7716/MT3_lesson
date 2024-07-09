@@ -17,18 +17,16 @@ Sphere::Sphere() {
 	screenC_ = {};//スクリーン座標
 	plane_ = nullptr;
 	camera_ = nullptr;
-	grid_ = nullptr;
 }
 
 Sphere::~Sphere() {
 }
 
 //初期化
-void Sphere::Initialize(Camera* camera, Grid* grid, Material sphere) {
-	sphere_ = sphere;
+void Sphere::Initialize(Camera* camera) {
+	sphere_ = { {0,0,0},1.0f ,WHITE};
 	scale_ = { 1.0f,1.0f,1.0f };
 	SetCamera(camera);
-	SetGrid(grid);
 }
 
 //更新処理
@@ -74,9 +72,9 @@ void Sphere::Draw() {
 			};
 
 			//スクリーン座標を求める
-			ScreenTransform(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix(), a, screenA_);
-			ScreenTransform(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix(), b, screenB_);
-			ScreenTransform(grid_->GetWorldViewProjection(), camera_->GetViewportMatrix(), c, screenC_);
+			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), a, screenA_);
+			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), b, screenB_);
+			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(
@@ -112,13 +110,14 @@ void Sphere::IsCollision(const Material& sphere, const Vector3& worldPosition) {
 	ChangeColor();//色を変える
 }
 
+//当たり判定(平面と球)
 void Sphere::IsCollision(Plane* plane) {
 	SetPlane(plane);
 	Vector3 normal = plane_->GetPlaneMaterial().normal;
 	float distance = plane_->GetPlaneMaterial().distance;
 	//normal = Math::Normalize(normal);
 	float k = fabsf(Math::Dot(normal, sphere_.center) - distance);
-	if (k <= sphere_.radius ) {
+	if (k <= sphere_.radius) {
 		sphere_.isHit = true;
 	}
 	else {
@@ -143,14 +142,14 @@ void Sphere::SetPlane(Plane* plane) {
 	plane_ = plane;
 }
 
-//グリッド線のゲッター
-void Sphere::SetGrid(Grid* grid) {
-	grid_ = grid;
-}
-
 //カメラのゲッター
 void Sphere::SetCamera(Camera* camera) {
 	camera_ = camera;
+}
+
+//球の素材のセッター
+void Sphere::SetSphere(const Material& material) {
+	sphere_ = material;
 }
 
 //色を変える

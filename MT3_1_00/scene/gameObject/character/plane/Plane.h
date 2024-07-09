@@ -32,7 +32,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="plane">平面の素材{normal,distance,color}</param>
-	void Initialize(Camera* camera, Grid* grid, const Material& plane);
+	void Initialize(Camera* camera);
 
 	/// <summary>
 	/// 更新処理
@@ -55,6 +55,11 @@ public://メンバ関数
 	/// <returns></returns>
 	const Material& GetPlaneMaterial();
 
+	/// <summary>
+	/// 平面の素材のセッター
+	/// </summary>
+	void SetPlane(const Material&material);
+
 private://メンバ関数
 
 	/// <summary>
@@ -66,7 +71,6 @@ private://メンバ関数
 
 private://メンバ変数
 	Camera* camera_;//カメラ
-	Grid* grid_;//グリッド線
 	Material plane_;//素材
 };
 

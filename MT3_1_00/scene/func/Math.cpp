@@ -56,7 +56,7 @@ Vector3 Math::Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
 	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
 	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] + 1.0f * matrix.m[3][2];
-	float w  = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
+	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
 	//assert(w != 0.0f);
 	result.x /= w;
 	result.y /= w;
@@ -100,12 +100,17 @@ Matrix4x4 Math::MakeRotateZMatrix(const float& radian) {
 
 //x,y,z座標で回転
 Matrix4x4 Math::MakeRotateXYZMatrix(const Vector3& radian) {
-	return MakeRotateXMatrix(radian.x)*MakeRotateYMatrix(radian.y)*MakeRotateZMatrix(radian.z);
+	return MakeRotateXMatrix(radian.x) * MakeRotateYMatrix(radian.y) * MakeRotateZMatrix(radian.z);
 }
 
 //アフィン関数
 Matrix4x4 Math::MakeAffineMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate) {
-	return (MakeScaleMatrix(scale)*MakeRotateXYZMatrix(radian))*MakeTranslateMatrix(translate);
+	return (MakeScaleMatrix(scale) * MakeRotateXYZMatrix(radian)) * MakeTranslateMatrix(translate);
+}
+
+//STRの変換
+Matrix4x4 Math::STRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate) {
+	return MakeScaleMatrix(scale) * MakeTranslateMatrix(translate) * MakeRotateXYZMatrix(radian);
 }
 
 // 正射影行列
@@ -144,7 +149,7 @@ Matrix4x4 Math::MakeViewportMatrix(const float& left, const float& top, const fl
 }
 
 //クロス積
-Vector3 Math::Cross(const Vector3& v1, const Vector3& v2){
+Vector3 Math::Cross(const Vector3& v1, const Vector3& v2) {
 	Vector3 result{};
 	result.x = v1.y * v2.z - v1.z * v2.y;
 	result.y = v1.z * v2.x - v1.x * v2.z;
@@ -178,8 +183,8 @@ Vector3 Math::Normalize(const Vector3& v) {
 }
 
 //正規化
-float Math::Normalize(const float& num){
-	float len = powf(num,2);
+float Math::Normalize(const float& num) {
+	float len = powf(num, 2);
 	float result = num / len;
 	return result;
 }

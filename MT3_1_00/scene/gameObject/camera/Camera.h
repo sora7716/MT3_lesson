@@ -57,6 +57,11 @@ public://メンバ関数
 	/// <returns></returns>
 	Vector3 GetTranslate();
 
+	/// <summary>
+	/// 同次クリップ空間のゲッター
+	/// </summary>
+	/// <returns></returns>
+	const Matrix4x4& GetProjctionMatrix();
 private://メンバ変数
 
 	Matrix4x4 cameraMatrix_         = {};//カメラマトリックス

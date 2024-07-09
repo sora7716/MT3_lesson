@@ -34,7 +34,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="sphere">スフィアの素材{positon,radius,color}</param>
-	void Initialize(Camera* camera, Grid* grid, Material sphere);
+	void Initialize(Camera* camera);
 
 	/// <summary>
 	/// 更新処理
@@ -84,16 +84,15 @@ public://メンバ関数
 	void SetPlane(Plane*plane);
 
 	/// <summary>
-	/// グリッド線のゲッター
-	/// </summary>
-	/// <param name="grid">グリッド線</param>
-	void SetGrid(Grid* grid);
-
-	/// <summary>
 	/// カメラのゲッター
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	void SetCamera(Camera* camera);
+
+	/// <summary>
+	/// 球の素材のセッター
+	/// </summary>
+	void SetSphere(const Material& material);
 
 private://メンバ関数
 
@@ -105,7 +104,6 @@ private://メンバ関数
 private://メンバ変数
 	
 	Camera* camera_;//カメラ
-	Grid* grid_;//グリッド線
 	Material sphere_;//スフィアの素材
 	Plane* plane_;//平面
 	Vector3 screenA_;//スクリーン座標

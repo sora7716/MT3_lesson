@@ -24,6 +24,13 @@ protected://メンバ関数
 	void WvpMatrix(Camera* camera);
 
 	/// <summary>
+	/// world*viewProjectionを求める
+	/// </summary>
+	/// <param name="viewProjection">ビュープロジェクション</param>
+	/// <param name="viewportMatrix">ビューポート</param>
+	void WvpMatrix(const Matrix4x4& viewProjection);
+
+	/// <summary>
 	/// WvpMatirx
 	/// </summary>
 	/// <param name="camera">カメラ</param>
@@ -56,7 +63,7 @@ protected://メンバ関数
 	/// <param name="camera">カメラ</param>
 	/// <param name="kLocalVertices">ローカル座標</param>
 	/// <param name="screenVertices">スクリーン座標</param>
-	void ScreenTransform(const Matrix4x4& viewProjection,const Matrix4x4& viewportMatrix,const Vector3& kLocalVertices, Vector3& screenVertices);
+	void ScreenTransform(const Matrix4x4& viewProjection, const Matrix4x4& viewportMatrix, const Vector3& kLocalVertices, Vector3& screenVertices);
 
 	/// <summary>
 	/// ローカル座標をスクリーン座標に変換
@@ -84,6 +91,12 @@ public://メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	const Matrix4x4& GetWorldViewProjection();
+
+	/// <summary>
+    /// ワールドマトリックスのゲッター
+    /// </summary>
+    /// <returns></returns>
+	const Matrix4x4& GetWorldMatrix();
 
 	/// <summary>
 	/// ワールド座標のゲッター

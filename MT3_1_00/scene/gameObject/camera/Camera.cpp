@@ -7,7 +7,7 @@ void Camera::Initialize(int kWindowWidth, int kWindowHeight) {
 	//カメラ
 	scale_ = { 1.0f,1.0f,1.0f };     //倍率
 	rotate_ = { 0.26f,0.0f,0.0f };
-	translate_ = { 0.0f,2.0f,-5.00f };//ポジション
+	translate_ = { 0.0f,2.0f,-5.0f };//ポジション
 }
 
 //更新処理
@@ -24,15 +24,14 @@ void Camera::Update(char* keys, char* preKeys) {
 
 //デバックテキスト
 void Camera::DebugText() {
-	ImGui::DragFloat3("CameraTranslate", &translate_.x, 0.01f);
 	ImGui::DragFloat3("CamereRotate", &rotate_.x, 0.01f);
-	ImGui::DragFloat3("CamereScale", &scale_.x, 0.01f);
+	ImGui::DragFloat3("CameraTranslate", &translate_.x, 0.01f);
 }
 
 //レンダリングパイプライン
 void Camera::RenderingPipeline() {
 	//カメラ座標系
-	cameraMatrix_ = Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	cameraMatrix_ = Math::STRMatrix(scale_, rotate_, translate_);
 	//ビュー座標系
 	viewMatrix_ = ~cameraMatrix_;
 	//同次クリップ座標系
@@ -70,4 +69,11 @@ Vector3 Camera::GetRotate() {
 //移動のゲッター
 Vector3 Camera::GetTranslate() {
 	return translate_;
-};
+}
+
+//同次クリップ空間のゲッター
+const Matrix4x4& Camera::GetProjctionMatrix(){
+	// TODO: return ステートメントをここに挿入します
+	return projectionMatrix_;
+}
+;
