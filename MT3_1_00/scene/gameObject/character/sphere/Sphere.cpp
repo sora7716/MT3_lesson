@@ -72,9 +72,9 @@ void Sphere::Draw() {
 			};
 
 			//スクリーン座標を求める
-			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), a, screenA_);
-			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), b, screenB_);
-			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), c, screenC_);
+			ScreenTransform(camera_, a, screenA_);
+			ScreenTransform(camera_, b, screenB_);
+			ScreenTransform(camera_, c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(
