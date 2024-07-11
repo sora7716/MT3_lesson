@@ -57,7 +57,7 @@ public://メンバ関数
 	/// 当たり判定(球と球)
 	/// </summary>
 	/// <param name="sphere">別のスフィア</param>
-	void IsCollision(const Material& sphere, const Vector3& worldPosition);
+	void IsCollision(const Material& target, const Vector3& worldPosition);
 
 	/// <summary>
 	/// 当たり判定(球と平面)

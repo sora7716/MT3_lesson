@@ -112,15 +112,15 @@ void Sphere::IsCollision(const Material& sphere, const Vector3& worldPosition) {
 	ChangeColor();//色を変える
 }
 
-void Sphere::IsCollision(Sphere* sphere, Plane* plane) {
+void Sphere::IsCollision(Sphere* target, Plane* plane) {
 	Vector3 normal = plane->GetPlaneMaterial().normal;
 	float distance = plane->GetPlaneMaterial().distance;
-	float k = fabsf(Math::Dot(normal, sphere->GetSphereMaterial().center) - distance);
-	if (k <= sphere_.radius ) {
-		sphere->SetIsHit(true);
+	float k = fabsf(Math::Dot(normal, target->GetSphereMaterial().center) - distance);
+	if (k <= target->GetSphereMaterial().radius) {
+		target->SetIsHit(true);
 	}
 	else {
-		sphere->SetIsHit(false);
+		target->SetIsHit(false);
 	}
 	ImGui::Text("%f", k);
 
