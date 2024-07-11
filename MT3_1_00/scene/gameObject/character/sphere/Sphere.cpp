@@ -125,6 +125,7 @@ void Sphere::IsCollision(Plane* plane) {
 		sphere_.isHit = false;
 	}
 	ImGui::Text("%f", k);
+
 	ChangeColor();//色を変える
 }
 
