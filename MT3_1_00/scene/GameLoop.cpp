@@ -108,7 +108,7 @@ void GameLoop::Update() {
 	point1_->Initialize(camera_,grid_,{ line_->GetPoint(), 0.01f,RED });
 	point2_->Initialize(camera_,grid_,{ line_->GetClosestPoint(), 0.01f,BLACK });
 	line_->Update();
-	sphere_[0]->IsCollision(plane_);
+	sphere_[0]->IsCollision(sphere_[0],plane_);
 	//triangle_->Update(keys_, preKeys_);//三角形
 	//shpere_->Update();//スフィア
 }

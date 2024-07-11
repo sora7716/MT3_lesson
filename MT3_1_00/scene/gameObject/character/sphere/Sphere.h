@@ -6,7 +6,7 @@ class Camera;
 class Grid;
 class Plane;
 
-class Sphere:public Character{
+class Sphere :public Character {
 
 public://構造体
 	//スフィアに使う構造体
@@ -58,12 +58,12 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="sphere">別のスフィア</param>
 	void IsCollision(const Material& sphere, const Vector3& worldPosition);
-	
+
 	/// <summary>
 	/// 当たり判定(球と平面)
 	/// </summary>
 	/// <param name="sphere">別のスフィア</param>
-	void IsCollision(Plane* plane);
+	void IsCollision(Sphere* sphere, Plane* plane);
 
 	/// <summary>
 	/// カラーのセッター
@@ -81,7 +81,7 @@ public://メンバ関数
 	/// 平面のセッター
 	/// </summary>
 	/// <param name="plaen">平面</param>
-	void SetPlane(Plane*plane);
+	void SetPlane(Plane* plane);
 
 	/// <summary>
 	/// グリッド線のゲッター
@@ -95,6 +95,12 @@ public://メンバ関数
 	/// <param name="camera">カメラ</param>
 	void SetCamera(Camera* camera);
 
+	/// <summary>
+	/// isHitのセッター
+	/// </summary>
+	/// <param name="IsHit"></param>
+	void SetIsHit(const bool& isHit);
+
 private://メンバ関数
 
 	/// <summary>
@@ -103,7 +109,7 @@ private://メンバ関数
 	void ChangeColor();
 
 private://メンバ変数
-	
+
 	Camera* camera_;//カメラ
 	Grid* grid_;//グリッド線
 	Material sphere_;//スフィアの素材
