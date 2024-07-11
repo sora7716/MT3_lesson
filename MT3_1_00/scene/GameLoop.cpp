@@ -119,7 +119,7 @@ void GameLoop::Update() {
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
 	plane_->DebugText();
-	line_->DebugText();
+	//line_->DebugText();
 	sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
 	//camera_->DebugText();
 	//sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
