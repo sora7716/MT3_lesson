@@ -34,7 +34,7 @@ void Collision::IsCollision(Point* target, Plane* plane) {
 	//垂直判定を行うための、法線と線の内積を求める
 	float dot = Math::Dot(plane->GetPlaneMaterial().normal, target->GetSegment().diff);
 
-	if (std::abs(dot) == 1e-6f) {
+	if (std::abs(dot) < 1e-6f) {
 		target->SetIsHit(false);
 	}
 
