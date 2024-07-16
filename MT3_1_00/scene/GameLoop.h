@@ -4,7 +4,7 @@
 #include"scene/gameObject/character/triangle/Triangle.h"
 #include"scene/gameObject/character/grid/Grid.h"
 #include "scene/gameObject/character/sphere/Sphere.h"
-#include "scene/gameObject/character/point/Point.h"
+#include "scene/gameObject/character/line/Line.h"
 #include "scene/gameObject/character/plane/Plane.h"
 #include "scene/func/collision/Collision.h"
 
@@ -43,7 +43,7 @@ private://メンバ変数
 
 	Sphere* point1_;
 	Sphere* point2_;
-	Point* line_;
+	Line* line_;
 
 	Plane* plane_;
 

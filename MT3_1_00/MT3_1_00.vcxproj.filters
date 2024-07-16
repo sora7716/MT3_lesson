@@ -89,14 +89,14 @@
     <ClCompile Include="scene\gameObject\character\sphere\Sphere.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
-    <ClCompile Include="scene\gameObject\character\point\Point.cpp">
-      <Filter>scene\cppファイル\gameObject</Filter>
-    </ClCompile>
     <ClCompile Include="scene\gameObject\character\plane\Plane.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
     <ClCompile Include="scene\func\collision\Collision.cpp">
       <Filter>scene\cppファイル\process</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\line\Line.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,14 +203,14 @@
     <ClInclude Include="scene\gameObject\character\sphere\Sphere.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="scene\gameObject\character\point\Point.h">
-      <Filter>scene\ヘッダーファイル\gameObject</Filter>
-    </ClInclude>
     <ClInclude Include="scene\gameObject\character\plane\Plane.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
     <ClInclude Include="scene\func\collision\Collision.h">
       <Filter>scene\ヘッダーファイル\process</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\line\Line.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

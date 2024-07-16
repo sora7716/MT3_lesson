@@ -4,7 +4,7 @@
 //前方宣言
 class Camera;
 
-class Point :public Character {
+class Line :public Character {
 public://メンバ関数
 
 	//直線
@@ -28,12 +28,12 @@ public://メンバ関数
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Point();
+	Line();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Point();
+	~Line();
 
 	/// <summary>
 	/// 初期化
@@ -78,6 +78,18 @@ public://メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	Segment GetSegment()const;
+
+	/// <summary>
+	/// 正射影ベクトルのゲッター
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetProject()const;
+
+	/// <summary>
+	/// 媒介変数のゲッター
+	/// </summary>
+	/// <returns></returns>
+	float GetT()const;
 
 	/// <summary>
 	/// 原点のセッター

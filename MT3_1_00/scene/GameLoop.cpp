@@ -67,7 +67,7 @@ void GameLoop::Create() {
 	}
 	triangle_ = new Triangle();
 	plane_ = new Plane();
-	line_ = new Point();
+	line_ = new Line();
 	point1_ = new Sphere();
 	point2_ = new Sphere();
 	collision_ = new Collision();
@@ -82,6 +82,7 @@ void GameLoop::Initialize() {
 	camera_->Initialize(kWindowWidth, kWindowHeight);
 	line_->Initialize(camera_);
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
+	line_->SetSegment({ {0.0f,1.0f,-0.5f},{0.0f,0.0f,1.0f} });
 	grid_->Initialize(camera_);
 
 	for (int i = 0; i < kSphereNum; i++) {
@@ -117,8 +118,9 @@ void GameLoop::Update() {
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
-	plane_->DebugText();
 	line_->DebugText();
+	triangle_->DebugText();
+	//plane_->DebugText();
 	//sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
 	//camera_->DebugText();
 	//sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
@@ -132,14 +134,15 @@ void GameLoop::DebugText() {
 void GameLoop::Collider(){
 	//collision_->IsCollision(sphere_[0],sphere_[1]);
 	//collision_->IsCollision(sphere_[0], plane_);
-	collision_->IsCollision(line_, plane_);
+	//collision_->IsCollision(line_, plane_);
+	collision_->IsCollision(line_, triangle_);
 }
 
 //描画処理
 void GameLoop::Draw() {
 	grid_->Draw();
 	line_->Draw();
-	plane_->Draw();
+	//plane_->Draw();
 	/*for (int i = 0; i < kSphereNum; i++) {
 		sphere_[i]->Draw();
 	}*/
@@ -147,6 +150,6 @@ void GameLoop::Draw() {
 	
 	/*point1_->Draw();
 	point2_->Draw();*/
-	//triangle_->Draw();
+	triangle_->WireFrameDraw();
 	Collider();
 }

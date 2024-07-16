@@ -1,10 +1,10 @@
-﻿#include "Point.h"
+﻿#include "Line.h"
 #include "scene/gameObject/camera/Camera.h"
 #include <algorithm>
 using namespace std;
 
 //コンストラクタ
-Point::Point() {
+Line::Line() {
 	t_ = {};
 	project_ = {};
 	closestPoint_ = {};
@@ -16,12 +16,12 @@ Point::Point() {
 }
 
 //デストラクタ
-Point::~Point() {
+Line::~Line() {
 
 }
 
 //初期化
-void Point::Initialize(Camera* camera) {
+void Line::Initialize(Camera* camera) {
 	camera_ = camera;
 	point_ = {};
 	segment_ = { {-0.45f,0.41f,0.0f},{1.0f,0.58f,0.0f} };
@@ -30,13 +30,13 @@ void Point::Initialize(Camera* camera) {
 }
 
 //更新処理
-void Point::Update() {
+void Line::Update() {
 	Project(point_ - segment_.origin, segment_.diff);
 	ClosestPoint();
 }
 
 
-void Point::DebugText() {
+void Line::DebugText() {
 	ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x, 0.1f);
 	//ImGui::DragFloat3("point", &point_.x,0.1f);
@@ -45,7 +45,7 @@ void Point::DebugText() {
 }
 
 //描画処理
-void Point::Draw() {
+void Line::Draw() {
 	Vector3 start{};
 	Vector3 end{};
 	CameraScreenTransform(camera_, segment_.origin, start);
@@ -58,7 +58,7 @@ void Point::Draw() {
 }
 
 //衝突した場合の判定
-void Point::OnCollision(){
+void Line::OnCollision(){
 	if (isHit_) {
 		SetColor(RED);
 	}
@@ -68,42 +68,52 @@ void Point::OnCollision(){
 }
 
 //最近接点のゲッター
-Vector3 Point::GetClosestPoint()const {
+Vector3 Line::GetClosestPoint()const {
 	return closestPoint_;
 }
 
 //原点のセッター
-Vector3 Point::GetPoint()const {
+Vector3 Line::GetPoint()const {
 	return point_;
 }
 
 //線分のゲッター
-Point::Segment Point::GetSegment() const{
+Line::Segment Line::GetSegment() const{
 	return segment_;
 }
 
+//正射影ベクトルのゲッター
+Vector3 Line::GetProject() const{
+	return project_;
+}
+
+//媒介変数のゲッター
+float Line::GetT() const{
+	return t_;
+}
+
 //原点のセッター
-void Point::SetPoint(const Vector3& point) {
+void Line::SetPoint(const Vector3& point) {
 	point_ = point;
 }
 
 //線分のセッター
-void Point::SetSegment(const Segment& segment) {
+void Line::SetSegment(const Segment& segment) {
 	segment_ = segment;
 }
 
 //色のセッター
-void Point::SetColor(uint32_t color) {
+void Line::SetColor(uint32_t color) {
 	color_ = color;
 }
 
 //衝突判定のセッター
-void Point::SetIsHit(bool isHit){
+void Line::SetIsHit(bool isHit){
 	isHit_ = isHit;
 }
 
 //正射影ベクトル
-void Point::Project(const Vector3& v1, const Vector3& v2) {
+void Line::Project(const Vector3& v1, const Vector3& v2) {
 	float dot1 = Math::Dot(v1, v2);
 	float length = Math::Dot(v2, v2);
 	project_ = dot1 / length * v2;
@@ -111,7 +121,7 @@ void Point::Project(const Vector3& v1, const Vector3& v2) {
 }
 
 
-void Point::ClosestPoint() {
+void Line::ClosestPoint() {
 	t_ = clamp(t_, 0.0f, 1.0f);
 	closestPoint_ = segment_.origin + segment_.diff * t_;
 	//closestPoint_ = segment_.origin + project_;

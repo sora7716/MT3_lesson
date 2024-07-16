@@ -4,7 +4,8 @@
 //前方宣言
 class Sphere;
 class Plane;
-class Point;
+class Line;
+class Triangle;
 
 class Collision {
 
@@ -28,6 +29,13 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="plane"></param>
-	void IsCollision(Point* target, Plane* plane);
+	void IsCollision(Line* target, Plane* plane);
+
+	/// <summary>
+	/// 当たり判定(線と三角形)
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="triangle"></param>
+	void IsCollision(Line* target, Triangle* triangle);
 };
 
