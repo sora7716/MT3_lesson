@@ -134,10 +134,10 @@ void GameObject::Rotation(){
 		if (mousePos_.x != preMousePos_.x) {
 			radian_.y = 0.1f;
 			float direction = 0;
-			if (mousePos_.x - preMousePos_.x > 5) {
+			if (mousePos_.x - preMousePos_.x > 2) {
 				direction = 1;
 			}
-			else if (mousePos_.x - preMousePos_.x <= -5) {
+			else if (mousePos_.x - preMousePos_.x <= -2) {
 				direction = -1;
 			}
 			radian_.y *= direction;
