@@ -26,7 +26,7 @@ void Triangle::Update(char* keys, char* preKeys) {
 
 	camera_->Update(keys, preKeys);//カメラの更新処理
 	for (uint32_t i = 0; i < 3; i++) {
-		ScreenTransform(camera_, triangleMaterial_.kLocalVertices_[i], screenVertices_[i]);
+		ScreenTransform(camera_->GetViewProjectionMatrix(),camera_->GetViewportMatrix(), triangleMaterial_.kLocalVertices_[i], screenVertices_[i]);
 	}
 	//Transfar(keys, preKeys);//三角形の動き
 }
