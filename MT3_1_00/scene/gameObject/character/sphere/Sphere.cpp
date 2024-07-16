@@ -77,6 +77,7 @@ void Sphere::Draw() {
 			/*screenA_ = Math::Transform(Math::Transform(a, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
 			screenB_ = Math::Transform(Math::Transform(b, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
 			screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());*/
+			
 			//スクリーン座標を求める
 			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), a, screenA_);
 			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), b, screenB_);

@@ -64,12 +64,12 @@ void Collision::IsCollision(Line* target, Triangle* triangle) {
 	Vector3 v0p = intersect - triangle->GetTriangleMaterial().kLocalVertices_[0];
 	Vector3 v20 = triangle->GetTriangleMaterial().kLocalVertices_[0] - triangle->GetTriangleMaterial().kLocalVertices_[2];
 
-	/*if (std::abs(dot) < 1e+6f) {
+	if (std::abs(dot) < 1e+6f) {
 		target->SetIsHit(false);
 	}
 	if (t >= 0.0f && t <= 1.0f) {
 		target->SetIsHit(true);
-	}*/
+	}
 
 	if (Math::Dot(Math::Cross(v01, v1p), normal) < 0.0f) {
 		target->SetIsHit(false);
@@ -84,59 +84,10 @@ void Collision::IsCollision(Line* target, Triangle* triangle) {
 		target->SetIsHit(true);
 	}
 	target->OnCollision();
-
-	
-	
-	
 }
 
 
-//template<typename tLine> bool IsCollision(const Triangle& triangle, const tLine& line) {
-	//Vector3 v01 = triangle->GetTriangleMaterial().kLocalVertices_[1] - triangle->GetTriangleMaterial().kLocalVertices_[0];
-	//Vector3 v12 = triangle->GetTriangleMaterial().kLocalVertices_[2] - triangle->GetTriangleMaterial().kLocalVertices_[1];
-	//Vector3 normal = Math::Normalize(Math::Cross(v01, v12));
-	//Plane* plane = new Plane();
-	//plane->SetPlane({ normal,Math::Dot(triangle->GetTriangleMaterial().kLocalVertices_[0], normal) });
-	//float dot = Math::Dot(plane->GetPlaneMaterial().normal, target->GetSegment().diff);
-	/*if (dot == 0.0f) {
-		target->SetIsHit(false);
-	}
-	else {
-		target->SetIsHit(true);
-	}*/
-	//float t = (plane->GetPlaneMaterial().distance - Math::Dot(target->GetSegment().origin, plane->GetPlaneMaterial().normal)) / dot;
-		/*if ((t < 0.0f) || (1.0f < t)) {
-			target->SetIsHit(false);
-		}
-		else {
-			target->SetIsHit(true);
-		}*/
-//Vector3 intersect = target->GetSegment().origin + t * target->GetSegment().diff;
-//Vector3 v1p = intersect - triangle->GetTriangleMaterial().kLocalVertices_[1];
-//if (Math::Dot(Math::Cross(v01, v1p), normal) < 0.0f) {
-//	target->SetIsHit(false);
-//}
-//else {
-//	target->SetIsHit(true);
-//}
 
-/*Vector3 v2p = intersect - triangle->GetTriangleMaterial().kLocalVertices_[2];
-	if (Math::Dot(Math::Cross(v12, v2p), normal) < 0.0f) {
-		target->SetIsHit(false);
-	}
-	else {
-		target->SetIsHit(true);
-	}*/
-	/*Vector3 v0p = intersect - triangle->GetTriangleMaterial().kLocalVertices_[0];
-		Vector3 v20 = triangle->GetTriangleMaterial().kLocalVertices_[0] - triangle->GetTriangleMaterial().kLocalVertices_[2];
-		if (Math::Dot(Math::Cross(v20, v0p), normal) < 0.0f) {
-			target->SetIsHit(false);
-		}
-		else {
-			target->SetIsHit(true);
-		}
-
-		target->OnCollision();*/
 
 
 

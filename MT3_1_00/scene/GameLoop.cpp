@@ -118,12 +118,12 @@ void GameLoop::Update() {
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
-	line_->DebugText();
-	triangle_->DebugText();
+	//line_->DebugText();
+	//triangle_->DebugText();
 	//plane_->DebugText();
 	//sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
-	//camera_->DebugText();
 	//sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
+	//camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
@@ -132,24 +132,22 @@ void GameLoop::DebugText() {
 
 //当たり判定
 void GameLoop::Collider(){
-	//collision_->IsCollision(sphere_[0],sphere_[1]);
+	collision_->IsCollision(sphere_[0],sphere_[1]);
 	//collision_->IsCollision(sphere_[0], plane_);
 	//collision_->IsCollision(line_, plane_);
-	collision_->IsCollision(line_, triangle_);
+	//collision_->IsCollision(line_, triangle_);
 }
 
 //描画処理
 void GameLoop::Draw() {
 	grid_->Draw();
-	line_->Draw();
+	//line_->Draw();
 	//plane_->Draw();
 	/*for (int i = 0; i < kSphereNum; i++) {
 		sphere_[i]->Draw();
 	}*/
-
-	
 	/*point1_->Draw();
 	point2_->Draw();*/
-	triangle_->WireFrameDraw();
+	//triangle_->WireFrameDraw();
 	Collider();
 }
