@@ -61,7 +61,14 @@ public://メンバ関数
 	/// 同次クリップ空間のゲッター
 	/// </summary>
 	/// <returns></returns>
-	const Matrix4x4& GetProjctionMatrix();
+	Matrix4x4 GetProjctionMatrix()const;
+
+	/// <summary>
+	/// ビューマトリックスのゲッター
+	/// </summary>
+	/// <returns></returns>
+	Matrix4x4 GetViewMatrix()const;
+
 private://メンバ変数
 
 	Matrix4x4 cameraMatrix_ = {};//カメラマトリックス

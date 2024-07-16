@@ -109,7 +109,7 @@ Matrix4x4 Math::MakeAffineMatrix(const Vector3& scale, const Vector3& radian, co
 }
 
 //STRの変換
-Matrix4x4 Math::STRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate) {
+Matrix4x4 Math::MakeSTRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate) {
 	return MakeScaleMatrix(scale) * MakeTranslateMatrix(translate) * MakeRotateXYZMatrix(radian);
 }
 

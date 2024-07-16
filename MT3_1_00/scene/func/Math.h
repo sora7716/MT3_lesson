@@ -83,7 +83,7 @@ public:
 	/// <param name="radian">角度</param>
 	/// <param name="translate">移動</param>
 	/// <returns>STRの変換</returns>
-	static Matrix4x4 STRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate);
+	static Matrix4x4 MakeSTRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate);
 
 	/// <summary>
 	/// 正射影行列

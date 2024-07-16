@@ -32,7 +32,6 @@ void Sphere::Initialize(Camera* camera) {
 //更新処理
 void Sphere::Update() {
 	translate_ = sphere_.center;
-
 }
 
 //デバックテキスト
@@ -71,10 +70,17 @@ void Sphere::Draw() {
 				sphere_.center.z + sphere_.radius * cos(lat) * sin(lon + kLonEvery)
 			};
 
+			////ワールド座標系
+			//worldMatrix_ = Math::MakeAffineMatrix(scale_, rotate_, sphere_.center);
+			////wvpマトリックス
+			//worldViewProjectionMatrix_ = worldMatrix_ * camera_->GetViewMatrix() * camera_->GetProjctionMatrix();
+			/*screenA_ = Math::Transform(Math::Transform(a, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
+			screenB_ = Math::Transform(Math::Transform(b, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
+			screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());*/
 			//スクリーン座標を求める
-			ScreenTransform(camera_, a, screenA_);
-			ScreenTransform(camera_, b, screenB_);
-			ScreenTransform(camera_, c, screenC_);
+			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), a, screenA_);
+			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), b, screenB_);
+			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(

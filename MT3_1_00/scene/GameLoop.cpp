@@ -112,15 +112,14 @@ void GameLoop::Update() {
 	point2_->SetSphere({ line_->GetClosestPoint(), 0.01f,BLACK });
 	line_->Update();
 	triangle_->Update(keys_, preKeys_);//三角形
-	Collider();
 }
 
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
 	plane_->DebugText();
-	//line_->DebugText();
-	sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
+	line_->DebugText();
+	//sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
 	//camera_->DebugText();
 	//sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
@@ -132,19 +131,22 @@ void GameLoop::DebugText() {
 //当たり判定
 void GameLoop::Collider(){
 	//collision_->IsCollision(sphere_[0],sphere_[1]);
-	collision_->IsCollision(sphere_[0], plane_);
-	//collision_->IsCollision(line_, plane_);
+	//collision_->IsCollision(sphere_[0], plane_);
+	collision_->IsCollision(line_, plane_);
 }
 
 //描画処理
 void GameLoop::Draw() {
 	grid_->Draw();
+	line_->Draw();
 	plane_->Draw();
-	//line_->Draw();
-	for (int i = 0; i < kSphereNum; i++) {
+	/*for (int i = 0; i < kSphereNum; i++) {
 		sphere_[i]->Draw();
-	}
+	}*/
+
+	
 	/*point1_->Draw();
 	point2_->Draw();*/
 	//triangle_->Draw();
+	Collider();
 }

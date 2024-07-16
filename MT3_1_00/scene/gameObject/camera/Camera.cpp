@@ -70,15 +70,21 @@ Vector3 Camera::GetTranslate() {
 }
 
 //同次クリップ空間のゲッター
-const Matrix4x4& Camera::GetProjctionMatrix() {
+ Matrix4x4 Camera::GetProjctionMatrix()const {
 	// TODO: return ステートメントをここに挿入します
 	return projectionMatrix_;
 }
 
+ //ビューマトリックスのゲッター
+ Matrix4x4 Camera::GetViewMatrix() const
+ {
+	 return viewMatrix_;
+ }
+
 //レンダリングパイプライン
 void Camera::RenderingPipeline() {
 	//カメラ座標系
-	cameraMatrix_ = Math::STRMatrix(scale_, rotate_, translate_);
+	cameraMatrix_ = Math::MakeSTRMatrix(scale_, rotate_, translate_);
 	//ビュー座標系
 	viewMatrix_ = ~cameraMatrix_;
 	//同次クリップ座標系
