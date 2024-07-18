@@ -19,7 +19,28 @@ public://構造体など
 		int y;
 	}Vector2Int;
 
+	//AABBに使う素材
+	typedef struct AABBMaterial {
+		Vector3 min;//最小点
+		Vector3 max;//最大点
+		uint32_t color;//色
+		bool isHit;//衝突したか
+	}AABBMaterial;
+
+	//AABBを2Dで作るときに使う
+	typedef struct AABBVertex2D {
+		Vector3 leftTop;
+		Vector3 rightTop;
+		Vector3 leftBottom;
+		Vector3 rightBottom;
+	}AABBVertex2D;
+
+public://静的メンバ変数
+	static inline const int kAABB2DNum = 2;//2次元で見たAABBの数
 protected://メンバ関数
+
+	GameObject() = default;
+	~GameObject() = default;
 
 	/// <summary>
 	/// 倍率

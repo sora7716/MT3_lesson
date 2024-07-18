@@ -7,11 +7,12 @@
 #include "scene/gameObject/character/line/Line.h"
 #include "scene/gameObject/character/plane/Plane.h"
 #include "scene/func/collision/Collision.h"
+#include "scene/gameObject/character/AABB/AABB.h"
 
 
 class GameLoop {
 public://メンバ関数
-	
+
 	/// <summary>
 	/// コンストラクター
 	/// </summary>
@@ -32,22 +33,25 @@ public://静的メンバ変数
 	static inline const int kWindowWidth = 1280;//画面の横幅
 	static inline const int kWindowHeight = 720;//画面の縦幅
 	static inline const int kSphereNum = 2;//スフィアの数
+	static inline const int kAABBNum = 1;//AABBの数
 private://メンバ変数
-	char keys_[kKeysNums];
-	char preKeys_[kKeysNums];
-	Camera* camera_;
-	Triangle* triangle_;
-	Grid* grid_;
+	char keys_[kKeysNums]{};
+	char preKeys_[kKeysNums]{};
+	Camera* camera_ = nullptr;
+	Triangle* triangle_ = nullptr;
+	Grid* grid_ = nullptr;
 
-	Sphere* sphere_[kSphereNum];
+	Sphere* sphere_[kSphereNum] = {};
 
-	Sphere* point1_;
-	Sphere* point2_;
-	Line* line_;
+	Sphere* point1_ = nullptr;
+	Sphere* point2_ = nullptr;
+	Line* line_ = nullptr;
 
-	Plane* plane_;
+	Plane* plane_ = nullptr;
 
-	Collision* collision_;
+	Collision* collision_ = nullptr;
+
+	AABB* aabbs_[kAABBNum] = { nullptr };
 
 private://メンバ関数
 
@@ -66,11 +70,12 @@ private://メンバ関数
 	/// </summary>
 	void Update();
 
+#ifdef _DEBUG
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
 	void DebugText();
-
+#endif // _DEBUG
 	/// <summary>
 	/// 当たり判定
 	/// </summary>

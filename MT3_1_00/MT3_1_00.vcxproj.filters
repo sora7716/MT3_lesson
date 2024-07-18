@@ -98,6 +98,9 @@
     <ClCompile Include="scene\gameObject\character\line\Line.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="scene\gameObject\character\AABB\AABB.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -210,6 +213,9 @@
       <Filter>scene\ヘッダーファイル\process</Filter>
     </ClInclude>
     <ClInclude Include="scene\gameObject\character\line\Line.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\AABB\AABB.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>

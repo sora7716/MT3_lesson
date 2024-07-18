@@ -1,16 +1,5 @@
 ﻿#include "Character.h"
 
-//コンストラクタ
-Character::Character() {
-	worldMatrix_ = {};//ワールドマトリックス
-	worldViewProjectionMatrix_ = {};//wvpマトリックス
-	ndcVertex_ = {};//正規化デバイス座標系
-}
-
-//デストラクタ
-Character::~Character() {
-}
-
 //ワールドビュープロジェクション
 void Character::WvpMatrix(Camera* camera) {
 	//ワールド座標系

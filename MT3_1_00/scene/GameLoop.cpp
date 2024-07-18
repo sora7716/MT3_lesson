@@ -1,23 +1,13 @@
 ﻿#include "GameLoop.h"
+
+#ifdef _DEBUG
 #include"Imgui.h"
+#endif // _DEBUG
+
 
 //コンストラクター
 GameLoop::GameLoop() {
-	for (int i = 0; i < kKeysNums; i++) {
-		keys_[i] = { 0 };
-		preKeys_[i] = { 0 };
-	}
-	camera_ = nullptr;
-	triangle_ = nullptr;
-	grid_ = nullptr;
-	for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i] = nullptr;
-	}
-	line_ = nullptr;
-	point1_ = nullptr;
-	point2_ = nullptr;
-	plane_ = nullptr;
-	collision_ = nullptr;
+
 }
 
 //デストラクター
@@ -31,6 +21,7 @@ GameLoop::~GameLoop() {
 	delete point1_;
 	delete point2_;
 	delete collision_;
+	delete* aabbs_;
 }
 
 //ゲームループ
@@ -71,6 +62,10 @@ void GameLoop::Create() {
 	point1_ = new Sphere();
 	point2_ = new Sphere();
 	collision_ = new Collision();
+	
+	for (int i = 0; i < kAABBNum; i++) {
+		aabbs_[i] = new AABB();
+	}
 }
 
 //初期化処理
@@ -84,17 +79,18 @@ void GameLoop::Initialize() {
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
 	line_->SetSegment({ {0.0f,1.0f,-0.5f},{0.0f,0.0f,1.0f} });
 	grid_->Initialize(camera_);
-
 	for (int i = 0; i < kSphereNum; i++) {
 		sphere_[i]->Initialize(camera_);
 		sphere_[i]->SetSphere({ 0.0f + (float)i,0.0f + (float)i,0.0f + (float)i,{1.0f},WHITE });
 	}
-
-	triangle_->Initialize(kWindowWidth, kWindowHeight,camera_);
+	triangle_->Initialize(kWindowWidth, kWindowHeight, camera_);
 	plane_->Initialize(camera_);
 	plane_->SetPlane({ {0.0f,1.0f,0.0f},1.0f,RED });
 	point1_->Initialize(camera_);
 	point2_->Initialize(camera_);
+
+	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{},WHITE,false});
+
 }
 
 //更新処理
@@ -113,8 +109,13 @@ void GameLoop::Update() {
 	point2_->SetSphere({ line_->GetClosestPoint(), 0.01f,BLACK });
 	line_->Update();
 	triangle_->Update(keys_, preKeys_);//三角形
+
+	for (AABB* aabb : aabbs_) {
+		aabb->Update();
+	}
 }
 
+#ifdef _DEBUG
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
@@ -127,12 +128,14 @@ void GameLoop::DebugText() {
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
+	aabbs_[0]->DebugText("aabb1");
 	ImGui::End();
 }
+#endif // _DEBUG
 
 //当たり判定
-void GameLoop::Collider(){
-	collision_->IsCollision(sphere_[0],sphere_[1]);
+void GameLoop::Collider() {
+	collision_->IsCollision(sphere_[0], sphere_[1]);
 	//collision_->IsCollision(sphere_[0], plane_);
 	//collision_->IsCollision(line_, plane_);
 	//collision_->IsCollision(line_, triangle_);
@@ -141,6 +144,9 @@ void GameLoop::Collider(){
 //描画処理
 void GameLoop::Draw() {
 	grid_->Draw();
+	for (AABB* aabb : aabbs_) {
+		aabb->Draw();
+	}
 	//line_->Draw();
 	//plane_->Draw();
 	/*for (int i = 0; i < kSphereNum; i++) {

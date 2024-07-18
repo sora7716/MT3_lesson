@@ -8,12 +8,12 @@ public://メンバ関数
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Character();
+	Character() = default;
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Character();
+	~Character() = default;
 
 protected://メンバ関数
 
@@ -105,8 +105,8 @@ public://メンバ関数
 	const Vector3 GetWorldPosition();
 
 protected://メンバ変数
-	Matrix4x4 worldMatrix_;//ワールドマトリックス
-	Matrix4x4 worldViewProjectionMatrix_;//wvpマトリックス
-	Vector3   ndcVertex_;//正規化デバイス座標系
+	Matrix4x4 worldMatrix_ = {};//ワールドマトリックス
+	Matrix4x4 worldViewProjectionMatrix_ = {};//wvpマトリックス
+	Vector3   ndcVertex_ = {};//正規化デバイス座標系
 };
 
