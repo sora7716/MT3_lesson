@@ -55,6 +55,12 @@ public://メンバ関数
 	/// <param name="color">セットしたいカラー</param>
 	void SetColor(uint32_t color);
 
+	/// <summary>
+	/// AABBの素材のゲッター
+	/// </summary>
+	/// <returns></returns>
+	AABBMaterial GetAABBMaterial()const;
+
 private://メンバ変数
 	AABBMaterial aabb_ = {};
 	Camera* camera_ = nullptr;

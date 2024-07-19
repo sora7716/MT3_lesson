@@ -86,3 +86,8 @@ void AABB::SetIsHit(bool isHit){
 void AABB::SetColor(uint32_t color){
 	aabb_.color = color;
 }
+
+//AABBの素材のゲッター
+GameObject::AABBMaterial AABB::GetAABBMaterial() const{
+	return aabb_;
+}

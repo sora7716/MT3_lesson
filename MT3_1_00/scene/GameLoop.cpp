@@ -141,6 +141,7 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(sphere_[0], plane_);
 	//collision_->IsCollision(line_, plane_);
 	//collision_->IsCollision(line_, triangle_);
+	collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
 }
 
 //描画処理

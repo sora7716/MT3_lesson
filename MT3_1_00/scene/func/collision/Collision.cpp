@@ -3,6 +3,7 @@
 #include "scene/gameObject/character/plane/Plane.h"
 #include "scene/gameObject/character/line/Line.h"
 #include "scene/gameObject/character/triangle/Triangle.h"
+#include "scene/gameObject/character/AABB/AABB.h"
 
 // 当たり判定(球と球)
 void Collision::IsCollision(Sphere* target, Sphere* sphere) {
@@ -86,10 +87,35 @@ void Collision::IsCollision(Line* target, Triangle* triangle) {
 	target->OnCollision();
 }
 
-void Collision::IsCollision(GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2){
-	if (aabb1.max.x > aabb2.min.x) {
-		
+void Collision::IsCollision(AABB* target,GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2){
+	//X座標の当たってない判定
+	if (aabb1.min.x < aabb2.max.x && aabb1.max.x < aabb2.min.x) {
+		target->SetIsHit(false);
 	}
+	else if (aabb2.max.x < aabb1.min.x && aabb2.min.x < aabb1.max.x) {
+		target->SetIsHit(false);
+	}
+
+	// Y座標の当たってない判定
+	else if (aabb1.max.y > aabb2.min.y && aabb1.min.y > aabb2.max.y) {
+		target->SetIsHit(false);
+	}
+	else if (aabb2.max.y > aabb1.min.y && aabb2.min.y > aabb1.max.y) {
+		target->SetIsHit(false);
+	}
+
+	// Z座標の当たってない判定
+	else if (aabb1.min.z < aabb2.max.z && aabb1.max.z < aabb2.min.z) {
+		target->SetIsHit(false);
+	}
+	else if (aabb2.max.z < aabb1.min.z && aabb2.min.z < aabb1.max.z) {
+		target->SetIsHit(false);
+	}
+
+	else {
+		target->SetIsHit(true);
+	}
+	target->OnCollision();
 }
 
 

@@ -7,6 +7,7 @@ class Sphere;
 class Plane;
 class Line;
 class Triangle;
+class AABB;
 
 class Collision {
 
@@ -44,6 +45,6 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="aabb1">ボックス1</param>
 	/// <param name="aabb2">ボックス2</param>
-	void IsCollision(GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
+	void IsCollision(AABB* target,GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
 };
 
