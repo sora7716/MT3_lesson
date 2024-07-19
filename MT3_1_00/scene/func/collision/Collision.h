@@ -52,5 +52,13 @@ public://メンバ関数
 	/// <param name="aabb1">ボックス1</param>
 	/// <param name="aabb2">ボックス2</param>
 	void IsCollision(AABB* target, GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
+
+	/// <summary>
+	/// ボックスと球の当たり判定
+	/// </summary>
+	/// <param name="target">ターゲット</param>
+	/// <param name="aabb">ボックス</param>
+	/// <param name="sphere">球</param>
+	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
 };
 

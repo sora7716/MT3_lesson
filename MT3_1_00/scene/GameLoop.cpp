@@ -90,7 +90,7 @@ void GameLoop::Initialize() {
 	point2_->Initialize(camera_);
 
 	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{},WHITE,false});
-	aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
+	//aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
 }
 
 //更新処理
@@ -123,13 +123,13 @@ void GameLoop::DebugText() {
 	triangle_->DebugText();*/
 	//plane_->DebugText();
 	spheres_[0]->DebugText("sphere[0]");
-	spheres_[1]->DebugText("sphere[1]");
+	//spheres_[1]->DebugText("sphere[1]");
 	//camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
-	/*aabbs_[0]->DebugText("aabb1");
-	aabbs_[1]->DebugText("aabb2");*/
+	aabbs_[0]->DebugText("aabb1");
+	//aabbs_[1]->DebugText("aabb2");
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -140,7 +140,8 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(sphere_[0], sphere_[0]->GetSphereMaterial(),plane_->GetPlaneMaterial());
 	//collision_->IsCollision(line_, line_->GetSegment(), plane_->GetPlaneMaterial());
 	//collision_->IsCollision(line_,line_->GetSegment(),triangle_->GetTriangleMaterial());
-	collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
+	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
+	collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), spheres_[0]->GetSphereMaterial());
 }
 
 //描画処理
@@ -151,9 +152,9 @@ void GameLoop::Draw() {
 	}
 	//line_->Draw();
 	//plane_->Draw();
-	/*for (Sphere*sphere: spheres_) {
+	for (Sphere*sphere: spheres_) {
 		sphere->Draw();
-	}*/
+	}
 	/*point1_->Draw();
 	point2_->Draw();*/
 	//triangle_->WireFrameDraw();

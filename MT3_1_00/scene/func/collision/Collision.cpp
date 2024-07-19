@@ -4,6 +4,8 @@
 #include "scene/gameObject/character/line/Line.h"
 #include "scene/gameObject/character/triangle/Triangle.h"
 #include "scene/gameObject/character/AABB/AABB.h"
+#include <algorithm>
+using namespace std;
 
 // 当たり判定(球と球)
 void Collision::IsCollision(Sphere* target, const GameObject::SphereMaterial& sphere1, const GameObject::SphereMaterial& sphere2) {
@@ -50,10 +52,10 @@ void Collision::IsCollision(Line* target, const GameObject::Segment& segment, co
 }
 
 void Collision::IsCollision(Line* target, const GameObject::Segment& segment, const GameObject::TriangleMaterial& triangle) {
-	
+
 	Vector3 v01 = triangle.kLocalVertices_[1] - triangle.kLocalVertices_[0];
 	Vector3 v12 = triangle.kLocalVertices_[2] - triangle.kLocalVertices_[1];
-	
+
 	Vector3 normal = Math::Normalize(Math::Cross(v01, v12));
 	float dot = Math::Dot(normal, segment.diff);
 	float distance = Math::Dot(triangle.kLocalVertices_[0], normal);
@@ -87,7 +89,7 @@ void Collision::IsCollision(Line* target, const GameObject::Segment& segment, co
 	target->OnCollision();
 }
 
-void Collision::IsCollision(AABB* target,GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2){
+void Collision::IsCollision(AABB* target, GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2) {
 	//X座標の当たってない判定
 	if (aabb1.min.x < aabb2.max.x && aabb1.max.x < aabb2.min.x) {
 		target->SetIsHit(false);
@@ -114,6 +116,24 @@ void Collision::IsCollision(AABB* target,GameObject::AABBMaterial aabb1, GameObj
 
 	else {
 		target->SetIsHit(true);
+	}
+	target->OnCollision();
+}
+
+void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere) {
+	Vector3 closestPoint = {
+		clamp(sphere.center.x,aabb.min.x,aabb.max.x),
+		clamp(sphere.center.y,aabb.min.y,aabb.max.y),
+		clamp(sphere.center.z,aabb.min.z,aabb.max.z),
+	};
+	//最近接点と球の中心との距離を求める
+	float distance = Math::Length(closestPoint - sphere.center);
+	//球の半径より上記の距離が小さかったら衝突
+	if (distance <= sphere.radius) {
+		target->SetIsHit(true);
+	}
+	else {
+		target->SetIsHit(false);
 	}
 	target->OnCollision();
 }
