@@ -41,6 +41,16 @@ void AABB::Update() {
 }
 
 #ifdef _DEBUG
+
+//衝突したときの判定
+void AABB::OnCollision(){
+	if (aabb_.isHit) {
+		SetColor(RED);
+	}
+	else {
+		SetColor(WHITE);
+	}
+}
 void AABB::DebugText(const char* type) {
 
 	std::string minMoji = std::string(type) + ".min";
@@ -65,4 +75,14 @@ void AABB::Draw() {
 	Novice::DrawLine((int)screenVertecies_[0].rightTop.x, (int)screenVertecies_[0].rightTop.y, (int)screenVertecies_[1].rightTop.x, (int)screenVertecies_[1].rightTop.y, aabb_.color);
 	Novice::DrawLine((int)screenVertecies_[0].leftBottom.x, (int)screenVertecies_[0].leftBottom.y, (int)screenVertecies_[1].leftBottom.x, (int)screenVertecies_[1].leftBottom.y, aabb_.color);
 	Novice::DrawLine((int)screenVertecies_[0].rightBottom.x, (int)screenVertecies_[0].rightBottom.y, (int)screenVertecies_[1].rightBottom.x, (int)screenVertecies_[1].rightBottom.y, aabb_.color);
+}
+
+// 衝突したかどうかのセッター
+void AABB::SetIsHit(bool isHit){
+	aabb_.isHit = isHit;
+}
+
+//色のセッター
+void AABB::SetColor(uint32_t color){
+	aabb_.color = color;
 }

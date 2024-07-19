@@ -90,6 +90,7 @@ void GameLoop::Initialize() {
 	point2_->Initialize(camera_);
 
 	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{},WHITE,false});
+	aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
 
 }
 
@@ -129,13 +130,14 @@ void GameLoop::DebugText() {
 		grid_->DebugText(i);
 	}*/
 	aabbs_[0]->DebugText("aabb1");
+	aabbs_[1]->DebugText("aabb2");
 	ImGui::End();
 }
 #endif // _DEBUG
 
 //当たり判定
 void GameLoop::Collider() {
-	collision_->IsCollision(sphere_[0], sphere_[1]);
+	//collision_->IsCollision(sphere_[0], sphere_[1]);
 	//collision_->IsCollision(sphere_[0], plane_);
 	//collision_->IsCollision(line_, plane_);
 	//collision_->IsCollision(line_, triangle_);

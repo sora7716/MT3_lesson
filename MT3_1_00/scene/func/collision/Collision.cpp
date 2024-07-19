@@ -64,7 +64,7 @@ void Collision::IsCollision(Line* target, Triangle* triangle) {
 	Vector3 v0p = intersect - triangle->GetTriangleMaterial().kLocalVertices_[0];
 	Vector3 v20 = triangle->GetTriangleMaterial().kLocalVertices_[0] - triangle->GetTriangleMaterial().kLocalVertices_[2];
 
-	if (std::abs(dot) < 1e+6f) {
+	if (std::abs(dot) < 1e-6f) {
 		target->SetIsHit(false);
 	}
 	if (t >= 0.0f && t <= 1.0f) {
@@ -84,6 +84,12 @@ void Collision::IsCollision(Line* target, Triangle* triangle) {
 		target->SetIsHit(true);
 	}
 	target->OnCollision();
+}
+
+void Collision::IsCollision(GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2){
+	if (aabb1.max.x > aabb2.min.x) {
+		
+	}
 }
 
 

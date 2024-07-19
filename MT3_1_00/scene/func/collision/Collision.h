@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Vector3.h>
+#include "scene/gameObject/GameObject.h"
 
 //前方宣言
 class Sphere;
@@ -37,5 +38,12 @@ public://メンバ関数
 	/// <param name="target"></param>
 	/// <param name="triangle"></param>
 	void IsCollision(Line* target, Triangle* triangle);
+
+	/// <summary>
+	/// AABBの当たり判定
+	/// </summary>
+	/// <param name="aabb1">ボックス1</param>
+	/// <param name="aabb2">ボックス2</param>
+	void IsCollision(GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
 };
 

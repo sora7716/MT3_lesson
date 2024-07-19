@@ -29,6 +29,11 @@ public://メンバ関数
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 衝突したときの判定
+	/// </summary>
+	void OnCollision();
+
 #ifdef _DEBUG
 	void DebugText(const char* type);
 #endif // _DEBUG
@@ -37,6 +42,18 @@ public://メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// 衝突したかどうかのセッター
+	/// </summary>
+	/// <param name="isHit">セットしたいフラグ</param>
+	void SetIsHit(bool isHit);
+
+	/// <summary>
+	/// 色のセッター
+	/// </summary>
+	/// <param name="color">セットしたいカラー</param>
+	void SetColor(uint32_t color);
 
 private://メンバ変数
 	AABBMaterial aabb_ = {};
