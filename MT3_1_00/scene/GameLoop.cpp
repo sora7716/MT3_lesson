@@ -14,7 +14,7 @@ GameLoop::GameLoop() {
 GameLoop::~GameLoop() {
 	delete camera_;
 	delete plane_;
-	delete* sphere_;
+	delete* spheres_;
 	delete triangle_;
 	delete grid_;
 	delete line_;
@@ -54,7 +54,7 @@ void GameLoop::Create() {
 	camera_ = new Camera();
 	grid_ = new Grid();
 	for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i] = new Sphere();
+		spheres_[i] = new Sphere();
 	}
 	triangle_ = new Triangle();
 	plane_ = new Plane();
@@ -80,8 +80,8 @@ void GameLoop::Initialize() {
 	line_->SetSegment({ {0.0f,1.0f,-0.5f},{0.0f,0.0f,1.0f} });
 	grid_->Initialize(camera_);
 	for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i]->Initialize(camera_);
-		sphere_[i]->SetSphere({ 0.0f + (float)i,0.0f + (float)i,0.0f + (float)i,{1.0f},WHITE });
+		spheres_[i]->Initialize(camera_);
+		spheres_[i]->SetSphere({ 0.0f + (float)i,0.0f + (float)i,0.0f + (float)i,{1.0f},WHITE });
 	}
 	triangle_->Initialize(kWindowWidth, kWindowHeight, camera_);
 	plane_->Initialize(camera_);
@@ -91,7 +91,6 @@ void GameLoop::Initialize() {
 
 	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{},WHITE,false});
 	aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
-
 }
 
 //更新処理
@@ -102,8 +101,8 @@ void GameLoop::Update() {
 	DebugText();//デバックテキスト
 
 	camera_->Update(keys_, preKeys_);
-	for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i]->Update();
+	for (Sphere* sphere : spheres_) {
+		sphere->Update();
 	}
 	grid_->Update();
 	point1_->SetSphere({ line_->GetPoint(), 0.01f,RED });
@@ -120,27 +119,27 @@ void GameLoop::Update() {
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
-	//line_->DebugText();
-	//triangle_->DebugText();
+	/*line_->DebugText();
+	triangle_->DebugText();*/
 	//plane_->DebugText();
-	//sphere_[0]->DebugText("sphere.center", "sphere.radius", "sphere.rotate");
-	//sphere_[1]->DebugText("sphere[1].center", "sphere[1].radius","sphere[1].rotate");
+	spheres_[0]->DebugText("sphere[0]");
+	spheres_[1]->DebugText("sphere[1]");
 	//camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
-	aabbs_[0]->DebugText("aabb1");
-	aabbs_[1]->DebugText("aabb2");
+	/*aabbs_[0]->DebugText("aabb1");
+	aabbs_[1]->DebugText("aabb2");*/
 	ImGui::End();
 }
 #endif // _DEBUG
 
 //当たり判定
 void GameLoop::Collider() {
-	//collision_->IsCollision(sphere_[0], sphere_[1]);
-	//collision_->IsCollision(sphere_[0], plane_);
-	//collision_->IsCollision(line_, plane_);
-	//collision_->IsCollision(line_, triangle_);
+	//collision_->IsCollision(sphere_[0], sphere_[0]->GetSphereMaterial(), sphere_[1]->GetSphereMaterial());
+	//collision_->IsCollision(sphere_[0], sphere_[0]->GetSphereMaterial(),plane_->GetPlaneMaterial());
+	//collision_->IsCollision(line_, line_->GetSegment(), plane_->GetPlaneMaterial());
+	//collision_->IsCollision(line_,line_->GetSegment(),triangle_->GetTriangleMaterial());
 	collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
 }
 
@@ -152,8 +151,8 @@ void GameLoop::Draw() {
 	}
 	//line_->Draw();
 	//plane_->Draw();
-	/*for (int i = 0; i < kSphereNum; i++) {
-		sphere_[i]->Draw();
+	/*for (Sphere*sphere: spheres_) {
+		sphere->Draw();
 	}*/
 	/*point1_->Draw();
 	point2_->Draw();*/

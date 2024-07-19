@@ -42,13 +42,6 @@ void Character::ScreenTransform(Camera* camera, const Vector3& kLocalVertices, V
 	screenVertices = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
 }
 
-void Character::ScreenTransform(const Matrix4x4& viewProjection, const Matrix4x4& viewportMatrix, const Vector3& kLocalVertices, Vector3& screenVertices) {
-	//正規化デバイス座標系
-	ndcVertex_ = Math::Transform(kLocalVertices, viewProjection);
-	//スクリーン座標
-	screenVertices = Math::Transform(ndcVertex_, viewportMatrix);
-}
-
 //ローカルをスクリーンに座標変換
 void Character::ScreenTransform(Camera* camera, const Vector3& kLocalVertices, Vector3& screenVertices, Vector3& scale, Vector3& rotate, Vector3& translate) {
 	//ワールドとワールドビュープロジェクションを求める

@@ -63,14 +63,6 @@ protected://メンバ関数
 	/// <param name="camera">カメラ</param>
 	/// <param name="kLocalVertices">ローカル座標</param>
 	/// <param name="screenVertices">スクリーン座標</param>
-	void ScreenTransform(const Matrix4x4& viewProjection, const Matrix4x4& viewportMatrix, const Vector3& kLocalVertices, Vector3& screenVertices);
-
-	/// <summary>
-	/// ローカル座標をスクリーン座標に変換
-	/// </summary>
-	/// <param name="camera">カメラ</param>
-	/// <param name="kLocalVertices">ローカル座標</param>
-	/// <param name="screenVertices">スクリーン座標</param>
 	/// <param name="scele">倍率</param>
 	/// <param name="rotate">角度</param>
 	/// <param name="translate">移動</param>

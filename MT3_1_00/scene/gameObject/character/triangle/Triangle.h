@@ -2,22 +2,6 @@
 #include "scene/gameObject/character/Character.h"
 class Triangle:public Character{
 
-public://構造体など
-
-	enum class Vertex {
-		kTop,
-		kRight,
-		kLeft,
-		kVertexNum,
-	};
-
-	//三角形の素材
-	typedef struct TriangleMaterial {
-		Vector3 kLocalVertices_[(int)Vertex::kVertexNum] = {};//ローカル座標
-		uint32_t color_;//色
-		bool isHit;
-	}TriangleMaterial;
-
 public://メンバ関数
 
 	/// <summary>
@@ -42,12 +26,12 @@ public://メンバ関数
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	void Draw()const;
 
 	/// <summary>
 	/// 描画ワイヤーフレーム
 	/// </summary>
-	void WireFrameDraw();
+	void WireFrameDraw()const;
 
 	/// <summary>
 	/// 衝突時の判定

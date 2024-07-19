@@ -2,19 +2,12 @@
 #include <cmath>
 #define _USE_MATH_DEFINES
 #include <Vector3.h>
+#include "scene/gameObject/GameObject.h"
 //カメラの前方宣言
 class Camera;
 class Grid;
 
-class Plane {
-
-public://構造体
-	//平面の構造体
-	typedef struct PlaneMaterial {
-		Vector3 normal;
-		float distance;
-		uint32_t color;
-	}PlaneMaterial;
+class Plane:public GameObject{
 public://メンバ関数
 
 	/// <summary>

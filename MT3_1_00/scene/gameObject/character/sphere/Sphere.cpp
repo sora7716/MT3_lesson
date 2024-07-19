@@ -6,6 +6,7 @@
 #define _USE_MATH_DEFINES
 #include <numbers>
 #define pi_f numbers::pi_v<float>
+#include <string>
 using namespace std;
 
 Sphere::Sphere() {
@@ -34,12 +35,19 @@ void Sphere::Update() {
 	translate_ = sphere_.center;
 }
 
+#ifdef _DEBUG
 //デバックテキスト
-void Sphere::DebugText(const char* label_center, const char* label_radius, const char* label_Rotate) {
-	ImGui::DragFloat3(label_Rotate, &rotate_.x, 0.1f);
-	ImGui::DragFloat3(label_center, &sphere_.center.x, 0.01f);
-	ImGui::DragFloat(label_radius, &sphere_.radius, 0.01f);
+void Sphere::DebugText(const char* label) {
+	/*string rotateLabel = string(label) + ".rotate";
+	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.1f);*/
+
+	string centerLabel = string(label) + ".center";
+	ImGui::DragFloat3(centerLabel.c_str(), &sphere_.center.x, 0.01f);
+
+	string radiusLabel = string(label) + ".radius";
+	ImGui::DragFloat(radiusLabel.c_str(), &sphere_.radius, 0.01f);
 }
+#endif // _DEBUG
 
 //描画
 void Sphere::Draw() {
@@ -79,9 +87,9 @@ void Sphere::Draw() {
 			screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());*/
 			
 			//スクリーン座標を求める
-			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), a, screenA_);
-			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), b, screenB_);
-			ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), c, screenC_);
+			CameraScreenTransform(camera_,a, screenA_);
+			CameraScreenTransform(camera_,b, screenB_);
+			CameraScreenTransform(camera_,c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(

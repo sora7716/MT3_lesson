@@ -8,7 +8,7 @@ void Camera::Initialize(int kWindowWidth, int kWindowHeight) {
 	//カメラ
 	scale_ = { 1.0f,1.0f,1.0f };     //倍率
 	rotate_ = { 0.26f,0.0f,0.0f };
-	translate_ = { 0.0f,0.0f,-5.0f };//ポジション
+	translate_ = { 0.0f,0.0f,-10.0f };//ポジション
 	preMousePos_ = mousePos_;
 }
 

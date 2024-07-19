@@ -33,7 +33,7 @@ public://静的メンバ変数
 	static inline const int kWindowWidth = 1280;//画面の横幅
 	static inline const int kWindowHeight = 720;//画面の縦幅
 	static inline const int kSphereNum = 2;//スフィアの数
-	static inline const int kAABBNum = 2;//AABBの数
+	static inline const int kAABBNum = 2;//AABBの数k
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};
@@ -41,7 +41,7 @@ private://メンバ変数
 	Triangle* triangle_ = nullptr;
 	Grid* grid_ = nullptr;
 
-	Sphere* sphere_[kSphereNum] = {};
+	Sphere* spheres_[kSphereNum] = {};
 
 	Sphere* point1_ = nullptr;
 	Sphere* point2_ = nullptr;

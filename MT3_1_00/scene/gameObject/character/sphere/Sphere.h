@@ -8,15 +8,6 @@ class Plane;
 
 class Sphere :public Character {
 
-public://構造体
-	//スフィアに使う構造体
-	typedef struct SphereMaterial {
-		Vector3 center;
-		float radius;
-		uint32_t color;
-		bool isHit;
-	}SphereMaterial;
-
 public://メンバ関数
 
 	/// <summary>
@@ -41,12 +32,14 @@ public://メンバ関数
 	/// </summary>
 	void Update();
 
+#ifdef _DEBUG
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
 	/// <param name="label_center">centerのラベル</param>
 	/// <param name="label_radius">radiusのラベル</param>
-	void DebugText(const char* label_center, const char* label_radius, const char* label_Rotate);
+	void DebugText(const char* label);
+#endif
 
 	/// <summary>
 	/// 描画処理

@@ -3,7 +3,9 @@
 #include <cmath>
 #include <array>
 #define _USE_MATH_DEFINES
+#ifdef _DEBUG
 #include <ImGui.h>
+#endif // _DEBUG
 #include "scene/func/Math.h"
 #include "scene/func/ScreenPrintf.h"
 #include "scene/func/Aithmetic.h"
@@ -34,6 +36,55 @@ public://構造体など
 		Vector3 leftBottom;
 		Vector3 rightBottom;
 	}AABBVertex2D;
+
+	//スフィアに使う構造体
+	typedef struct SphereMaterial {
+		Vector3 center;
+		float radius;
+		uint32_t color;
+		bool isHit;
+	}SphereMaterial;
+
+	//平面の構造体
+	typedef struct PlaneMaterial {
+		Vector3 normal;
+		float distance;
+		uint32_t color;
+	}PlaneMaterial;
+
+	//直線
+	typedef struct StraightLine {
+		Vector3 origin;//始点
+		Vector3 diff;//終点への差分ベクトル
+	}StraightLine;
+
+	//半直線
+	typedef struct Ray {
+		Vector3 origin;//始点
+		Vector3 diff; //終点への差分ベクトル
+	}Ray;
+
+	//線分
+	typedef struct Segment {
+		Vector3 origin;//始点
+		Vector3 diff; //終点への差分ベクトル
+	}Segment;
+
+
+	//頂点
+	enum class Vertex {
+		kTop,
+		kRight,
+		kLeft,
+		kVertexNum,
+	};
+
+	//三角形の素材
+	typedef struct TriangleMaterial {
+		Vector3 kLocalVertices_[(int)Vertex::kVertexNum] = {};//ローカル座標
+		uint32_t color_;//色
+		bool isHit;
+	}TriangleMaterial;
 
 public://静的メンバ変数
 	static inline const int kAABB2DNum = 2;//2次元で見たAABBの数

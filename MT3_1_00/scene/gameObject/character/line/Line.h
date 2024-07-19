@@ -7,24 +7,6 @@ class Camera;
 class Line :public Character {
 public://メンバ関数
 
-	//直線
-	typedef struct StraightLine {
-		Vector3 origin;//始点
-		Vector3 diff;//終点への差分ベクトル
-	}StraightLine;
-
-	//半直線
-	typedef struct Ray {
-		Vector3 origin;//始点
-		Vector3 diff; //終点への差分ベクトル
-	}Ray;
-
-	//線分
-	typedef struct Segment {
-		Vector3 origin;//始点
-		Vector3 diff; //終点への差分ベクトル
-	}Segment;
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>

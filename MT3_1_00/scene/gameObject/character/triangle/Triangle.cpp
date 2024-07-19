@@ -26,7 +26,7 @@ void Triangle::Update(char* keys, char* preKeys) {
 
 	camera_->Update(keys, preKeys);//カメラの更新処理
 	for (uint32_t i = 0; i < 3; i++) {
-		ScreenTransform(camera_->GetViewProjectionMatrix(),camera_->GetViewportMatrix(), triangleMaterial_.kLocalVertices_[i], screenVertices_[i]);
+		CameraScreenTransform(camera_,triangleMaterial_.kLocalVertices_[i], screenVertices_[i]);
 	}
 	//Transfar(keys, preKeys);//三角形の動き
 }
@@ -37,7 +37,7 @@ void Triangle::DebugText() {
 	ImGui::DragFloat2("VertexLeft", &triangleMaterial_.kLocalVertices_[(int)Vertex::kLeft].x, 0.01f);
 }
 
-void Triangle::Draw() {
+void Triangle::Draw()const {
 	//クロス積
 	//ScreenPrintf::VectorScreenPrintf(0, 0, cross_, "Cross");
 	//三角ポリゴン
@@ -48,7 +48,7 @@ void Triangle::Draw() {
 		RED, kFillModeSolid);
 }
 
-void Triangle::WireFrameDraw() {
+void Triangle::WireFrameDraw()const {
 	//三角ポリゴン
 	Novice::DrawTriangle(
 		int(screenVertices_[(int)Vertex::kTop].x), int(screenVertices_[(int)Vertex::kTop].y),

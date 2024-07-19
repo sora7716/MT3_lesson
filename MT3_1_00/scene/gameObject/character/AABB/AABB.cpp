@@ -4,6 +4,7 @@
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
+using namespace std;
 
 //コンストラクター
 AABB::AABB() {
@@ -32,10 +33,10 @@ void AABB::Update() {
 	localVertecies_[1].rightBottom = { aabb_.max.x,aabb_.min.y,aabb_.max.z };
 
 	for (int i = 0; i < kAABB2DNum; i++) {
-		ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), localVertecies_[i].leftTop, screenVertecies_[i].leftTop);
-		ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), localVertecies_[i].rightTop, screenVertecies_[i].rightTop);
-		ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), localVertecies_[i].leftBottom, screenVertecies_[i].leftBottom);
-		ScreenTransform(camera_->GetViewProjectionMatrix(), camera_->GetViewportMatrix(), localVertecies_[i].rightBottom, screenVertecies_[i].rightBottom);
+		CameraScreenTransform(camera_, localVertecies_[i].leftTop, screenVertecies_[i].leftTop);
+		CameraScreenTransform(camera_, localVertecies_[i].rightTop, screenVertecies_[i].rightTop);
+		CameraScreenTransform(camera_, localVertecies_[i].leftBottom, screenVertecies_[i].leftBottom);
+		CameraScreenTransform(camera_, localVertecies_[i].rightBottom, screenVertecies_[i].rightBottom);
 	}
 
 }
@@ -53,16 +54,16 @@ void AABB::OnCollision(){
 }
 void AABB::DebugText(const char* type) {
 
-	std::string minMoji = std::string(type) + ".min";
+	string minMoji = string(type) + ".min";
 	ImGui::DragFloat3(minMoji.c_str(), &aabb_.min.x, 0.01f);
 
-	std::string maxMoji = std::string(type) + ".max";
+	string maxMoji = string(type) + ".max";
 	ImGui::DragFloat3(maxMoji.c_str(), &aabb_.max.x, 0.01f);
 }
 #endif // _DEBUG
 
 //描画
-void AABB::Draw() {
+void AABB::Draw()const {
 	//正面と背面の生成
 	for (int i = 0; i < kAABB2DNum; i++) {
 		Novice::DrawLine((int)screenVertecies_[i].leftTop.x, (int)screenVertecies_[i].leftTop.y, (int)screenVertecies_[i].rightTop.x, (int)screenVertecies_[i].rightTop.y, aabb_.color);
