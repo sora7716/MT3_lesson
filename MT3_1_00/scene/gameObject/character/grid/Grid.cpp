@@ -42,9 +42,11 @@ void Grid::Update() {
 
 }
 
+#ifdef _DEBUG
 void Grid::DebugText(int i) {
 	ImGui::DragFloat3("rotate", &gridRotate_[i].x,0.01f);
 }
+#endif // _DEBUG
 
 void Grid::Draw() {
 	const float kGridHalfWidth = 2.0f;//Gridの半分の幅

@@ -22,12 +22,14 @@ void Plane::Initialize(Camera* camera) {
 void Plane::Update() {
 }
 
+#ifdef _DEBUG
 //デバックテキスト
 void Plane::DebugText(){
 	ImGui::DragFloat3("Plane.Normalize", &plane_.normal.x, 0.01f);
 	plane_.normal = Math::Normalize(plane_.normal);
 	ImGui::DragFloat("Plane.distance", &plane_.distance, 0.01f);
 }
+#endif // _DEBUG
 
 //描画処理
 void Plane::Draw() {

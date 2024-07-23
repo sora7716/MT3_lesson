@@ -36,6 +36,10 @@ void Line::Update() {
 }
 
 
+#ifdef _DEBUG
+/// <summary>
+/// デバックテキスト
+/// </summary>
 void Line::DebugText() {
 	ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x, 0.1f);
@@ -43,9 +47,10 @@ void Line::DebugText() {
 	//ImGui::InputFloat3("Project", &project_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	//ImGui::InputFloat3("cp", &closestPoint_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 }
+#endif // _DEBUG
 
 //描画処理
-void Line::Draw() {
+void Line::DrawSegment() {
 	Vector3 start{};
 	Vector3 end{};
 	CameraScreenTransform(camera_, segment_.origin, start);

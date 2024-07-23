@@ -60,5 +60,17 @@ public://メンバ関数
 	/// <param name="aabb">ボックス</param>
 	/// <param name="sphere">球</param>
 	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
+
+	/// <summary>
+	/// ボックスと線分の当たり判定
+	/// </summary>
+	/// <param name="target">ターゲット</param>
+	/// <param name="aabb">ボックス</param>
+	/// <param name="segment">線分</param>
+	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment);
+
+public://静的メンバ変数
+	static inline const float kTMin = 0.0f;
+	static inline const float kTMax = 1.0f;
 };
 

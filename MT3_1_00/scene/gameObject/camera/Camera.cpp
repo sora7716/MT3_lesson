@@ -21,9 +21,9 @@ void Camera::Update(char* keys, char* preKeys) {
 	bool front = keys[DIK_UP] && preKeys[DIK_UP] && keys[DIK_LSHIFT] && preKeys[DIK_LSHIFT];
 	bool behide = keys[DIK_DOWN] && preKeys[DIK_DOWN] && keys[DIK_LSHIFT] && preKeys[DIK_LSHIFT];
 
-#ifdef _DEBUG
 	GameObject::Movement(left, right, up, down, front, behide, -1.0f);
 
+#ifdef _DEBUG
 	//拡大縮小
 	GameObject::Scaling();
 
@@ -34,11 +34,13 @@ void Camera::Update(char* keys, char* preKeys) {
 	RenderingPipeline();
 }
 
+#ifdef _DEBUG
 //デバックテキスト
 void Camera::DebugText() {
 	ImGui::DragFloat3("CamereRotate", &rotate_.x, 0.01f);
 	ImGui::DragFloat3("CameraTranslate", &translate_.x, 0.01f);
 }
+#endif // _DEBUG
 
 //描画
 void Camera::Draw() {

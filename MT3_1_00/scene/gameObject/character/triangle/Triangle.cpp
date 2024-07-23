@@ -31,11 +31,13 @@ void Triangle::Update(char* keys, char* preKeys) {
 	//Transfar(keys, preKeys);//三角形の動き
 }
 
+#ifdef _DEBUG
 void Triangle::DebugText() {
 	ImGui::DragFloat2("VertexTop", &triangleMaterial_.kLocalVertices_[(int)Vertex::kTop].x, 0.01f);
 	ImGui::DragFloat2("VertexRight", &triangleMaterial_.kLocalVertices_[(int)Vertex::kRight].x, 0.01f);
 	ImGui::DragFloat2("VertexLeft", &triangleMaterial_.kLocalVertices_[(int)Vertex::kLeft].x, 0.01f);
 }
+#endif // _DEBUG
 
 void Triangle::Draw()const {
 	//クロス積

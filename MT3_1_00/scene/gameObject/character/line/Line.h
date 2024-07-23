@@ -27,16 +27,17 @@ public://メンバ関数
 	/// </summary>
 	void Update();
 
-
+#ifdef _DEBUG
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
 	void DebugText();
+#endif // _DEBUG
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	void DrawSegment();
 
 	/// <summary>
 	/// 衝突した場合の判定
