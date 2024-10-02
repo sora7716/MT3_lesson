@@ -5,6 +5,7 @@
 #include "scene/gameObject/character/line/Line.h"
 #include "scene/gameObject/character/triangle/Triangle.h"
 #include "scene/gameObject/character/AABB/AABB.h"
+#include "scene/gameObject/character/OBB/OBB.h"
 #include <algorithm> 
 using namespace std;
 
@@ -142,6 +143,22 @@ void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, 
 	target->OnCollision();
 }
 
+// AABBと球の当たり判定
+bool Collision::IsCollision(GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere) {
+	Vector3 closestPoint = {
+		clamp(sphere.center.x,aabb.min.x,aabb.max.x),
+		clamp(sphere.center.y,aabb.min.y,aabb.max.y),
+		clamp(sphere.center.z,aabb.min.z,aabb.max.z),
+	};
+	//最近接点と球の中心との距離を求める
+	float distance = Math::Length(closestPoint - sphere.center);
+	//球の半径より上記の距離が小さかったら衝突
+	if (distance <= sphere.radius) {
+		return true;
+	}
+	return false;
+}
+
 //ボックスと線分の当たり判定
 void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment) {
 	GameObject::AABBMaterial t;
@@ -183,6 +200,15 @@ void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, 
 	}
 	target->SetIsHit(isHit);
 	target->OnCollision();
+}
+
+// OBBと球の当たり判定
+void Collision::IsCollision(OBB* target, const Matrix4x4& obbWorldMatrixInvers, const GameObject::SphereMaterial& sphere) {
+	Vector3 centerInOBBLocalSpace = Math::Transform(sphere.center, obbWorldMatrixInvers);
+	GameObject::AABBMaterial aabbOBBLocal = { .min = -target->GetSize(),.max = target->GetSize() };
+	GameObject::SphereMaterial sphereOBBLocal{ centerInOBBLocalSpace,sphere.radius };
+	//ローカル空間で衝突判定
+	target->OnCollision(IsCollision(aabbOBBLocal, sphereOBBLocal));
 }
 
 

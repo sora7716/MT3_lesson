@@ -8,7 +8,9 @@
 #include "scene/gameObject/character/plane/Plane.h"
 #include "scene/func/collision/Collision.h"
 #include "scene/gameObject/character/AABB/AABB.h"
+#include "scene/gameObject/character/OBB/OBB.h"
 
+#include <memory>
 
 class GameLoop {
 public://メンバ関数
@@ -52,6 +54,8 @@ private://メンバ変数
 	Collision* collision_ = nullptr;
 
 	AABB* aabbs_[kAABBNum] = { nullptr };
+
+	std::unique_ptr<OBB>obb_ = nullptr;
 
 private://メンバ関数
 

@@ -89,6 +89,13 @@ const Vector3 operator* (const float& num1, const Vector3& num2);
 const Vector3& operator+=(Vector3& v, const float& num);
 
 /// <summary>
+/// マイナスにする
+/// </summary>
+/// <param name="v"></param>
+/// <returns></returns>
+const Vector3 operator-(const Vector3& v);
+
+/// <summary>
 /// 加算
 /// </summary>
 /// <param name="num"></param>

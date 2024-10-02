@@ -8,6 +8,7 @@ class Plane;
 class Line;
 class Triangle;
 class AABB;
+class OBB;
 
 class Collision {
 
@@ -49,25 +50,42 @@ public://メンバ関数
 	/// AABBの当たり判定
 	/// </summary>
 	/// <param name="target">ターゲット</param>
-	/// <param name="aabb1">ボックス1</param>
-	/// <param name="aabb2">ボックス2</param>
+	/// <param name="aabb1">AABB1</param>
+	/// <param name="aabb2">AABB2</param>
 	void IsCollision(AABB* target, GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
 
 	/// <summary>
-	/// ボックスと球の当たり判定
+	/// AABBと球の当たり判定
 	/// </summary>
 	/// <param name="target">ターゲット</param>
-	/// <param name="aabb">ボックス</param>
+	/// <param name="aabb">AABB</param>
 	/// <param name="sphere">球</param>
 	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
 
 	/// <summary>
-	/// ボックスと線分の当たり判定
+	/// AABBと球の当たり判定
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="sphere">球</param>
+	/// <returns></returns>
+	bool IsCollision(GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
+
+	/// <summary>
+	/// AABBと線分の当たり判定
 	/// </summary>
 	/// <param name="target">ターゲット</param>
-	/// <param name="aabb">ボックス</param>
+	/// <param name="aabb">AABB</param>
 	/// <param name="segment">線分</param>
 	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment);
+
+	/// <summary>
+	/// OBBと球の当たり判定
+	/// </summary>
+    /// <param name="target">ターゲット</param>
+	/// <param name="obbWorldMatrixInvers">OBBのワールド行列の逆行列</param>
+	/// <param name="aabb">AABB</param>
+	/// <param name="sphare">球</param>
+	void IsCollision(OBB* target,const Matrix4x4& obbWorldMatrixInvers, const GameObject::SphereMaterial& sphere);
 
 public://静的メンバ変数
 	static inline const float kTMin = 0.0f;

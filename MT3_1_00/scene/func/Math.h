@@ -3,7 +3,7 @@
 
 class Math {
 public:
-	
+
 	/// <summary>
 	/// 転置行列
 	/// </summary>
@@ -66,6 +66,23 @@ public:
 	/// <param name="radian">角度</param>
 	/// <returns>回転</returns>
 	static Matrix4x4 MakeRotateXYZMatrix(const Vector3& radian);
+
+	/// <summary>
+	/// OBB用の回転行列
+	/// </summary>
+	/// <param name="orientations">回転行列から抽出するやつ</param>
+	/// <param name="rotate">回転する値</param>
+	/// <param name="size">サイズ</param>
+	static void MakeOBBRotateMatrix(Vector3* orientations, const Vector3& rotate,const Vector3& size);
+
+
+	/// <summary>
+	/// OBB用のワールド行列
+	/// </summary>
+	/// <param name="orientations">回転行列から抽出したやつ</param>
+    /// <param name="center">センターの値</param>
+	/// <returns>OBBのワールド行列</returns>
+	static Matrix4x4 MakeOBBWorldMatrix(const Vector3* orientations, const Vector3 center);
 
 	/// <summary>
 	/// アフィン関数

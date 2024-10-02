@@ -41,7 +41,7 @@ void AABB::Update() {
 
 }
 
-#ifdef _DEBUG
+
 
 //衝突したときの判定
 void AABB::OnCollision(){
@@ -52,6 +52,8 @@ void AABB::OnCollision(){
 		SetColor(WHITE);
 	}
 }
+
+#ifdef _DEBUG
 void AABB::DebugText(const char* type) {
 
 	string minMoji = string(type) + ".min";
@@ -86,6 +88,18 @@ void AABB::SetIsHit(bool isHit){
 //色のセッター
 void AABB::SetColor(uint32_t color){
 	aabb_.color = color;
+}
+
+//ローカル座標のセッター
+void AABB::SetAABBVertex2D(AABBVertex2D local){
+	localVertecies_[0] = local;
+	localVertecies_[1] = local;
+}
+
+//aabbのセッター
+void AABB::SetAABB(Vector3 min, Vector3 max){
+	aabb_.min = min;
+	aabb_.max = max;
 }
 
 //AABBの素材のゲッター

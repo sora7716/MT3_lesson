@@ -66,6 +66,8 @@ void GameLoop::Create() {
 	for (int i = 0; i < kAABBNum; i++) {
 		aabbs_[i] = new AABB();
 	}
+
+	obb_ = std::make_unique<OBB>();
 }
 
 //初期化処理
@@ -91,6 +93,8 @@ void GameLoop::Initialize() {
 
 	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{0.5f,0.5f,0.5f},WHITE,false });
 	//aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
+
+	obb_->Initialize(camera_);
 }
 
 //更新処理
@@ -116,13 +120,15 @@ void GameLoop::Update() {
 	for (AABB* aabb : aabbs_) {
 		aabb->Update();
 	}
+
+	obb_->Update();
 }
 
 #ifdef _DEBUG
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
-	line_->DebugText();
+	//line_->DebugText();
 	//triangle_->DebugText();
 	//plane_->DebugText();
 	//spheres_[0]->DebugText("sphere[0]");
@@ -131,8 +137,9 @@ void GameLoop::DebugText() {
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
-	aabbs_[0]->DebugText("aabb1");
+	//aabbs_[0]->DebugText("aabb1");
 	//aabbs_[1]->DebugText("aabb2");
+	obb_->DebagText("obb");
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -145,22 +152,24 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(line_,line_->GetSegment(),triangle_->GetTriangleMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), spheres_[0]->GetSphereMaterial());
-	collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), line_->GetSegment());
+	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), line_->GetSegment());
+	collision_->IsCollision(obb_.get(), obb_->GetOBBWorldMatrixInvers(), spheres_[0]->GetSphereMaterial());
 }
 
 //描画処理
 void GameLoop::Draw() {
 	grid_->Draw();
-	for (AABB* aabb : aabbs_) {
-		aabb->Draw();
-	}
-	line_->DrawSegment();
-	//plane_->Draw();
-	/*for (Sphere* sphere : spheres_) {
+	//for (AABB* aabb : aabbs_) {
+	//	aabb->Draw();
+	//}
+	//line_->DrawSegment();
+	////plane_->Draw();
+	for (Sphere* sphere : spheres_) {
 		sphere->Draw();
-	}*/
+	}
 	/*point1_->Draw();
 	point2_->Draw();*/
 	//triangle_->WireFrameDraw();
+	obb_->Draw();
 	Collider();
 }

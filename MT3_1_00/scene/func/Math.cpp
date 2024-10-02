@@ -103,6 +103,39 @@ Matrix4x4 Math::MakeRotateXYZMatrix(const Vector3& radian) {
 	return MakeRotateXMatrix(radian.x) * MakeRotateYMatrix(radian.y) * MakeRotateZMatrix(radian.z);
 }
 
+// OBB用の回転行列
+void Math::MakeOBBRotateMatrix(Vector3* orientations, const Vector3& rotate, const Vector3& size) {
+	Matrix4x4 rotateMatrix = MakeRotateXYZMatrix(rotate);
+
+	//回転行列からの抽出
+
+	//X'
+	orientations[0].x = rotateMatrix.m[0][0] * size.x;
+	orientations[0].y = rotateMatrix.m[0][1] * size.x;
+	orientations[0].z = rotateMatrix.m[0][2] * size.x;
+
+	//Y'
+	orientations[1].x = rotateMatrix.m[1][0] * size.y;
+	orientations[1].y = rotateMatrix.m[1][1] * size.y;
+	orientations[1].z = rotateMatrix.m[1][2] * size.y;
+
+	//Z'
+	orientations[2].x = rotateMatrix.m[2][0] * size.z;
+	orientations[2].y = rotateMatrix.m[2][1] * size.z;
+	orientations[2].z = rotateMatrix.m[2][2] * size.z;
+}
+
+// OBB用のワールド行列
+Matrix4x4 Math::MakeOBBWorldMatrix(const Vector3* orientations, const Vector3 center) {
+	Matrix4x4 result{
+		orientations[0].z,orientations[0].y,orientations[0].z,0.0f,
+		orientations[1].z,orientations[1].y,orientations[1].z,0.0f,
+		orientations[2].z,orientations[2].y,orientations[2].z,0.0f,
+		center.x,center.y,center.z,1.0f,
+	};
+	return result;
+}
+
 //アフィン関数
 Matrix4x4 Math::MakeAffineMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate) {
 	return (MakeScaleMatrix(scale) * MakeRotateXYZMatrix(radian)) * MakeTranslateMatrix(translate);
@@ -186,8 +219,8 @@ Vector3 Math::Normalize(const Vector3& v) {
 float Math::Normalize(const float& num) {
 	float len = powf(num, 2);
 	if (len != 0.0f) {
-	float result = num / len;
-	return result;
+		float result = num / len;
+		return result;
 	}
 	return num;
 }

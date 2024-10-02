@@ -23,6 +23,12 @@ void Character::WvpMatrix(Camera* camera, Vector3& scale, Vector3& rotate, Vecto
 	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
 }
 
+//ワールドビュープロジェクションだけの計算
+void Character::WorldViewProjection(Camera* camera){
+	//wvpマトリックス
+	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
+}
+
 //ワールドビュープロジェクション戻り値あり
 Matrix4x4 Character::WorldViewProjectionMatrix(Camera* camera, Vector3 scale, Vector3 rotate, Vector3 translate) const {
 	//ワールド座標系
@@ -35,7 +41,7 @@ Matrix4x4 Character::WorldViewProjectionMatrix(Camera* camera, Vector3 scale, Ve
 //ローカルをスクリーンに座標変換
 void Character::ScreenTransform(Camera* camera, const Vector3& kLocalVertices, Vector3& screenVertices) {
 	//ワールドとワールドビュープロジェクションを求める
-	WvpMatrix(camera);
+	WorldViewProjection(camera);
 	//正規化デバイス座標系
 	ndcVertex_ = Math::Transform(kLocalVertices, worldViewProjectionMatrix_);
 	//スクリーン座標

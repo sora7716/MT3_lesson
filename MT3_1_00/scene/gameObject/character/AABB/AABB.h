@@ -56,6 +56,19 @@ public://メンバ関数
 	void SetColor(uint32_t color);
 
 	/// <summary>
+	/// ローカル座標のセッター
+	/// </summary>
+	/// <param name="local">ローカル座標</param>
+	void SetAABBVertex2D(AABBVertex2D local);
+
+	/// <summary>
+	/// aabbのセッター
+	/// </summary>
+	/// <param name="min">最小</param>
+	/// <param name="max">最大</param>
+	void SetAABB(Vector3 min, Vector3 max);
+
+	/// <summary>
 	/// AABBの素材のゲッター
 	/// </summary>
 	/// <returns></returns>
