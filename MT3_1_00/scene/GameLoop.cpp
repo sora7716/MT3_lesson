@@ -131,7 +131,7 @@ void GameLoop::DebugText() {
 	//line_->DebugText();
 	//triangle_->DebugText();
 	//plane_->DebugText();
-	//spheres_[0]->DebugText("sphere[0]");
+	spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
 	//camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {

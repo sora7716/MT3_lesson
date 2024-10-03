@@ -72,8 +72,7 @@ public:
 	/// </summary>
 	/// <param name="orientations">回転行列から抽出するやつ</param>
 	/// <param name="rotate">回転する値</param>
-	/// <param name="size">サイズ</param>
-	static void MakeOBBRotateMatrix(Vector3* orientations, const Vector3& rotate,const Vector3& size);
+	static void MakeOBBRotateMatrix(Vector3* orientations, const Vector3& rotate);
 
 
 	/// <summary>

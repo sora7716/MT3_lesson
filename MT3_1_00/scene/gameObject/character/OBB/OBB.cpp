@@ -28,7 +28,7 @@ void OBB::Update() {
 	aabb_.min = -obb_.size;
 	aabb_.max = obb_.size;
 	MakeVertecies();//頂点を作成
-	Math::MakeOBBRotateMatrix(obb_.orientations, rotate_,obb_.size);//OBB用の回転行列を抽出
+	Math::MakeOBBRotateMatrix(obb_.orientations, rotate_);//OBB用の回転行列を抽出
 	worldMatrix_ = Math::MakeOBBWorldMatrix(obb_.orientations, obb_.center);//OBB用のワールド行列を作成
 	for (int i = 0; i < kAABB2DNum; i++) {
 		ScreenTransform(camera_, localVertecies_[i].leftTop, screenVertecies_[i].leftTop);
@@ -46,9 +46,9 @@ void OBB::DebagText(const char* type){
 	ImGui::DragFloat3(maxMoji.c_str(), &aabb_.max.x, 0.01f);
 	string sizeMoji = string(type) + "size";
 	ImGui::DragFloat3(sizeMoji.c_str(), &obb_.size.x, 0.01f);
-	string rotateMoji = string(type) + "rotation";
+	string rotateMoji = string(type) + ".rotation";
 	ImGui::DragFloat3(rotateMoji.c_str(), &rotate_.x, 0.01f);
-	string translationMoji = string(type) + "translation";
+	string translationMoji = string(type) + ".translation";
 	ImGui::DragFloat3(translationMoji.c_str(), &obb_.center.x, 0.01f);
 }
 
