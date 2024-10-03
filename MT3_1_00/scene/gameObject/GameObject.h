@@ -91,7 +91,8 @@ public://構造体など
 		Vector3 center;//中心 translation
 		Vector3 orientations[3];//座標軸。正規化・直行必須 rotation
 		Vector3 size;//座標軸方向の長さの半分。中心から面までの距離 scale
-	}ObbMaterial;
+		uint32_t color = WHITE;
+	}OBBMaterial;
 
 public://静的メンバ変数
 	static inline const int kAABB2DNum = 2;//2次元で見たAABBの数

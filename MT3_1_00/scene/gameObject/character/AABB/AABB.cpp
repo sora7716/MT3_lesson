@@ -57,10 +57,10 @@ void AABB::OnCollision(){
 void AABB::DebugText(const char* type) {
 
 	string minMoji = string(type) + ".min";
-	ImGui::DragFloat3(minMoji.c_str(), &aabb_.min.x, 0.01f);
+	ImGui::SliderFloat3(minMoji.c_str(), &aabb_.min.x, 0.0f,3.0f);
 
 	string maxMoji = string(type) + ".max";
-	ImGui::DragFloat3(maxMoji.c_str(), &aabb_.max.x, 0.01f);
+	ImGui::SliderFloat3(maxMoji.c_str(), &aabb_.max.x, 0.0f, 3.0f);
 }
 #endif // _DEBUG
 

@@ -19,12 +19,13 @@ public://メンバ関数
 	/// </summary>
 	~OBB() = default;
 
+	
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="camera">カメラ</param>
-	/// <param name="aabb">aabb</param>
-	void Initialize(Camera* camera);
+	/// <param name="obbMaterial">obbの素材</param>
+	void Initialize(Camera* camera,OBBMaterial obbMaterial);
 
 	/// <summary>
 	/// 更新
@@ -67,7 +68,7 @@ private://メンバ関数
 
 private://メンバ変数
 
-	ObbMaterial obb_ = {};//obb
+	OBBMaterial obb_ = {};//obb
 	Matrix4x4 invers_ = {};//obbの逆行列
 	Camera* camera_ = nullptr;//カメラ
 	AABBMaterial aabb_ = {};//AABBのマテリアル

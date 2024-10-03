@@ -10,26 +10,24 @@ using namespace std;
 
 
 //初期化
-void OBB::Initialize(Camera* camera) {
+void OBB::Initialize(Camera* camera, OBBMaterial obbMaterial) {
 	camera_ = camera;//カメラを受け取る
-	obb_ = {
-		.center{-1.0f,0.0f,0.0f},
-		.orientations = {{1.0f,0.0f,0.0f},
-					     {0.0f,1.0f,0.0f},
-					     {0.0f,0.0f,1.0f}
-		},
-		.size{0.5f,0.5f,0.5f}
-	};
-	aabb_.color = WHITE;
+	//OBBの値を設定
+	obb_ = obbMaterial;
+	//色を決める
+	aabb_.color = obb_.color;
 }
 
 //更新
 void OBB::Update() {
+	//サイズを設定
 	aabb_.min = -obb_.size;
 	aabb_.max = obb_.size;
+
 	MakeVertecies();//頂点を作成
 	Math::MakeOBBRotateMatrix(obb_.orientations, rotate_);//OBB用の回転行列を抽出
 	worldMatrix_ = Math::MakeOBBWorldMatrix(obb_.orientations, obb_.center);//OBB用のワールド行列を作成
+	//スクリーン座標に変換
 	for (int i = 0; i < kAABB2DNum; i++) {
 		ScreenTransform(camera_, localVertecies_[i].leftTop, screenVertecies_[i].leftTop);
 		ScreenTransform(camera_, localVertecies_[i].rightTop, screenVertecies_[i].rightTop);
@@ -40,12 +38,8 @@ void OBB::Update() {
 
 //デバックテキスト
 void OBB::DebagText(const char* type){
-	string minMoji = string(type) + ".min";
-	ImGui::DragFloat3(minMoji.c_str(), &aabb_.min.x, 0.01f);
-	string maxMoji = string(type) + ".max";
-	ImGui::DragFloat3(maxMoji.c_str(), &aabb_.max.x, 0.01f);
 	string sizeMoji = string(type) + "size";
-	ImGui::DragFloat3(sizeMoji.c_str(), &obb_.size.x, 0.01f);
+	ImGui::SliderFloat3(sizeMoji.c_str(), &obb_.size.x, 0.0f, 3.0f);
 	string rotateMoji = string(type) + ".rotation";
 	ImGui::DragFloat3(rotateMoji.c_str(), &rotate_.x, 0.01f);
 	string translationMoji = string(type) + ".translation";
@@ -84,7 +78,7 @@ void OBB::OnCollision(bool isHit){
 		aabb_.color = RED;
 	}
 	else {
-		aabb_.color = WHITE;
+		aabb_.color = obb_.color;
 	}
 }
 

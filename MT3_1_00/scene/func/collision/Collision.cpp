@@ -153,10 +153,7 @@ bool Collision::IsCollision(GameObject::AABBMaterial& aabb, const GameObject::Sp
 	//最近接点と球の中心との距離を求める
 	float distance = Math::Length(closestPoint - sphere.center);
 	//球の半径より上記の距離が小さかったら衝突
-	if (distance <= sphere.radius) {
-		return true;
-	}
-	return false;
+	return distance <= sphere.radius;
 }
 
 //ボックスと線分の当たり判定
@@ -203,8 +200,8 @@ void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, 
 }
 
 // OBBと球の当たり判定
-void Collision::IsCollision(OBB* target, const Matrix4x4& obbWorldMatrixInvers, const GameObject::SphereMaterial& sphere) {
-	Vector3 centerInOBBLocalSpace = Math::Transform(sphere.center, obbWorldMatrixInvers);
+void Collision::IsCollision(OBB* target,const GameObject::SphereMaterial& sphere) {
+	Vector3 centerInOBBLocalSpace = Math::Transform(sphere.center, target->GetOBBWorldMatrixInvers());
 	GameObject::AABBMaterial aabbOBBLocal = { .min = -target->GetSize(),.max = target->GetSize() };
 	GameObject::SphereMaterial sphereOBBLocal{ centerInOBBLocalSpace,sphere.radius };
 	//ローカル空間で衝突判定

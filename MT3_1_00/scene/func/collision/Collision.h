@@ -82,10 +82,9 @@ public://メンバ関数
 	/// OBBと球の当たり判定
 	/// </summary>
     /// <param name="target">ターゲット</param>
-	/// <param name="obbWorldMatrixInvers">OBBのワールド行列の逆行列</param>
 	/// <param name="aabb">AABB</param>
 	/// <param name="sphare">球</param>
-	void IsCollision(OBB* target,const Matrix4x4& obbWorldMatrixInvers, const GameObject::SphereMaterial& sphere);
+	void IsCollision(OBB* target,const GameObject::SphereMaterial& sphere);
 
 public://静的メンバ変数
 	static inline const float kTMin = 0.0f;

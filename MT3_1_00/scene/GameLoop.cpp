@@ -79,7 +79,7 @@ void GameLoop::Initialize() {
 	camera_->Initialize(kWindowWidth, kWindowHeight);
 	line_->Initialize(camera_);
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
-	line_->SetSegment({ {-0.7f,0.3f,0.0f},{2.0f,-0.5f,0.0f} });
+	line_->SetSegment({ {-0.8f,-0.3f,0.0f},{0.5f,0.5f,0.5f} });
 	grid_->Initialize(camera_);
 	for (int i = 0; i < kSphereNum; i++) {
 		spheres_[i]->Initialize(camera_);
@@ -93,8 +93,16 @@ void GameLoop::Initialize() {
 
 	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{0.5f,0.5f,0.5f},WHITE,false });
 	//aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
-
-	obb_->Initialize(camera_);
+	obbMaterial_ = {
+		.center{-1.0f,0.0f,0.0f},
+		.orientations = {{1.0f,0.0f,0.0f},
+						 {0.0f,1.0f,0.0f},
+						 {0.0f,0.0f,1.0f}
+		},
+		.size{0.5f,0.5f,0.5f},
+		.color=BLACK
+	};
+	obb_->Initialize(camera_,obbMaterial_);
 }
 
 //更新処理
@@ -153,7 +161,7 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), spheres_[0]->GetSphereMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), line_->GetSegment());
-	collision_->IsCollision(obb_.get(), obb_->GetOBBWorldMatrixInvers(), spheres_[0]->GetSphereMaterial());
+	collision_->IsCollision(obb_.get(),spheres_[0]->GetSphereMaterial());
 }
 
 //描画処理
@@ -162,7 +170,7 @@ void GameLoop::Draw() {
 	//for (AABB* aabb : aabbs_) {
 	//	aabb->Draw();
 	//}
-	//line_->DrawSegment();
+	line_->DrawSegment();
 	////plane_->Draw();
 	for (Sphere* sphere : spheres_) {
 		sphere->Draw();
