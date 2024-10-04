@@ -109,6 +109,14 @@ const Vector3 operator-(const Vector3& v);
 const Vector3 operator/(const Vector3& v1, const Vector3& v2);
 
 /// <summary>
+/// v1がv2のほうが小さい
+/// </summary>
+/// <param name="v1"></param>
+/// <param name="v2"></param>
+/// <returns></returns>
+const bool operator<(const Vector3& v1, const Vector3& v2);
+
+/// <summary>
 /// 加算
 /// </summary>
 /// <param name="num"></param>

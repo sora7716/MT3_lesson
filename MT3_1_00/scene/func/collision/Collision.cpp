@@ -267,6 +267,7 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 	const int kObjectNum = 2;//オブジェクトの数
 	const int kDirectionNum = 3;//面の法線の数
 	const int kVertexNum = 8;//頂点の数
+	const int kEdgeNum = kVertexNum / 2;//辺の数
 	//9つの辺のクロス積
 	Vector3 cross[9];
 	cross[0] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[0]);
@@ -279,16 +280,21 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 	cross[7] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[1]);
 	cross[8] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[2]);
 
-	//すべての頂点に射影[オブジェクトの数][座標の数][頂点の数]
-	Vector3 project[kObjectNum][kDirectionNum][kVertexNum];//射影した位置
-	GameObject::Vertex2D tempVertex[kObjectNum]{};//頂点位置を格納する仮の場所
-	Vector3 tempOrientations[kDirectionNum]{};//面の法線を格納する仮の場所
+	//クロス積を正規化
+	for (int i = 0; i < 9; i++) {
+		//cross[i] = Math::Normalize(cross[i]);
+	}
 
+	//すべての頂点に射影[オブジェクトの数][座標の数][頂点の数]
+	static Vector3 project[kObjectNum][kDirectionNum][kVertexNum];//射影した位置
+	static GameObject::Vertex2D tempVertex[kObjectNum]{};//頂点位置を格納する仮の場所
+	static Vector3 tempOrientations[kDirectionNum]{};//面の法線を格納する仮の場所
+	const int kVertexType = 2;//頂点が正面にあるのか背面にあるのかのタイプ
 	for (int i = 0; i < kObjectNum; i++) {
 		//ターゲットの頂点と面の法線ベクトルを保存してる
 		if (i == 0) {
 			//頂点
-			for (int j = 0; j < 2; j++) {
+			for (int j = 0; j < kVertexType; j++) {
 				tempVertex[j] = target->GetLocalVertex()[j];
 			}
 			//法線ベクトル
@@ -299,7 +305,7 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 		//ターゲット以外のOBBの頂点と法線ベクトルを保存してる
 		else {
 			//頂点
-			for (int j = 0; j < 2; j++) {
+			for (int j = 0; j < kVertexType; j++) {
 				tempVertex[j] = obb->GetLocalVertex()[j];
 			}
 			//法線ベクトル
@@ -309,81 +315,167 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 		}
 		//射影ベクトルを求める
 		for (int j = 0; j < kDirectionNum; j++) {
-			project[i][j][0] = Math::Project(tempVertex[i].leftTop, tempOrientations[j]);
-			project[i][j][1] = Math::Project(tempVertex[i].leftBottom, tempOrientations[j]);
-			project[i][j][2] = Math::Project(tempVertex[i].rightTop, tempOrientations[j]);
-			project[i][j][3] = Math::Project(tempVertex[i].rightBottom, tempOrientations[j]);
+			project[i][j][0] = Math::Project(tempVertex[0].leftTop, tempOrientations[j]);
+			project[i][j][1] = Math::Project(tempVertex[0].leftBottom, tempOrientations[j]);
+			project[i][j][2] = Math::Project(tempVertex[0].rightTop, tempOrientations[j]);
+			project[i][j][3] = Math::Project(tempVertex[0].rightBottom, tempOrientations[j]);
+			project[i][j][4] = Math::Project(tempVertex[1].leftTop, tempOrientations[j]);
+			project[i][j][5] = Math::Project(tempVertex[1].leftBottom, tempOrientations[j]);
+			project[i][j][6] = Math::Project(tempVertex[1].rightTop, tempOrientations[j]);
+			project[i][j][7] = Math::Project(tempVertex[1].rightBottom, tempOrientations[j]);
 		}
 	}
 	;
 	//射影した点の最大値と最小値を求める
-	//0,1
-	//2,3
-	//4,5
-	//6,7
-	Vector3 minPos[kObjectNum][kVertexNum]{};//最大値
-	Vector3 maxPos[kObjectNum][kVertexNum]{};//最小値
+	//0,3
+	//1,2
+	//4,7
+	//5,6
+	static Vector3 minPos[kObjectNum][kVertexNum / 2]{};//最大値
+	static Vector3 maxPos[kObjectNum][kVertexNum / 2]{};//最小値
 	for (int i = 0; i < kObjectNum; i++) {
 		for (int j = 0; j < kDirectionNum; j++) {
-			for (int k = 0; k < kVertexNum; k += 2) {
-				//最小値を算出
 
-				//X
-				if (project[i][j][k].x < project[i][j][k + 1].x) {
-					minPos[i][k].x = project[i][j][k].x;
-				}
-				else {
-					minPos[i][k].x = project[i][j][k + 1].x;
-				}
+			//X
+			if (project[i][j][0].x < project[i][j][3].x) {
+				minPos[i][0].x = project[i][j][0].x;
+				maxPos[i][0].x = project[i][j][3].x;
+			}
+			else {
+				minPos[i][0].x = project[i][j][3].x;
+				maxPos[i][0].x = project[i][j][0].x;
+			}
+			if (project[i][j][1].x < project[i][j][2].x) {
+				minPos[i][1].x = project[i][j][1].x;
+				maxPos[i][1].x = project[i][j][2].x;
+			}
+			else {
+				minPos[i][1].x = project[i][j][2].x;
+				maxPos[i][1].x = project[i][j][1].x;
+			}
+			if (project[i][j][4].x < project[i][j][7].x) {
+				minPos[i][2].x = project[i][j][4].x;
+				maxPos[i][2].x = project[i][j][7].x;
+			}
+			else {
+				minPos[i][2].x = project[i][j][7].x;
+				maxPos[i][2].x = project[i][j][4].x;
+			}
+			if (project[i][j][5].x < project[i][j][6].x) {
+				minPos[i][3].x = project[i][j][5].x;
+				maxPos[i][3].x = project[i][j][6].x;
+			}
+			else {
+				minPos[i][3].x = project[i][j][6].x;
+				maxPos[i][3].x = project[i][j][5].x;
+			}
 
-				//Y
-				if (project[i][j][k].y < project[i][j][k + 1].y) {
-					minPos[i][k].y = project[i][j][k].y;
-				}
-				else {
-					minPos[i][k].y = project[i][j][k + 1].y;
-				}
+			//Y
+			if (project[i][j][0].y < project[i][j][3].y) {
+				minPos[i][0].y = project[i][j][0].y;
+				maxPos[i][0].y = project[i][j][3].y;
+			}
+			else {
+				minPos[i][0].y = project[i][j][3].y;
+				maxPos[i][0].y = project[i][j][0].y;
+			}
+			if (project[i][j][1].y < project[i][j][2].y) {
+				minPos[i][1].y = project[i][j][1].y;
+				maxPos[i][1].y = project[i][j][2].y;
+			}
+			else {
+				minPos[i][1].y = project[i][j][2].y;
+				maxPos[i][1].y = project[i][j][1].y;
+			}
+			if (project[i][j][4].y < project[i][j][7].y) {
+				minPos[i][2].y = project[i][j][4].y;
+				maxPos[i][2].y = project[i][j][7].y;
+			}
+			else {
+				minPos[i][2].y = project[i][j][7].y;
+				maxPos[i][2].y = project[i][j][4].y;
+			}
+			if (project[i][j][5].y < project[i][j][6].y) {
+				minPos[i][3].y = project[i][j][5].y;
+				maxPos[i][3].y = project[i][j][6].y;
+			}
+			else {
+				minPos[i][3].y = project[i][j][6].y;
+				maxPos[i][3].y = project[i][j][5].y;
+			}
 
-				//Z
-				if (project[i][j][k].z < project[i][j][k + 1].z) {
-					minPos[i][k].z = project[i][j][k].z;
-				}
-				else {
-					minPos[i][k].z = project[i][j][k + 1].z;
-				}
-			
-				//最大値を算出
-
-				//X
-				if (project[i][j][k].x > project[i][j][k + 1].x) {
-					maxPos[i][k].x = project[i][j][k].x;
-				}
-				else {
-					maxPos[i][k].x = project[i][j][k + 1].x;
-				}
-
-				//Y
-				if (project[i][j][k].y > project[i][j][k + 1].y) {
-					maxPos[i][k].y = project[i][j][k].y;
-				}
-				else {
-					maxPos[i][k].y = project[i][j][k + 1].y;
-				}
-
-				//Z
-				if (project[i][j][k].z > project[i][j][k + 1].z) {
-					maxPos[i][k].z = project[i][j][k].z;
-				}
-				else {
-					maxPos[i][k].z = project[i][j][k + 1].z;
-				}
+			//Z
+			if (project[i][j][0].z < project[i][j][3].z) {
+				minPos[i][0].z = project[i][j][0].z;
+				maxPos[i][0].z = project[i][j][3].z;
+			}
+			else {
+				minPos[i][0].z = project[i][j][3].z;
+				maxPos[i][0].z = project[i][j][0].z;
+			}
+			if (project[i][j][1].z < project[i][j][2].z) {
+				minPos[i][1].z = project[i][j][1].z;
+				maxPos[i][1].z = project[i][j][2].z;
+			}
+			else {
+				minPos[i][1].z = project[i][j][2].z;
+				maxPos[i][1].z = project[i][j][1].z;
+			}
+			if (project[i][j][4].z < project[i][j][7].z) {
+				minPos[i][2].z = project[i][j][4].z;
+				maxPos[i][2].z = project[i][j][7].z;
+			}
+			else {
+				minPos[i][2].z = project[i][j][7].z;
+				maxPos[i][2].z = project[i][j][4].z;
+			}
+			if (project[i][j][5].z < project[i][j][6].z) {
+				minPos[i][3].z = project[i][j][5].z;
+				maxPos[i][3].z = project[i][j][6].z;
+			}
+			else {
+				minPos[i][3].z = project[i][j][6].z;
+				maxPos[i][3].z = project[i][j][5].z;
 			}
 		}
 	}
 
 	//分割軸の長さを求める
-	Vector3 axisLength[kObjectNum][kVertexNum/2];
-	axisLength[0][0].x = maxPos[0][0].x - minPos[0][0].x;
+	static Vector3 axisLength[kObjectNum][kVertexNum / 2]{};//長さ
+	for (int i = 0; i < kObjectNum; i++) {
+		for (int j = 0; j < kEdgeNum; j++) {
+			axisLength[i][j].x = std::abs(maxPos[i][j].x - minPos[i][j].x);
+			axisLength[i][j].y = std::abs(maxPos[i][j].y - minPos[i][j].y);
+			axisLength[i][j].z = std::abs(maxPos[i][j].z - minPos[i][j].z);
+		}
+	}
+
+	//影の長さの合計
+	static Vector3 sumAxisLength[kEdgeNum]{};//2つのオブジェクトを合わせた長さ
+	for (int i = 0; i < kEdgeNum; i++) {
+		sumAxisLength[i].x = axisLength[0][i].x + axisLength[1][i].x;
+		sumAxisLength[i].y = axisLength[0][i].y + axisLength[1][i].y;
+		sumAxisLength[i].z = axisLength[0][i].z + axisLength[1][i].z;
+	}
+
+	//2つの影の両端の差分
+	static Vector3 differenceAxis[kEdgeNum]{};//二つの頂点の差分
+	for (int i = 0; i < kEdgeNum; i++) {
+		differenceAxis[i] = std::max(maxPos[0][i], maxPos[1][i]) - std::min(minPos[0][i], minPos[1][i]);
+	}
+
+	//影の長さ<2つの影の両端の差分を
+	bool isHit = true;
+	for (int i = 0; i < kEdgeNum; i++) {
+		if (sumAxisLength[i].x < differenceAxis[i].x ||
+			sumAxisLength[i].y < differenceAxis[i].y ||
+			sumAxisLength[i].z < differenceAxis[i].z) {
+			// 分割軸がある => 衝突していない
+			isHit = false;
+		}
+	}
+
+	target->OnCollision(isHit);
 }
 
 
