@@ -79,17 +79,17 @@ void Sphere::Draw() {
 			};
 
 			////ワールド座標系
-			worldMatrix_ = Math::MakeAffineMatrix(scale_, rotate_, sphere_.center);
-			//wvpマトリックス
-			worldViewProjectionMatrix_ = worldMatrix_ * camera_->GetViewMatrix() * camera_->GetProjctionMatrix();
-			screenA_ = Math::Transform(Math::Transform(a, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
-			screenB_ = Math::Transform(Math::Transform(b, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
-			screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
+			//worldMatrix_ = Math::MakeOBBWorldMatrix(o, sphere_.center);
+			////wvpマトリックス
+			//worldViewProjectionMatrix_ = worldMatrix_ * camera_->GetViewMatrix() * camera_->GetProjctionMatrix();
+			//screenA_ = Math::Transform(Math::Transform(a, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
+			//screenB_ = Math::Transform(Math::Transform(b, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
+			//screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
 			
 			//スクリーン座標を求める
-			/*CameraScreenTransform(camera_,a, screenA_);
+			CameraScreenTransform(camera_,a, screenA_);
 			CameraScreenTransform(camera_,b, screenB_);
-			CameraScreenTransform(camera_,c, screenC_);*/
+			CameraScreenTransform(camera_,c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(

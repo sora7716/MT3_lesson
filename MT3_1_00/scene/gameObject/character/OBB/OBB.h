@@ -55,6 +55,18 @@ public://メンバ関数
 	Vector3 GetSize()const;
 
 	/// <summary>
+	/// OBBのマテリアルのゲッター
+	/// </summary>
+	/// <returns></returns>
+	OBBMaterial GetOBBMaterial()const;
+
+	/// <summary>
+	/// ローカルの頂点
+	/// </summary>
+	/// <returns></returns>
+	Vertex2D* GetLocalVertex();
+
+	/// <summary>
 	/// 衝突したら
 	/// </summary>
 	void OnCollision(bool isHit);
@@ -72,7 +84,7 @@ private://メンバ変数
 	Matrix4x4 invers_ = {};//obbの逆行列
 	Camera* camera_ = nullptr;//カメラ
 	AABBMaterial aabb_ = {};//AABBのマテリアル
-	AABBVertex2D localVertecies_[kAABB2DNum] = {};//ローカルの頂点
-	AABBVertex2D screenVertecies_[kAABB2DNum] = {};//スクリーンの頂点
+	Vertex2D localVertecies_[kAABB2DNum] = {};//ローカルの頂点
+	Vertex2D screenVertecies_[kAABB2DNum] = {};//スクリーンの頂点
 };
 

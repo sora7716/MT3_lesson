@@ -35,7 +35,8 @@ public://静的メンバ変数
 	static inline const int kWindowWidth = 1280;//画面の横幅
 	static inline const int kWindowHeight = 720;//画面の縦幅
 	static inline const int kSphereNum = 1;//スフィアの数
-	static inline const int kAABBNum = 1;//AABBの数k
+	static inline const int kAABBNum = 1;//AABBの数
+	static inline const int kOBBNum = 2;//OBBの数
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};
@@ -55,8 +56,8 @@ private://メンバ変数
 
 	AABB* aabbs_[kAABBNum] = { nullptr };
 
-	std::unique_ptr<OBB>obb_ = nullptr;
-	GameObject::OBBMaterial obbMaterial_ = {};
+	std::unique_ptr<OBB>obbs_[kOBBNum] = nullptr;
+	GameObject::OBBMaterial obbMaterial_[kOBBNum] = {};
 
 private://メンバ関数
 

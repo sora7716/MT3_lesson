@@ -14,6 +14,8 @@ void OBB::Initialize(Camera* camera, OBBMaterial obbMaterial) {
 	camera_ = camera;//カメラを受け取る
 	//OBBの値を設定
 	obb_ = obbMaterial;
+	//角度
+	rotate_ = obbMaterial.rotation;
 	//色を決める
 	aabb_.color = obb_.color;
 }
@@ -71,6 +73,16 @@ Matrix4x4 OBB::GetOBBWorldMatrixInvers()const{
 //サイズのゲッター
 Vector3 OBB::GetSize()const{
 	return obb_.size;
+}
+
+// OBBのマテリアルのゲッター
+GameObject::OBBMaterial OBB::GetOBBMaterial() const{
+	return obb_;
+}
+
+// ローカルの頂点
+GameObject::Vertex2D* OBB::GetLocalVertex(){
+	return localVertecies_;
 }
 
 void OBB::OnCollision(bool isHit){

@@ -66,8 +66,9 @@ void GameLoop::Create() {
 	for (int i = 0; i < kAABBNum; i++) {
 		aabbs_[i] = new AABB();
 	}
-
-	obb_ = std::make_unique<OBB>();
+	for (int i = 0; i < kOBBNum; i++) {
+		obbs_[i] = std::make_unique<OBB>();
+	}
 }
 
 //初期化処理
@@ -93,16 +94,27 @@ void GameLoop::Initialize() {
 
 	aabbs_[0]->Initialize(camera_, { { -0.5f,-0.5f,-0.5f },{0.5f,0.5f,0.5f},WHITE,false });
 	//aabbs_[1]->Initialize(camera_, { { 0.2f,0.2f,0.2f },{1.0f,1.0f,1.0f},WHITE,false});
-	obbMaterial_ = {
-		.center{-1.0f,0.0f,0.0f},
+
+	obbMaterial_[0] = {
+		.center{0.0f,0.0f,0.0f},
 		.orientations = {{1.0f,0.0f,0.0f},
 						 {0.0f,1.0f,0.0f},
 						 {0.0f,0.0f,1.0f}
 		},
-		.size{0.5f,0.5f,0.5f},
-		.color=BLACK
+		.size{0.83f,0.26f,0.24f},
 	};
-	obb_->Initialize(camera_,obbMaterial_);
+	obbMaterial_[1] = {
+		.center{0.9f,0.66f,0.78f},
+		.orientations = {{1.0f,0.0f,0.0f},
+						 {0.0f,1.0f,0.0f},
+						 {0.0f,0.0f,1.0f}
+		},
+		.size{0.5f,0.37f,0.5f},
+		.rotation{-0.05f,-2.49f,0.15f},
+	};
+	for (int i = 0; i < kOBBNum; i++) {
+		obbs_[i]->Initialize(camera_, obbMaterial_[i]);
+	}
 }
 
 //更新処理
@@ -129,7 +141,9 @@ void GameLoop::Update() {
 		aabb->Update();
 	}
 
-	obb_->Update();
+	for (auto& obb : obbs_) {
+		obb->Update();
+	}
 }
 
 #ifdef _DEBUG
@@ -139,7 +153,7 @@ void GameLoop::DebugText() {
 	//line_->DebugText();
 	//triangle_->DebugText();
 	//plane_->DebugText();
-	spheres_[0]->DebugText("sphere[0]");
+	//spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
 	//camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
@@ -147,7 +161,8 @@ void GameLoop::DebugText() {
 	}*/
 	//aabbs_[0]->DebugText("aabb1");
 	//aabbs_[1]->DebugText("aabb2");
-	obb_->DebagText("obb");
+	obbs_[0]->DebagText("obb1");
+	obbs_[1]->DebagText("obb2");
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -161,7 +176,9 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), spheres_[0]->GetSphereMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), line_->GetSegment());
-	collision_->IsCollision(obb_.get(),spheres_[0]->GetSphereMaterial());
+	//collision_->IsCollision(obb_.get(),spheres_[0]->GetSphereMaterial());
+	//collision_->IsCollision(obb_.get(), line_->GetSegment());
+	collision_->IsCollision(obbs_[0].get(), obbs_[1].get());
 }
 
 //描画処理
@@ -170,14 +187,16 @@ void GameLoop::Draw() {
 	//for (AABB* aabb : aabbs_) {
 	//	aabb->Draw();
 	//}
-	line_->DrawSegment();
+	//line_->DrawSegment();
 	////plane_->Draw();
-	for (Sphere* sphere : spheres_) {
+	/*for (Sphere* sphere : spheres_) {
 		sphere->Draw();
-	}
+	}*/
 	/*point1_->Draw();
 	point2_->Draw();*/
 	//triangle_->WireFrameDraw();
-	obb_->Draw();
+	for (auto& obb : obbs_) {
+		obb->Draw();
+	}
 	Collider();
 }

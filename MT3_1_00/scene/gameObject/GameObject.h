@@ -10,8 +10,7 @@
 #include "scene/func/ScreenPrintf.h"
 #include "scene/func/Aithmetic.h"
 
-class GameObject
-{
+class GameObject{
 
 public://構造体など
 
@@ -30,12 +29,12 @@ public://構造体など
 	}AABBMaterial;
 
 	//AABBを2Dで作るときに使う
-	typedef struct AABBVertex2D {
+	typedef struct Vertex2D {
 		Vector3 leftTop;
 		Vector3 rightTop;
 		Vector3 leftBottom;
 		Vector3 rightBottom;
-	}AABBVertex2D;
+	}Vertex2D;
 
 	//スフィアに使う構造体
 	typedef struct SphereMaterial {
@@ -90,8 +89,9 @@ public://構造体など
 	typedef struct ObbMaterial {
 		Vector3 center;//中心 translation
 		Vector3 orientations[3];//座標軸。正規化・直行必須 rotation
-		Vector3 size;//座標軸方向の長さの半分。中心から面までの距離 scale
-		uint32_t color = WHITE;
+		Vector3 size = { 1.0f,1.0f,1.0f };//座標軸方向の長さの半分。中心から面までの距離 scale
+		Vector3 rotation = {};//回転
+		uint32_t color = WHITE;//色
 	}OBBMaterial;
 
 public://静的メンバ変数

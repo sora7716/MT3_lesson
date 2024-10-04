@@ -40,7 +40,7 @@ public://メンバ関数
 	void Draw();
 
 private://静的メンバ変数
-	static inline const uint32_t kSubdivision = 30;
+	static inline const uint32_t kSubdivision = 10;
 	static inline const float kRotateSpeed = 0.05f;//回転スピード
 
 public://静的メンバ変数

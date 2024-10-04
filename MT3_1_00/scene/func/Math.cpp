@@ -225,5 +225,12 @@ float Math::Normalize(const float& num) {
 	return num;
 }
 
+//正射影ベクトル
+Vector3 Math::Project(const Vector3& v1, const Vector3& v2) {
+	float dot1 = Math::Dot(v1, v2);
+	float length = Math::Dot(v2, v2);
+	return dot1 / length * v2;
+}
+
 
 

@@ -91,7 +91,7 @@ void AABB::SetColor(uint32_t color){
 }
 
 //ローカル座標のセッター
-void AABB::SetAABBVertex2D(AABBVertex2D local){
+void AABB::SetLocalVertex2D(Vertex2D local){
 	localVertecies_[0] = local;
 	localVertecies_[1] = local;
 }

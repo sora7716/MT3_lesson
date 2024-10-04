@@ -171,4 +171,12 @@ public:
 	/// <param name="num">数字</param>
 	/// <returns></returns>
 	static float Normalize(const float& num);
+
+	/// <summary>
+	/// 正射影ベクトル
+	/// </summary>
+	/// <param name="v1">ベクトル</param>
+	/// <param name="v2">ベクトル</param>
+	/// <returns>正射影</returns>
+	static Vector3 Project(const Vector3& v1, const Vector3& v2);
 };

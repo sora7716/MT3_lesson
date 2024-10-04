@@ -59,7 +59,7 @@ public://メンバ関数
 	/// ローカル座標のセッター
 	/// </summary>
 	/// <param name="local">ローカル座標</param>
-	void SetAABBVertex2D(AABBVertex2D local);
+	void SetLocalVertex2D(Vertex2D local);
 
 	/// <summary>
 	/// aabbのセッター
@@ -77,8 +77,8 @@ public://メンバ関数
 private://メンバ変数
 	AABBMaterial aabb_ = {};
 	Camera* camera_ = nullptr;
-	AABBVertex2D localVertecies_[kAABB2DNum] = {};
-	AABBVertex2D screenVertecies_[kAABB2DNum] = {};
+	Vertex2D localVertecies_[kAABB2DNum] = {};
+	Vertex2D screenVertecies_[kAABB2DNum] = {};
 
 };
 

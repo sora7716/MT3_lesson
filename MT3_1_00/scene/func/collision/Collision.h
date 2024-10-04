@@ -63,11 +63,11 @@ public://メンバ関数
 	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
 
 	/// <summary>
-	/// AABBと球の当たり判定
+	/// AABBと球の当たり判定(返り値あり)
 	/// </summary>
 	/// <param name="aabb">AABB</param>
 	/// <param name="sphere">球</param>
-	/// <returns></returns>
+	/// <returns>当たり判定</returns>
 	bool IsCollision(GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
 
 	/// <summary>
@@ -75,16 +75,36 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="target">ターゲット</param>
 	/// <param name="aabb">AABB</param>
-	/// <param name="segment">線分</param>
 	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment);
+
+	/// <summary>
+	/// AABBと線分の当たり判定(返り値あり)
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="segment">線分</param>
+	/// <returns>当たり判定</returns>
+	bool IsCollision(const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment);
 
 	/// <summary>
 	/// OBBと球の当たり判定
 	/// </summary>
     /// <param name="target">ターゲット</param>
-	/// <param name="aabb">AABB</param>
 	/// <param name="sphare">球</param>
 	void IsCollision(OBB* target,const GameObject::SphereMaterial& sphere);
+
+	/// <summary>
+	/// OBBと線分の当たり判定
+	/// </summary>
+	/// <param name="target">ターゲット</param>
+	/// <param name="segment">線分</param>
+	void IsCollision(OBB* target, const GameObject::Segment segment);
+
+	/// <summary>
+	/// OBBとAABB/OBBの当たり判定
+	/// </summary>
+	/// <param name="target">ターゲット</param>
+	/// <param name="obb">OBB</param>
+	void IsCollision(OBB* target, OBB* obb);
 
 public://静的メンバ変数
 	static inline const float kTMin = 0.0f;
