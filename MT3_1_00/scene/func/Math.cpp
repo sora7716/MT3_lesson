@@ -227,9 +227,15 @@ float Math::Normalize(const float& num) {
 
 //正射影ベクトル
 Vector3 Math::Project(const Vector3& v1, const Vector3& v2) {
+	float length = Math::Dot(v2, v2); // v2の長さの2乗
+
+	// 0除算を避けるために長さがゼロでないか確認
+	if (length == 0.0f) {
+		return Vector3(0, 0, 0); // 長さが0のベクトルに射影すると結果は無効
+	}
+
 	float dot1 = Math::Dot(v1, v2);
-	float length = Math::Dot(v2, v2);
-	return dot1 / length * v2;
+	return (dot1 / length) * v2;
 }
 
 
