@@ -56,7 +56,7 @@ private://メンバ変数
 
 	AABB* aabbs_[kAABBNum] = { nullptr };
 
-	std::unique_ptr<OBB>obbs_[kOBBNum] = nullptr;
+	std::unique_ptr<OBB>obbs_[kOBBNum] = { nullptr };
 	GameObject::OBBMaterial obbMaterial_[kOBBNum] = {};
 
 private://メンバ関数

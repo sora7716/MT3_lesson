@@ -29,6 +29,10 @@ void OBB::Update() {
 	MakeVertecies();//頂点を作成
 	Math::MakeOBBRotateMatrix(obb_.orientations, rotate_);//OBB用の回転行列を抽出
 	worldMatrix_ = Math::MakeOBBWorldMatrix(obb_.orientations, obb_.center);//OBB用のワールド行列を作成
+	//正規化しておく
+	for (int i = 0; i < 3; i++) {
+		obb_.orientations[i] = Math::Normalize(obb_.orientations[i]);
+	}
 	//スクリーン座標に変換
 	for (int i = 0; i < kAABB2DNum; i++) {
 		ScreenTransform(camera_, localVertecies_[i].leftTop, screenVertecies_[i].leftTop);
@@ -39,7 +43,7 @@ void OBB::Update() {
 }
 
 //デバックテキスト
-void OBB::DebagText(const char* type){
+void OBB::DebagText(const char* type) {
 	string sizeMoji = string(type) + "size";
 	ImGui::SliderFloat3(sizeMoji.c_str(), &obb_.size.x, 0.0f, 3.0f);
 	string rotateMoji = string(type) + ".rotation";
@@ -65,27 +69,27 @@ void OBB::Draw() {
 }
 
 // ワールドマトリックス逆行列のゲッター
-Matrix4x4 OBB::GetOBBWorldMatrixInvers()const{
+Matrix4x4 OBB::GetOBBWorldMatrixInvers()const {
 	Matrix4x4 obbWorldMatrixInvers = ~worldMatrix_;
 	return obbWorldMatrixInvers;
 }
 
 //サイズのゲッター
-Vector3 OBB::GetSize()const{
+Vector3 OBB::GetSize()const {
 	return obb_.size;
 }
 
 // OBBのマテリアルのゲッター
-GameObject::OBBMaterial OBB::GetOBBMaterial() const{
+GameObject::OBBMaterial OBB::GetOBBMaterial()const {
 	return obb_;
 }
 
 // ローカルの頂点
-GameObject::Vertex2D* OBB::GetLocalVertex(){
+GameObject::Vertex2D* OBB::GetLocalVertex() {
 	return localVertecies_;
 }
 
-void OBB::OnCollision(bool isHit){
+void OBB::OnCollision(bool isHit) {
 	if (isHit) {
 		aabb_.color = RED;
 	}
@@ -95,7 +99,7 @@ void OBB::OnCollision(bool isHit){
 }
 
 //頂点を作成
-void OBB::MakeVertecies(){
+void OBB::MakeVertecies() {
 	localVertecies_[0].leftTop = { aabb_.min.x,aabb_.max.y,aabb_.min.z };
 	localVertecies_[0].rightTop = { aabb_.max.x,aabb_.max.y,aabb_.min.z };
 	localVertecies_[0].leftBottom = { aabb_.min.x,aabb_.min.y,aabb_.min.z };

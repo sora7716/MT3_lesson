@@ -264,129 +264,98 @@ void Collision::IsCollision(OBB* target, const GameObject::Segment segment) {
 
 // OBBとAABB/OBBの当たり判定
 void Collision::IsCollision(OBB* target, OBB* obb) {
-	const int kObjectNum = 2;//オブジェクトの数
-	const int kDirectionNum = 3;//面の法線の数
-	const int kVertexNum = 8;//頂点の数
-	const int kEdgeNum = kVertexNum / 2;//辺の数
+	//分割軸の数
+	Vector3 separateAxes[15];
+	//面の法線
+	/*ターゲット*/
+	separateAxes[0] = target->GetOBBMaterial().orientations[0];
+	separateAxes[1] = target->GetOBBMaterial().orientations[1];
+	separateAxes[2] = target->GetOBBMaterial().orientations[2];
+	/*ターゲットではないほう*/
+	separateAxes[3] = obb->GetOBBMaterial().orientations[0];
+	separateAxes[4] = obb->GetOBBMaterial().orientations[1];
+	separateAxes[5] = obb->GetOBBMaterial().orientations[2];
+    //9つの辺のクロス積
+	separateAxes[6] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[0]);
+	separateAxes[7] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[1]);
+	separateAxes[8] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[2]);
+	separateAxes[9] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[0]);
+	separateAxes[10] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[1]);
+	separateAxes[11] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[2]);
+	separateAxes[12] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[0]);
+	separateAxes[13] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[1]);
+	separateAxes[14] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[2]);
 
-	//9つの辺のクロス積
-	Vector3 cross[9];
-	cross[0] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[0]);
-	cross[1] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[1]);
-	cross[2] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[2]);
-	cross[3] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[0]);
-	cross[4] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[1]);
-	cross[5] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[2]);
-	cross[6] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[0]);
-	cross[7] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[1]);
-	cross[8] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[2]);
-
-	//すべての頂点に射影[オブジェクトの数][座標の数][頂点の数]
-	static Vector3 project[kObjectNum][kDirectionNum][kVertexNum];//射影した位置
-	static GameObject::Vertex2D tempVertex[kObjectNum]{};//頂点位置を格納する仮の場所
-	static Vector3 tempOrientations[kDirectionNum]{};//面の法線を格納する仮の場所
-	const int kVertexType = 2;//頂点が正面にあるのか背面にあるのかのタイプ
-	for (int i = 0; i < kObjectNum; i++) {
-		//ターゲットの頂点と面の法線ベクトルを保存してる
-		if (i == 0) {
-			//頂点
-			for (int j = 0; j < kVertexType; j++) {
-				tempVertex[j] = target->GetLocalVertex()[j];
-			}
-			//法線ベクトル
-			for (int j = 0; j < 3; j++) {
-				tempOrientations[j] = target->GetOBBMaterial().orientations[j];
-			}
-		}
-		//ターゲット以外のOBBの頂点と法線ベクトルを保存してる
-		else {
-			//頂点
-			for (int j = 0; j < kVertexType; j++) {
-				tempVertex[j] = obb->GetLocalVertex()[j];
-			}
-			//法線ベクトル
-			for (int j = 0; j < 3; j++) {
-				tempOrientations[j] = obb->GetOBBMaterial().orientations[j];
-			}
-		}
-		//射影ベクトルを求める
-		for (int j = 0; j < kDirectionNum; j++) {
-			project[i][j][0] = Math::Project(tempVertex[0].leftTop,     tempOrientations[j]);
-			project[i][j][1] = Math::Project(tempVertex[0].leftBottom,  tempOrientations[j]);
-			project[i][j][2] = Math::Project(tempVertex[0].rightTop,    tempOrientations[j]);
-			project[i][j][3] = Math::Project(tempVertex[0].rightBottom, tempOrientations[j]);
-			project[i][j][4] = Math::Project(tempVertex[1].leftTop,     tempOrientations[j]);
-			project[i][j][5] = Math::Project(tempVertex[1].leftBottom,  tempOrientations[j]);
-			project[i][j][6] = Math::Project(tempVertex[1].rightTop,    tempOrientations[j]);
-			project[i][j][7] = Math::Project(tempVertex[1].rightBottom, tempOrientations[j]);
-		}
+	//半分のベクトル
+	/*ターゲット*/
+	Vector3 targetDirection[3]{
+		target->GetOBBMaterial().orientations[0] * target->GetOBBMaterial().size.x,
+		target->GetOBBMaterial().orientations[1] * target->GetOBBMaterial().size.y,
+		target->GetOBBMaterial().orientations[2] * target->GetOBBMaterial().size.z,
+	};
+	/*OBB*/
+	Vector3 obbDirection[3]{
+		obb->GetOBBMaterial().orientations[0] * obb->GetOBBMaterial().size.x,
+		obb->GetOBBMaterial().orientations[1] * obb->GetOBBMaterial().size.y,
+		obb->GetOBBMaterial().orientations[2] * obb->GetOBBMaterial().size.z,
 	};
 
-	//射影した点の最大値と最小値を求める
-	//0,3
-	//1,2
-	//4,7
-	//5,6
-	static Vector3 minPos[kObjectNum][kEdgeNum]{};//最大値
-	static Vector3 maxPos[kObjectNum][kEdgeNum]{};//最小値
-	for (int i = 0; i < kObjectNum; i++) {
-		for (int j = 0; j < kDirectionNum; j++) {
-			//X
-			minPos[i][j].x = std::min({ project[i][j][0].x, project[i][j][1].x, project[i][j][2].x, project[i][j][3].x, project[i][j][4].x, project[i][j][5].x, project[i][j][6].x, project[i][j][7].x });
-			maxPos[i][j].x = std::max({ project[i][j][0].x, project[i][j][1].x, project[i][j][2].x, project[i][j][3].x, project[i][j][4].x, project[i][j][5].x, project[i][j][6].x, project[i][j][7].x });
+	//頂点の数
+	const int kCornerNum = 8;
 
-			//Y
-			minPos[i][j].y = std::min({ project[i][j][0].y, project[i][j][1].y, project[i][j][2].y, project[i][j][3].y, project[i][j][4].y, project[i][j][5].y, project[i][j][6].y, project[i][j][7].y });
-			maxPos[i][j].y = std::max({ project[i][j][0].y, project[i][j][1].y, project[i][j][2].y, project[i][j][3].y, project[i][j][4].y, project[i][j][5].y, project[i][j][6].y, project[i][j][7].y });
+	// 点(頂点)
+	Vector3 targetCorners[kCornerNum] = {
+	  target->GetOBBMaterial().center + targetDirection[0] + targetDirection[1] + targetDirection[2],//背面の右上
+	  target->GetOBBMaterial().center + targetDirection[0] + targetDirection[1] - targetDirection[2],//正面の右上
+	  target->GetOBBMaterial().center + targetDirection[0] - targetDirection[1] + targetDirection[2],//背面の右下
+	  target->GetOBBMaterial().center + targetDirection[0] - targetDirection[1] - targetDirection[2],//正面の右下
+	  target->GetOBBMaterial().center - targetDirection[0] + targetDirection[1] + targetDirection[2],//背面の左上
+	  target->GetOBBMaterial().center - targetDirection[0] + targetDirection[1] - targetDirection[2],//正面の左上
+	  target->GetOBBMaterial().center - targetDirection[0] - targetDirection[1] + targetDirection[2],//背面の左下
+	  target->GetOBBMaterial().center - targetDirection[0] - targetDirection[1] - targetDirection[2],//正面の左下
+	};
+	Vector3 obbCorners[kCornerNum] = {
+	 obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の右上
+	 obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の右上
+	 obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の右下
+	 obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の右下
+	 obb->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の左上
+	 obb->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の左上
+	 obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の左下
+	 obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の左下
+	};
+	// 中心点間のベクトル
+	Vector3 centerToCenter = target->GetOBBMaterial().center - obb->GetOBBMaterial().center;
 
-			//Z
-			minPos[i][j].z = std::min({ project[i][j][0].z, project[i][j][1].z, project[i][j][2].z, project[i][j][3].z, project[i][j][4].z, project[i][j][5].z, project[i][j][6].z, project[i][j][7].z });
-			maxPos[i][j].z = std::max({ project[i][j][0].z, project[i][j][1].z, project[i][j][2].z, project[i][j][3].z, project[i][j][4].z, project[i][j][5].z, project[i][j][6].z, project[i][j][7].z });
-		}
-	}
-
-	//分割軸の長さを求める
-	static Vector3 axisLength[kObjectNum][kEdgeNum]{};//長さ
-	for (int i = 0; i < kObjectNum; i++) {
-		for (int j = 0; j < kEdgeNum; j++) {
-			axisLength[i][j].x = std::abs(maxPos[i][j].x - minPos[i][j].x);
-			axisLength[i][j].y = std::abs(maxPos[i][j].y - minPos[i][j].y);
-			axisLength[i][j].z = std::abs(maxPos[i][j].z - minPos[i][j].z);
-		}
-	}
-
-	//影の長さの合計
-	static Vector3 sumAxisLength[kEdgeNum]{};//2つのオブジェクトを合わせた長さ
-	for (int i = 0; i < kEdgeNum; i++) {
-		sumAxisLength[i].x = axisLength[0][i].x + axisLength[1][i].x;
-		sumAxisLength[i].y = axisLength[0][i].y + axisLength[1][i].y;
-		sumAxisLength[i].z = axisLength[0][i].z + axisLength[1][i].z;
-	}
-
-	//2つの影の両端の差分
-	static Vector3 differenceAxis[kEdgeNum]{};//二つの頂点の差分
-	for (int i = 0; i < kEdgeNum; i++) {
-		differenceAxis[i] = std::max(maxPos[0][i], maxPos[1][i]) - std::min(minPos[0][i], minPos[1][i]);
-	}
-
-	//影の長さ<2つの影の両端の差分を
+	//当たったかの判定
 	bool isHit = true;
-	for (int i = 0; i < kEdgeNum; i++) {
-		if (sumAxisLength[i].x <= differenceAxis[i].x ||
-			sumAxisLength[i].y <= differenceAxis[i].y ||
-			sumAxisLength[i].z <= differenceAxis[i].z) {
-			isHit = false;
-			break; // 一度衝突していないとわかれば、残りの計算をスキップ
+
+	//当たり判定の計算
+	for (const auto& separateAxis : separateAxes) {
+		float minTarget = (numeric_limits<float>::max)();
+		float maxTarget = (numeric_limits<float>::lowest)();
+		float minOBB = minTarget;
+		float maxOBB = maxTarget;
+		for (auto cornerIndex = 0; cornerIndex < kCornerNum; cornerIndex++) {
+			float targetDistance = Math::Dot(targetCorners[cornerIndex], separateAxis);
+			minTarget = (min)(targetDistance, minTarget);
+			maxTarget = (max)(targetDistance, maxTarget);
+			float obbDistance = Math::Dot(obbCorners[cornerIndex], separateAxis);
+			minOBB = (min)(obbDistance, minOBB);
+			maxOBB = (max)(obbDistance, maxOBB);
 		}
-
+		//それぞれを射影した範囲長の合計を求める
+		float sumSpan = maxTarget - minTarget + maxOBB - minOBB;
+		//最大範囲を求める
+		float longSpan = (max)(maxTarget, maxOBB) - (min)(minTarget, minOBB);
+		//分離軸が見つかる判定
+		if (sumSpan < longSpan) {
+			isHit = false;
+		}
 	}
-
 	//ターゲットの当たり判定を実行
 	target->OnCollision(isHit);
 }
-
-
-
 
 
 
