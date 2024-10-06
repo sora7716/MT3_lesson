@@ -1,7 +1,9 @@
+#define NOMINMAX
 #include <cassert>
 #include <cmath>
 #include "Math.h"
 #define cont(theta) (1.0f/tanf(theta)) 
+#include <algorithm>
 using namespace std;
 
 //転置行列
@@ -358,7 +360,12 @@ Vector3 Math::CatmullRomPosition(const std::vector<Vector3>& points, float t) {
 }
 
 // 三次元のベジエ曲線
-Vector3 Math::Bezier(const Vector3& p0, const Vector3& p1, const Vector3& p2, float t) {
+Vector3 Math::Bezier(const Vector3* points, float t) {
+	//制御点を分ける
+	Vector3 p0 = points[0];//始点
+	Vector3 p1 = points[1];//中点
+	Vector3 p2 = points[2];//終点
+
 	Vector3 p0p1 = Lerp(p0, p1, t);  // p0とp1の間を補間
 	Vector3 p1p2 = Lerp(p1, p2, t);  // p1とp2の間を補間
 	Vector3 p = Lerp(p0p1, p1p2, t); // 上記2つの補間結果をさらに補間
@@ -366,7 +373,12 @@ Vector3 Math::Bezier(const Vector3& p0, const Vector3& p1, const Vector3& p2, fl
 }
 
 // 三次元ベジエ曲線(球面線形補間ver)
-Vector3 Math::BezierS(const Vector3& p0, const Vector3& p1, const Vector3& p2, float t) {
+Vector3 Math::BezierS(const Vector3* points, float t) {
+	//制御点を分ける
+	Vector3 p0 = points[0];//始点
+	Vector3 p1 = points[1];//中点
+	Vector3 p2 = points[2];//終点
+
 	Vector3 p0p1 = SLerp(p0, p1, t);  // p0とp1の間を補間
 	Vector3 p1p2 = SLerp(p1, p2, t);  // p1とp2の間を補間
 	Vector3 p = SLerp(p0p1, p1p2, t); // 上記2つの補間結果をさらに補間

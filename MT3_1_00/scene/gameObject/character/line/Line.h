@@ -20,7 +20,7 @@ public://メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Camera* camera);
+	void Initialize(Camera* camera,const Segment&& segment);
 
 	/// <summary>
 	/// 更新処理
@@ -35,9 +35,14 @@ public://メンバ関数
 #endif // _DEBUG
 
 	/// <summary>
-	/// 描画処理
+	/// 線分の描画
 	/// </summary>
 	void DrawSegment();
+
+	/// <summary>
+	/// ベジエ曲線の描画
+	/// </summary>
+	void DrawBezier();
 
 	/// <summary>
 	/// 衝突した場合の判定
@@ -97,6 +102,18 @@ public://メンバ関数
 	/// <param name="isHit"></param>
 	void SetIsHit(bool isHit);
 
+	/// <summary>
+	/// ベジエ曲線の制御点のセッター
+	/// </summary>
+	/// <param name="controlPoints">制御点</param>
+	void SetBezierControlPoints(Vector3* controlPoints);
+
+	/// <summary>
+	/// ベジエ曲線の制御点のゲッター
+	/// </summary>
+	/// <returns>制御点の座標</returns>
+	Vector3* GetBezierControlPoints();
+
 private://メンバ関数
 
 	/// <summary>
@@ -113,6 +130,10 @@ private://メンバ関数
 	/// <param name="segment">線分</param>
 	void ClosestPoint();
 
+public:
+
+	static inline const int kDivision = 100;
+
 private://メンバ変数
 	float t_;//媒介変数表示
 	Vector3 project_;//正射影ベクトル
@@ -120,7 +141,8 @@ private://メンバ変数
 	Vector3 point_;//原点
 	Segment segment_;//線分
 	Camera* camera_;//カメラ
-	uint32_t color_;
-	bool isHit_;
+	uint32_t color_;//色
+	bool isHit_;//当たったかどうか
+	Vector3 bezierControlPoints[3] = {};//ベジエ曲線用の制御点
 };
 

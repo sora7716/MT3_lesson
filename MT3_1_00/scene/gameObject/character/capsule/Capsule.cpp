@@ -13,10 +13,10 @@ void Capsule::Initialize(Camera* camera, const CapsuleMaterial&& capsule) {
 	sphere_[0]->SetSphere({ capsule_.origin,capsule_.radius,capsule_.color,capsule_.isHit });
 	sphere_[1]->SetSphere({ (capsule_.origin - capsule_.diff),capsule_.radius,capsule_.color,capsule_.isHit });
 	line_ = std::make_unique<Line>();
-	line_->Initialize(camera_);
+	/*line_->Initialize(camera_);
 	line_->SetSegment({ capsule_.origin,capsule_.diff });
 	line_->SetColor(capsule_.color);
-	line_->SetIsHit(capsule_.isHit);
+	line_->SetIsHit(capsule_.isHit);*/
 }
 
 //更新
@@ -28,5 +28,5 @@ void Capsule::Draw() {
 	for (int i = 0; i < 2; i++) {
 		sphere_[i]->Draw();
     }
-	line_->DrawSegment();
+	//line_->DrawSegment();
 }

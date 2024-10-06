@@ -17,7 +17,6 @@ GameLoop::~GameLoop() {
 	delete* spheres_;
 	delete triangle_;
 	delete grid_;
-	delete line_;
 	delete point1_;
 	delete point2_;
 	delete collision_;
@@ -58,7 +57,10 @@ void GameLoop::Create() {
 	}
 	triangle_ = new Triangle();
 	plane_ = new Plane();
-	line_ = new Line();
+	line_ = std::make_unique<Line>();
+	for (int i = 0; i < 3; i++) {
+		bezierControlPointSpheres_[i] = std::make_unique<Sphere>();
+	}
 	point1_ = new Sphere();
 	point2_ = new Sphere();
 	collision_ = new Collision();
@@ -80,9 +82,14 @@ void GameLoop::Initialize() {
 	Novice::Initialize(kWindowTitle, kWindowWidth, kWindowHeight);
 
 	camera_->Initialize(kWindowWidth, kWindowHeight);
-	line_->Initialize(camera_);
+	line_->Initialize(camera_, std::move(segment_));
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
 	line_->SetSegment({ {-0.8f,-0.3f,0.0f},{0.5f,0.5f,0.5f} });
+	line_->SetBezierControlPoints(bezierControlPoints);
+	for (int i = 0; i < 3; i++) {
+		bezierControlPointSpheres_[i]->Initialize(camera_);
+		bezierControlPointSpheres_[i]->SetSphere({ line_->GetBezierControlPoints()[i],0.05f,BLACK,false });
+	}
 	grid_->Initialize(camera_);
 	for (int i = 0; i < kSphereNum; i++) {
 		spheres_[i]->Initialize(camera_);
@@ -158,7 +165,7 @@ void GameLoop::Update() {
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
-	//line_->DebugText();
+	line_->DebugText();
 	//triangle_->DebugText();
 	//plane_->DebugText();
 	//spheres_[0]->DebugText("sphere[0]");
@@ -169,8 +176,11 @@ void GameLoop::DebugText() {
 	}*/
 	//aabbs_[0]->DebugText("aabb1");
 	//aabbs_[1]->DebugText("aabb2");
-	obbs_[0]->DebagText("obb1");
-	obbs_[1]->DebagText("obb2");
+	/*obbs_[0]->DebagText("obb1");
+	obbs_[1]->DebagText("obb2");*/
+	bezierControlPointSpheres_[0]->DebugText("controlpoints1");
+	bezierControlPointSpheres_[1]->DebugText("controlpoints2");
+	bezierControlPointSpheres_[2]->DebugText("controlpoints3");
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -186,7 +196,7 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), line_->GetSegment());
 	//collision_->IsCollision(obb_.get(),spheres_[0]->GetSphereMaterial());
 	//collision_->IsCollision(obb_.get(), line_->GetSegment());
-	collision_->IsCollision(obbs_[0].get(), obbs_[1].get());
+	//collision_->IsCollision(obbs_[0].get(), obbs_[1].get());
 }
 
 //描画処理
@@ -196,6 +206,10 @@ void GameLoop::Draw() {
 	//	aabb->Draw();
 	//}
 	//line_->DrawSegment();
+	line_->DrawBezier();
+	for (auto& controlPoint : bezierControlPointSpheres_) {
+		controlPoint->Draw();
+	}
 	////plane_->Draw();
 	/*for (Sphere* sphere : spheres_) {
 		sphere->Draw();
@@ -207,6 +221,6 @@ void GameLoop::Draw() {
 		obb->Draw();
 	}*/
 
-	capsule_->Draw();
+	/*capsule_->Draw();*/
 	Collider();
 }

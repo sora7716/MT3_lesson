@@ -21,10 +21,10 @@ Line::~Line() {
 }
 
 //初期化
-void Line::Initialize(Camera* camera) {
+void Line::Initialize(Camera* camera, const Segment&& segment) {
 	camera_ = camera;
 	point_ = {};
-	segment_ = { {-0.45f,0.41f,0.0f},{1.0f,0.58f,0.0f} };
+	segment_ = segment;
 	color_ = WHITE;
 	isHit_ = false;
 }
@@ -49,7 +49,7 @@ void Line::DebugText() {
 }
 #endif // _DEBUG
 
-//描画処理
+//線分の描画
 void Line::DrawSegment() {
 	Vector3 start{};
 	Vector3 end{};
@@ -62,8 +62,33 @@ void Line::DrawSegment() {
 	);
 }
 
+//ベジエ曲線の描画
+void Line::DrawBezier() {
+	for (int i = 0; i < kDivision; i++) {
+		//フレームを分割
+		float frame[2] = { static_cast<float>(i) / kDivision,static_cast<float>(i + 1) / kDivision};
+		//ベジエ曲線
+		Vector3 bezier[2];
+		for (int j = 0; j < 2; j++) {
+			bezier[j] = Math::Bezier(bezierControlPoints, frame[j]);
+		}
+		//ベジエ曲線の始点と終点
+		Vector3 start{};
+		Vector3 end{};
+		//スクリーン座標に変換
+		CameraScreenTransform(camera_, bezier[0], bezier[0]);
+		CameraScreenTransform(camera_, bezier[1], bezier[1]);
+		//描画
+		Novice::DrawLine(
+			(int)bezier[0].x, (int)bezier[0].y,
+			(int)bezier[1].x, (int)bezier[1].y,
+			color_
+		);
+	}
+}
+
 //衝突した場合の判定
-void Line::OnCollision(){
+void Line::OnCollision() {
 	if (isHit_) {
 		SetColor(RED);
 	}
@@ -83,17 +108,17 @@ Vector3 Line::GetPoint()const {
 }
 
 //線分のゲッター
-Line::Segment Line::GetSegment() const{
+Line::Segment Line::GetSegment() const {
 	return segment_;
 }
 
 //正射影ベクトルのゲッター
-Vector3 Line::GetProject() const{
+Vector3 Line::GetProject() const {
 	return project_;
 }
 
 //媒介変数のゲッター
-float Line::GetT() const{
+float Line::GetT() const {
 	return t_;
 }
 
@@ -113,8 +138,20 @@ void Line::SetColor(uint32_t color) {
 }
 
 //衝突判定のセッター
-void Line::SetIsHit(bool isHit){
+void Line::SetIsHit(bool isHit) {
 	isHit_ = isHit;
+}
+
+// ベジエ曲線の制御点のセッター
+void Line::SetBezierControlPoints(Vector3* controlPoints) {
+	for (int i = 0; i < 3; i++) {
+		bezierControlPoints[i] = controlPoints[i];
+	}
+}
+
+// ベジエ曲線の制御点のゲッター
+Vector3* Line::GetBezierControlPoints(){
+	return bezierControlPoints;
 }
 
 //正射影ベクトル
@@ -125,7 +162,7 @@ void Line::Project(const Vector3& v1, const Vector3& v2) {
 	t_ = dot1 / length;
 }
 
-
+// 最近接点
 void Line::ClosestPoint() {
 	t_ = clamp(t_, 0.0f, 1.0f);
 	closestPoint_ = segment_.origin + segment_.diff * t_;

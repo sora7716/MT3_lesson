@@ -1,5 +1,6 @@
 #pragma once
 #include "scene/func/Aithmetic.h"
+#include <vector>
 
 class Math {
 public:
@@ -237,20 +238,16 @@ public:
 	/// <summary>
 	/// 三次元のベジエ曲線
 	/// </summary>
-	/// <param name="p0">始点</param>
-	/// <param name="p1">中点</param>
-	/// <param name="p2">終点</param>
+	/// <param name="points">制御点</param>
 	/// <param name="t">フレーム</param>
 	/// <returns>ベジエ曲線</returns>
-	static Vector3 Bezier(const Vector3& p0, const Vector3& p1, const Vector3& p2, float t);
+	static Vector3 Bezier(const Vector3* points,float t);
 
 	/// <summary>
 	/// 三次元ベジエ曲線(球面線形補間ver)
 	/// </summary>
-	/// <param name="p0">始点</param>
-	/// <param name="p1">中点</param>
-	/// <param name="p2">終点</param>
+	/// <param name="points">制御点</param>
 	/// <param name="t">フレーム</param>
 	/// <returns>ベジエ曲線</returns>
-	static Vector3 BezierS(const Vector3& p0, const Vector3& p1, const Vector3& p2, float t);
+	static Vector3 BezierS(const Vector3* points, float t);
 };

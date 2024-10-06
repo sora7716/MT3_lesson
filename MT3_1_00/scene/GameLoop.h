@@ -49,7 +49,14 @@ private://メンバ変数
 
 	Sphere* point1_ = nullptr;
 	Sphere* point2_ = nullptr;
-	Line* line_ = nullptr;
+	std::unique_ptr<Line> line_ = nullptr;
+	GameObject::Segment segment_ = { {-0.45f,0.41f,0.0f},{1.0f,0.58f,0.0f} };
+	Vector3 bezierControlPoints[3] = {
+		{-0.8f,0.58f,1.0f},
+		{1.76f,1.0f,-0.3f},
+		{0.94f,-0.7f,2.3f},
+	};
+	std::unique_ptr<Sphere>bezierControlPointSpheres_[3] = { nullptr };
 
 	Plane* plane_ = nullptr;
 

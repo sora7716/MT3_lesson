@@ -38,8 +38,8 @@ void Sphere::Update() {
 #ifdef _DEBUG
 //デバックテキスト
 void Sphere::DebugText(const char* label) {
-	string rotateLabel = string(label) + ".rotate";
-	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.1f);
+	/*string rotateLabel = string(label) + ".rotate";
+	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.1f);*/
 
 	string centerLabel = string(label) + ".center";
 	ImGui::DragFloat3(centerLabel.c_str(), &sphere_.center.x, 0.01f);
