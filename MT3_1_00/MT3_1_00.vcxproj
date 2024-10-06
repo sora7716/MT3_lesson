@@ -124,6 +124,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="scene\GameLoop.cpp" />
     <ClCompile Include="scene\gameObject\camera\Camera.cpp" />
     <ClCompile Include="scene\gameObject\character\AABB\AABB.cpp" />
+    <ClCompile Include="scene\gameObject\character\capsule\Capsule.cpp" />
     <ClCompile Include="scene\gameObject\character\Character.cpp" />
     <ClCompile Include="scene\gameObject\character\grid\Grid.cpp" />
     <ClCompile Include="scene\gameObject\character\line\Line.cpp" />
@@ -168,6 +169,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="scene\GameLoop.h" />
     <ClInclude Include="scene\gameObject\camera\Camera.h" />
     <ClInclude Include="scene\gameObject\character\AABB\AABB.h" />
+    <ClInclude Include="scene\gameObject\character\capsule\Capsule.h" />
     <ClInclude Include="scene\gameObject\character\Character.h" />
     <ClInclude Include="scene\gameObject\character\grid\Grid.h" />
     <ClInclude Include="scene\gameObject\character\line\Line.h" />

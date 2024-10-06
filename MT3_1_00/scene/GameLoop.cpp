@@ -69,6 +69,8 @@ void GameLoop::Create() {
 	for (int i = 0; i < kOBBNum; i++) {
 		obbs_[i] = std::make_unique<OBB>();
 	}
+
+	capsule_ = std::make_unique<Capsule>();
 }
 
 //初期化処理
@@ -115,6 +117,12 @@ void GameLoop::Initialize() {
 	for (int i = 0; i < kOBBNum; i++) {
 		obbs_[i]->Initialize(camera_, obbMaterial_[i]);
 	}
+	capsuleMaterial_ = {
+		{-0.8f,-0.3f,0.0f},
+		{0.5f,0.5f,0.5f},
+		30,
+	};
+	capsule_->Initialize(camera_, std::move(capsuleMaterial_));
 }
 
 //更新処理
@@ -195,8 +203,10 @@ void GameLoop::Draw() {
 	/*point1_->Draw();
 	point2_->Draw();*/
 	//triangle_->WireFrameDraw();
-	for (auto& obb : obbs_) {
+	/*for (auto& obb : obbs_) {
 		obb->Draw();
-	}
+	}*/
+
+	capsule_->Draw();
 	Collider();
 }

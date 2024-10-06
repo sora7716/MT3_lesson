@@ -9,6 +9,7 @@
 #include "scene/func/collision/Collision.h"
 #include "scene/gameObject/character/AABB/AABB.h"
 #include "scene/gameObject/character/OBB/OBB.h"
+#include "scene/gameObject/character/capsule/Capsule.h"
 
 #include <memory>
 
@@ -58,6 +59,9 @@ private://メンバ変数
 
 	std::unique_ptr<OBB>obbs_[kOBBNum] = { nullptr };
 	GameObject::OBBMaterial obbMaterial_[kOBBNum] = {};
+
+	std::unique_ptr<Capsule>capsule_ = nullptr;
+	GameObject::CapsuleMaterial capsuleMaterial_ = {};
 
 private://メンバ関数
 

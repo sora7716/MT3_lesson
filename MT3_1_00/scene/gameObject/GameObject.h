@@ -94,6 +94,15 @@ public://構造体など
 		uint32_t color = WHITE;//色
 	}OBBMaterial;
 
+	//カプセル作るときの素材
+	typedef struct CapsuleMaterial {
+		Vector3 origin;//始点
+		Vector3 diff;//終点への差分ベクトル
+		float radius;//半径
+		uint32_t color = WHITE;//色
+		bool isHit = false;//衝突したかの判定
+	}CapsuleMaterial;
+
 public://静的メンバ変数
 	static inline const int kAABB2DNum = 2;//2次元で見たAABBの数
 protected://メンバ関数
