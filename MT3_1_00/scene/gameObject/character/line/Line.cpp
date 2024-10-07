@@ -43,6 +43,9 @@ void Line::Update() {
 void Line::DebugText() {
 	ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x, 0.1f);
+	ImGui::DragFloat3("bezierPints[0]", &bezierControlPoints[0].x, 0.1f);
+	ImGui::DragFloat3("bezierPints[1]", &bezierControlPoints[1].x, 0.1f);
+	ImGui::DragFloat3("bezierPints[2]", &bezierControlPoints[2].x, 0.1f);
 	//ImGui::DragFloat3("point", &point_.x,0.1f);
 	//ImGui::InputFloat3("Project", &project_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	//ImGui::InputFloat3("cp", &closestPoint_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);

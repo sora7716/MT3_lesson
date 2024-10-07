@@ -86,9 +86,10 @@ void GameLoop::Initialize() {
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
 	line_->SetSegment({ {-0.8f,-0.3f,0.0f},{0.5f,0.5f,0.5f} });
 	line_->SetBezierControlPoints(bezierControlPoints);
+	line_->SetColor(BLUE);
 	for (int i = 0; i < 3; i++) {
 		bezierControlPointSpheres_[i]->Initialize(camera_);
-		bezierControlPointSpheres_[i]->SetSphere({ line_->GetBezierControlPoints()[i],0.05f,BLACK,false });
+		bezierControlPointSpheres_[i]->SetSphere({ line_->GetBezierControlPoints()[i],0.01f,BLACK,false });
 	}
 	grid_->Initialize(camera_);
 	for (int i = 0; i < kSphereNum; i++) {
@@ -159,6 +160,10 @@ void GameLoop::Update() {
 	for (auto& obb : obbs_) {
 		obb->Update();
 	}
+
+	for (int i = 0; i < 3; i++) {
+		bezierControlPointSpheres_[i]->SetSphere({ line_->GetBezierControlPoints()[i],0.01f,BLACK,false });
+	}
 }
 
 #ifdef _DEBUG
@@ -170,7 +175,7 @@ void GameLoop::DebugText() {
 	//plane_->DebugText();
 	//spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
-	//camera_->DebugText();
+	camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
