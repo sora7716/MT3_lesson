@@ -45,6 +45,13 @@ protected://メンバ関数
 	/// <param name="camera">カメラ</param>
 	void WorldViewProjection(Camera *camera);
 
+
+	/// <summary>
+	/// ワールドビュープロジェクションだけの計算
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	void OBBWvpMatrix(const Camera* camera);
+
 	/// <summary>
 	/// world*viewProjectionを求める(拡縮回転移動を宣言)戻り値あり
 	/// </summary>
@@ -78,10 +85,17 @@ protected://メンバ関数
 	/// ローカル座標をスクリーン座標に変換
 	/// </summary>
 	/// <param name="camera">カメラ</param>
-	/// <param name="ndcVertex">正規化デバイス</param>
 	/// <param name="kLocalVertices">ローカル座標</param>
 	/// <param name="screenVertices">スクリーン座標</param>
 	void CameraScreenTransform(Camera* camera, const Vector3& kLocalVertices, Vector3& screenVertices);
+
+	/// <summary>
+	/// OBB空間に変換
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="local">ローカル座標</param>
+	/// <param name="screen">スクリーン座標</param>
+	void OBBTransform(const Camera* camera, const Vector3& local, Vector3& screen);
 
 public://メンバ関数
 	/// <summary>

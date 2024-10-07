@@ -51,7 +51,7 @@ void Sphere::DebugText(const char* label) {
 
 //描画
 void Sphere::Draw() {
-	const uint32_t kSubdivision = 16;//分割数
+	const uint32_t kSubdivision = 10;//分割数
 	const float kLatEvery = pi_f / float(kSubdivision);//経度分割1つ分の角度(θd)
 	const float kLonEvery = 2.0f * pi_f / float(kSubdivision);//緯度分割1つ分の角度(φd)
 
@@ -73,9 +73,9 @@ void Sphere::Draw() {
 			};
 
 			c = {
-				sphere_.center.x + sphere_.radius * cos(lat) * cos(lon + kLonEvery),
-				sphere_.center.y + sphere_.radius * sin(lat),
-				sphere_.center.z + sphere_.radius * cos(lat) * sin(lon + kLonEvery)
+				sphere_.center.x + sphere_.radius * cos(lat+ kLatEvery) * cos(lon + kLonEvery),
+				sphere_.center.y + sphere_.radius * sin(lat+ kLatEvery),
+				sphere_.center.z + sphere_.radius * cos(lat+ kLatEvery) * sin(lon + kLonEvery)
 			};
 
 			////ワールド座標系
@@ -85,7 +85,7 @@ void Sphere::Draw() {
 			//screenA_ = Math::Transform(Math::Transform(a, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
 			//screenB_ = Math::Transform(Math::Transform(b, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
 			//screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
-			
+			//translate_ = sphere_.center;
 			//スクリーン座標を求める
 			CameraScreenTransform(camera_,a, screenA_);
 			CameraScreenTransform(camera_,b, screenB_);

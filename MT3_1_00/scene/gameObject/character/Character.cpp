@@ -29,6 +29,18 @@ void Character::WorldViewProjection(Camera* camera){
 	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
 }
 
+//OBB空間で表示
+void Character::OBBWvpMatrix(const Camera* camera){
+	Vector3 orientation[3]{
+	1,0,0,
+	0,1,0,
+	0,0,1,};
+	Math::MakeOBBRotateMatrix(orientation,rotate_);//回転行列から抽出
+	worldMatrix_ = Math::MakeOBBWorldMatrix(orientation,translate_);//抽出した値からワールドマトリックスを求める
+	//wvpマトリックス
+	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
+}
+
 //ワールドビュープロジェクション戻り値あり
 Matrix4x4 Character::WorldViewProjectionMatrix(Camera* camera, Vector3 scale, Vector3 rotate, Vector3 translate) const {
 	//ワールド座標系
@@ -65,6 +77,16 @@ void Character::CameraScreenTransform(Camera* camera, const Vector3& kLocalVerti
 	ndcVertex_ = Math::Transform(kLocalVertices, camera->GetViewProjectionMatrix());
 	//スクリーン座標
 	screenVertices = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
+}
+
+// OBB空間に変換
+void Character::OBBTransform(const Camera* camera, const Vector3& local, Vector3& screen){
+	//OBB空間に変換
+	OBBWvpMatrix(camera);
+	//正規化デバイス座標系
+	ndcVertex_ = Math::Transform(local, worldViewProjectionMatrix_);
+	//スクリーン座標
+	screen = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
 }
 
 // ワールドビュープロジェクションのゲッター

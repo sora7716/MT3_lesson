@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Vector3.h>
 #include "scene/gameObject/GameObject.h"
 
@@ -9,6 +9,7 @@ class Line;
 class Triangle;
 class AABB;
 class OBB;
+class Hexagon;
 
 class Collision {
 
@@ -105,6 +106,14 @@ public://メンバ関数
 	/// <param name="target">ターゲット</param>
 	/// <param name="obb">OBB</param>
 	void IsCollision(OBB* target, OBB* obb);
+
+	/// <summary>
+	/// 六角形と線の当たり判定
+	/// </summary>
+	/// <param name="hexagon">六角形</param>
+	/// <param name="line">線分</param>
+	/// <returns>衝突したか</returns>
+	bool IsCollision(Hexagon*hexagon,Line*line);
 
 public://静的メンバ変数
 	static inline const float kTMin = 0.0f;

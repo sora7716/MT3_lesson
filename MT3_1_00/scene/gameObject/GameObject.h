@@ -24,8 +24,8 @@ public://構造体など
 	typedef struct AABBMaterial {
 		Vector3 min;//最小点
 		Vector3 max;//最大点
-		uint32_t color;//色
-		bool isHit;//衝突したか
+		uint32_t color = WHITE;//色
+		bool isHit = false;//衝突したか
 	}AABBMaterial;
 
 	//AABBを2Dで作るときに使う
@@ -40,8 +40,8 @@ public://構造体など
 	typedef struct SphereMaterial {
 		Vector3 center;
 		float radius;
-		uint32_t color;
-		bool isHit;
+		uint32_t color = WHITE;//色
+		bool isHit = false;//衝突したか
 	}SphereMaterial;
 
 	//平面の構造体
@@ -81,8 +81,8 @@ public://構造体など
 	//三角形の素材
 	typedef struct TriangleMaterial {
 		Vector3 kLocalVertices_[(int)Vertex::kVertexNum] = {};//ローカル座標
-		uint32_t color_;//色
-		bool isHit;
+		uint32_t color = WHITE;//色
+		bool isHit = false;//衝突したか
 	}TriangleMaterial;
 
 	//OBBの素材
@@ -102,6 +102,14 @@ public://構造体など
 		uint32_t color = WHITE;//色
 		bool isHit = false;//衝突したかの判定
 	}CapsuleMaterial;
+
+	//六角形を作るときに使う素材
+	typedef struct HexagonMaterial {
+		Vector3 center;//中心
+		float radius;//半径
+		uint32_t color = WHITE;//色
+		bool isHit = false;//衝突したか
+	}HexagonMaterial;
 
 public://静的メンバ変数
 	static inline const int kAABB2DNum = 2;//2次元で見たAABBの数

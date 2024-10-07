@@ -127,6 +127,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="scene\gameObject\character\capsule\Capsule.cpp" />
     <ClCompile Include="scene\gameObject\character\Character.cpp" />
     <ClCompile Include="scene\gameObject\character\grid\Grid.cpp" />
+    <ClCompile Include="scene\gameObject\character\hexagon\Hexagon.cpp" />
     <ClCompile Include="scene\gameObject\character\line\Line.cpp" />
     <ClCompile Include="scene\gameObject\character\OBB\OBB.cpp" />
     <ClCompile Include="scene\gameObject\character\plane\Plane.cpp" />
@@ -172,12 +173,16 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="scene\gameObject\character\capsule\Capsule.h" />
     <ClInclude Include="scene\gameObject\character\Character.h" />
     <ClInclude Include="scene\gameObject\character\grid\Grid.h" />
+    <ClInclude Include="scene\gameObject\character\hexagon\Hexagon.h" />
     <ClInclude Include="scene\gameObject\character\line\Line.h" />
     <ClInclude Include="scene\gameObject\character\OBB\OBB.h" />
     <ClInclude Include="scene\gameObject\character\plane\Plane.h" />
     <ClInclude Include="scene\gameObject\character\sphere\Sphere.h" />
     <ClInclude Include="scene\gameObject\character\triangle\Triangle.h" />
     <ClInclude Include="scene\gameObject\GameObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

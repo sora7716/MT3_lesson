@@ -1,4 +1,4 @@
-﻿#include "GameLoop.h"
+#include "GameLoop.h"
 
 #ifdef _DEBUG
 #include"Imgui.h"
@@ -73,6 +73,8 @@ void GameLoop::Create() {
 	}
 
 	capsule_ = std::make_unique<Capsule>();
+
+	hexagon_ = std::make_unique<Hexagon>();
 }
 
 //初期化処理
@@ -132,6 +134,11 @@ void GameLoop::Initialize() {
 		30,
 	};
 	capsule_->Initialize(camera_, std::move(capsuleMaterial_));
+	hexagonMateiral_ = {
+		{0.0f,0.0f,0.0f},
+		1.0f,
+	};
+	hexagon_->Initialize(camera_, hexagonMateiral_);
 }
 
 //更新処理
@@ -169,8 +176,10 @@ void GameLoop::Update() {
 		catmullRomPointSpheres_.resize(4);
 		catmullRomPointSpheres_[i] = new Sphere();
 		catmullRomPointSpheres_[i]->Initialize(camera_);
-		catmullRomPointSpheres_[i]->SetSphere({ line_->GetCatmullRomPoints()[i],0.01f,BLACK,false});
+		catmullRomPointSpheres_[i]->SetSphere({ line_->GetCatmullRomPoints()[i],0.01f,BLACK,false });
 	}
+
+	hexagon_->Update();
 }
 
 #ifdef _DEBUG
@@ -178,30 +187,31 @@ void GameLoop::Update() {
 void GameLoop::DebugText() {
 	ImGui::Begin("window");
 	line_->DebugText();
+	hexagon_->DebugText("hexagon");
 	//triangle_->DebugText();
-	//plane_->DebugText();
-	//spheres_[0]->DebugText("sphere[0]");
-	//spheres_[1]->DebugText("sphere[1]");
-//	camera_->DebugText();
-	/*for (int i = 0; i < Grid::kElementCount; i++) {
-		grid_->DebugText(i);
-	}*/
-	//aabbs_[0]->DebugText("aabb1");
-	//aabbs_[1]->DebugText("aabb2");
-	/*obbs_[0]->DebagText("obb1");
-	obbs_[1]->DebagText("obb2");*/
-	/*bezierPointSpheres_[0]->DebugText("controlpoints1");
-	bezierPointSpheres_[1]->DebugText("controlpoints2");
-	bezierPointSpheres_[2]->DebugText("controlpoints3");*/
+	plane_->DebugText();
+	/*spheres_[0]->DebugText("sphere[0]");
+	spheres_[1]->DebugText("sphere[1]");*/
+	//camera_->DebugText();
+	 /*for (int i = 0; i < Grid::kElementCount; i++) {
+		 grid_->DebugText(i);
+	 }*/
+	 //aabbs_[0]->DebugText("aabb1");
+	 //aabbs_[1]->DebugText("aabb2");
+	 /*obbs_[0]->DebagText("obb1");
+	 obbs_[1]->DebagText("obb2");*/
+	 /*bezierPointSpheres_[0]->DebugText("controlpoints1");
+	 bezierPointSpheres_[1]->DebugText("controlpoints2");
+	 bezierPointSpheres_[2]->DebugText("controlpoints3");*/
 	ImGui::End();
 }
 #endif // _DEBUG
 
 //当たり判定
 void GameLoop::Collider() {
-	//collision_->IsCollision(sphere_[0], sphere_[0]->GetSphereMaterial(), sphere_[1]->GetSphereMaterial());
+	//collision_->IsCollision(spheres_[0], spheres_[0]->GetSphereMaterial(), spheres_[1]->GetSphereMaterial());
 	//collision_->IsCollision(sphere_[0], sphere_[0]->GetSphereMaterial(),plane_->GetPlaneMaterial());
-	//collision_->IsCollision(line_, line_->GetSegment(), plane_->GetPlaneMaterial());
+	//collision_->IsCollision(line_.get(), line_->GetSegment(), plane_->GetPlaneMaterial());
 	//collision_->IsCollision(line_,line_->GetSegment(),triangle_->GetTriangleMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), aabbs_[1]->GetAABBMaterial());
 	//collision_->IsCollision(aabbs_[0], aabbs_[0]->GetAABBMaterial(), spheres_[0]->GetSphereMaterial());
@@ -209,6 +219,7 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(obb_.get(),spheres_[0]->GetSphereMaterial());
 	//collision_->IsCollision(obb_.get(), line_->GetSegment());
 	//collision_->IsCollision(obbs_[0].get(), obbs_[1].get());
+	hexagon_->OnCollision(collision_->IsCollision(hexagon_.get(), line_.get()));
 }
 
 //描画処理
@@ -217,19 +228,19 @@ void GameLoop::Draw() {
 	//for (AABB* aabb : aabbs_) {
 	//	aabb->Draw();
 	//}
-	//line_->DrawSegment();
+	line_->DrawSegment();
 	//line_->DrawBezier();
-	line_->DrawCatmullRom();
+	//line_->DrawCatmullRom();
 	/*for (auto& controlPoint : bezierPointSpheres_) {
 		controlPoint->Draw();
 	}*/
-	for (auto controlPoint : catmullRomPointSpheres_) {
-		controlPoint->Draw();
-	}
-	////plane_->Draw();
-	/*for (Sphere* sphere : spheres_) {
-		sphere->Draw();
-	}*/
+	//for (auto controlPoint : catmullRomPointSpheres_) {
+	//	controlPoint->Draw();
+	//}
+	//plane_->Draw();
+	//for (Sphere* sphere : spheres_) {
+	//	sphere->Draw();
+	//}
 	/*point1_->Draw();
 	point2_->Draw();*/
 	//triangle_->WireFrameDraw();
@@ -238,5 +249,7 @@ void GameLoop::Draw() {
 	}*/
 
 	/*capsule_->Draw();*/
+
+	hexagon_->Draw();
 	Collider();
 }

@@ -1,4 +1,4 @@
-﻿#include "Line.h"
+#include "Line.h"
 #include "scene/gameObject/camera/Camera.h"
 #include <algorithm>
 using namespace std;
@@ -41,18 +41,18 @@ void Line::Update() {
 /// デバックテキスト
 /// </summary>
 void Line::DebugText() {
-	/*ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
+	ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x, 0.1f);
-	ImGui::DragFloat3("bezierPints[0]", &bezierPoints_[0].x, 0.1f);
-	ImGui::DragFloat3("bezierPints[1]", &bezierPoints_[1].x, 0.1f);
-	ImGui::DragFloat3("bezierPints[2]", &bezierPoints_[2].x, 0.1f);*/
+	//ImGui::DragFloat3("bezierPints[0]", &bezierPoints_[0].x, 0.1f);
+	//ImGui::DragFloat3("bezierPints[1]", &bezierPoints_[1].x, 0.1f);
+	//ImGui::DragFloat3("bezierPints[2]", &bezierPoints_[2].x, 0.1f);
 	//ImGui::DragFloat3("point", &point_.x,0.1f);
 	//ImGui::InputFloat3("Project", &project_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	//ImGui::InputFloat3("cp", &closestPoint_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
-	ImGui::DragFloat3("catmullRomPoint[0]", &catmullRomPoints_[0].x, 0.1f);
-	ImGui::DragFloat3("catmullRomPoint[1]", &catmullRomPoints_[1].x, 0.1f);
-	ImGui::DragFloat3("catmullRomPoint[2]", &catmullRomPoints_[2].x, 0.1f);
-	ImGui::DragFloat3("catmullRomPoint[3]", &catmullRomPoints_[3].x, 0.1f);
+	//ImGui::DragFloat3("catmullRomPoint[0]", &catmullRomPoints_[0].x, 0.1f);
+	//ImGui::DragFloat3("catmullRomPoint[1]", &catmullRomPoints_[1].x, 0.1f);
+	//ImGui::DragFloat3("catmullRomPoint[2]", &catmullRomPoints_[2].x, 0.1f);
+	//ImGui::DragFloat3("catmullRomPoint[3]", &catmullRomPoints_[3].x, 0.1f);
 }
 #endif // _DEBUG
 

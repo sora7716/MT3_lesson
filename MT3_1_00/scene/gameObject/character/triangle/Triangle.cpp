@@ -18,7 +18,7 @@ void Triangle::Initialize(int kWindowWidth, int kWindowHeight, Camera* camera) {
 	triangleMaterial_.kLocalVertices_[(int)Vertex::kRight] = { 1.0f, -1.0f, 0.0f };
 	triangleMaterial_.kLocalVertices_[(int)Vertex::kLeft] = { -1.0f, -1.0f, 0.0f };
 
-	triangleMaterial_.color_ = WHITE;
+	triangleMaterial_.color = WHITE;
 }
 
 void Triangle::Update(char* keys, char* preKeys) {
@@ -56,7 +56,7 @@ void Triangle::WireFrameDraw()const {
 		int(screenVertices_[(int)Vertex::kTop].x), int(screenVertices_[(int)Vertex::kTop].y),
 		int(screenVertices_[(int)Vertex::kRight].x), int(screenVertices_[(int)Vertex::kRight].y),
 		int(screenVertices_[(int)Vertex::kLeft].x), int(screenVertices_[(int)Vertex::kLeft].y),
-		triangleMaterial_.color_, kFillModeWireFrame);
+		triangleMaterial_.color, kFillModeWireFrame);
 }
 
 //衝突時の判定
@@ -76,7 +76,7 @@ Triangle::TriangleMaterial Triangle::GetTriangleMaterial() const {
 
 //カラーのセッター
 void Triangle::SetColor(uint32_t color) {
-	triangleMaterial_.color_ = color;
+	triangleMaterial_.color= color;
 }
 
 //動き

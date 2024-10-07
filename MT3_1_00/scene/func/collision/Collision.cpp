@@ -1,4 +1,4 @@
-﻿#define NOMINMAX
+#define NOMINMAX
 #include "Collision.h"
 #include "scene/gameObject/character/sphere/Sphere.h"
 #include "scene/gameObject/character/plane/Plane.h"
@@ -6,6 +6,7 @@
 #include "scene/gameObject/character/triangle/Triangle.h"
 #include "scene/gameObject/character/AABB/AABB.h"
 #include "scene/gameObject/character/OBB/OBB.h"
+#include "scene/gameObject/character/hexagon/Hexagon.h"
 #include <algorithm> 
 using namespace std;
 
@@ -199,6 +200,7 @@ void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, 
 	target->OnCollision();
 }
 
+// AABBと線分の当たり判定(返り値あり)
 bool Collision::IsCollision(const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment) {
 	GameObject::AABBMaterial t;
 	Vector3 tNear;
@@ -275,7 +277,7 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 	separateAxes[3] = obb->GetOBBMaterial().orientations[0];
 	separateAxes[4] = obb->GetOBBMaterial().orientations[1];
 	separateAxes[5] = obb->GetOBBMaterial().orientations[2];
-    //9つの辺のクロス積
+	//9つの辺のクロス積
 	separateAxes[6] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[0]);
 	separateAxes[7] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[1]);
 	separateAxes[8] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[2]);
@@ -355,6 +357,76 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 	}
 	//ターゲットの当たり判定を実行
 	target->OnCollision(isHit);
+}
+
+
+bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
+	// 六角形の各辺
+	Vector3 edge[6]{
+		hexagon->GetVertex()[1] - hexagon->GetVertex()[0],
+		hexagon->GetVertex()[2] - hexagon->GetVertex()[1],
+		hexagon->GetVertex()[3] - hexagon->GetVertex()[2],
+		hexagon->GetVertex()[4] - hexagon->GetVertex()[3],
+		hexagon->GetVertex()[5] - hexagon->GetVertex()[4],
+		hexagon->GetVertex()[0] - hexagon->GetVertex()[5],
+	};
+
+	ImGui::Text(" %f: %f : %f", hexagon->GetVertex()[0].x, hexagon->GetVertex()[0].y, hexagon->GetVertex()[0].z);
+	ImGui::Text(" %f: %f : %f", hexagon->GetVertex()[1].x, hexagon->GetVertex()[1].y, hexagon->GetVertex()[1].z);
+	ImGui::Text(" %f: %f : %f", edge[0].x, edge[0].y, edge[0].z);
+
+	//衝突したかどうか
+	bool isHit = false;
+
+	//六角形の面の法線
+	Vector3 normal = Math::Normalize(Math::Cross(edge[0], edge[1]));
+
+
+	//疑似的に平面を作成
+	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetVertex()[0],normal) };
+
+	//平面の法線とラインの差分が向き合っているかどうか
+	float dot = Math::Dot(plane.normal, line->GetSegment().diff);
+
+	//平行だったらtrueを返す
+	if (std::abs(dot) < 1e-6f) {
+		isHit = false;
+	}
+	float t = (plane.distance - Math::Dot(line->GetSegment().origin, plane.normal)) / dot;
+	Vector3 intersect = line->GetSegment().origin + t * line->GetSegment().diff;
+	Vector3 v0p = intersect - hexagon->GetVertex()[0];
+	Vector3 v1p = intersect - hexagon->GetVertex()[1];
+	Vector3 v2p = intersect - hexagon->GetVertex()[2];
+	Vector3 v3p = intersect - hexagon->GetVertex()[3];
+	Vector3 v4p = intersect - hexagon->GetVertex()[4];
+	Vector3 v5p = intersect - hexagon->GetVertex()[5];
+	if (t >= kTMin && t <= kTMax) {
+		isHit = true;
+	}
+
+	if (Math::Dot(Math::Cross(edge[0], v0p), normal) < 0.0f) {
+		isHit = false;
+	}
+	else if (Math::Dot(Math::Cross(edge[1], v1p), normal) < 0.0f) {
+		isHit = false;
+	}
+	else if (Math::Dot(Math::Cross(edge[2], v2p), normal) < 0.0f) {
+		isHit = false;
+	}
+	else if (Math::Dot(Math::Cross(edge[3], v3p), normal) < 0.0f) {
+		isHit = false;
+	}
+	else if (Math::Dot(Math::Cross(edge[4], v4p), normal) < 0.0f) {
+		isHit = false;
+	}
+	else if (Math::Dot(Math::Cross(edge[5], v5p), normal) < 0.0f) {
+		isHit = false;
+	}
+	else {
+		isHit = true;
+	}
+
+	return isHit;
 }
 
 

@@ -102,10 +102,13 @@
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
     <ClCompile Include="scene\gameObject\character\OBB\OBB.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\hexagon\Hexagon.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
     <ClCompile Include="scene\gameObject\character\capsule\Capsule.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,7 +227,17 @@
     <ClInclude Include="scene\gameObject\character\AABB\AABB.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
-    <ClInclude Include="scene\gameObject\character\OBB\OBB.h" />
-    <ClInclude Include="scene\gameObject\character\capsule\Capsule.h" />
+    <ClInclude Include="scene\gameObject\character\capsule\Capsule.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\hexagon\Hexagon.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\OBB\OBB.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
 </Project>
