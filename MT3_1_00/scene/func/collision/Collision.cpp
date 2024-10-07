@@ -53,7 +53,7 @@ void Collision::IsCollision(Line* target, const GameObject::Segment& segment, co
 	target->OnCollision();
 }
 
-//AABBの当たり判定
+// 当たり判定(線と三角形)
 void Collision::IsCollision(Line* target, const GameObject::Segment& segment, const GameObject::TriangleMaterial& triangle) {
 
 	Vector3 v01 = triangle.kLocalVertices_[1] - triangle.kLocalVertices_[0];
