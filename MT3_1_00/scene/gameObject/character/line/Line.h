@@ -45,6 +45,11 @@ public://メンバ関数
 	void DrawBezier();
 
 	/// <summary>
+	/// スプライン曲線
+	/// </summary>
+	void DrawCatmullRom();
+
+	/// <summary>
 	/// 衝突した場合の判定
 	/// </summary>
 	void OnCollision();
@@ -106,13 +111,25 @@ public://メンバ関数
 	/// ベジエ曲線の制御点のセッター
 	/// </summary>
 	/// <param name="controlPoints">制御点</param>
-	void SetBezierControlPoints(Vector3* controlPoints);
+	void SetBezierPoints(Vector3* controlPoints);
 
 	/// <summary>
 	/// ベジエ曲線の制御点のゲッター
 	/// </summary>
 	/// <returns>制御点の座標</returns>
-	Vector3* GetBezierControlPoints();
+	Vector3* GetBezierPoints();
+
+	/// <summary>
+	/// スプライン曲線の制御点のセッター
+	/// </summary>
+	/// <param name="controlPoints">制御点</param>
+	void SetCatmullRomPoints(std::vector<Vector3>controlPoints);
+
+	/// <summary>
+	/// スプライン曲線の制御点のゲッター
+	/// </summary>
+	/// <returns></returns>
+	std::vector<Vector3>GetCatmullRomPoints();
 
 private://メンバ関数
 
@@ -143,6 +160,7 @@ private://メンバ変数
 	Camera* camera_;//カメラ
 	uint32_t color_;//色
 	bool isHit_;//当たったかどうか
-	Vector3 bezierControlPoints[3] = {};//ベジエ曲線用の制御点
+	Vector3 bezierPoints_[3] = {};//ベジエ曲線用の制御点
+	std::vector<Vector3>catmullRomPoints_{};//スプライン曲線用の制御点
 };
 

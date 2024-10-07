@@ -41,14 +41,18 @@ void Line::Update() {
 /// デバックテキスト
 /// </summary>
 void Line::DebugText() {
-	ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
+	/*ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
 	ImGui::DragFloat3("segment diff", &segment_.diff.x, 0.1f);
-	ImGui::DragFloat3("bezierPints[0]", &bezierControlPoints[0].x, 0.1f);
-	ImGui::DragFloat3("bezierPints[1]", &bezierControlPoints[1].x, 0.1f);
-	ImGui::DragFloat3("bezierPints[2]", &bezierControlPoints[2].x, 0.1f);
+	ImGui::DragFloat3("bezierPints[0]", &bezierPoints_[0].x, 0.1f);
+	ImGui::DragFloat3("bezierPints[1]", &bezierPoints_[1].x, 0.1f);
+	ImGui::DragFloat3("bezierPints[2]", &bezierPoints_[2].x, 0.1f);*/
 	//ImGui::DragFloat3("point", &point_.x,0.1f);
 	//ImGui::InputFloat3("Project", &project_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	//ImGui::InputFloat3("cp", &closestPoint_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
+	ImGui::DragFloat3("catmullRomPoint[0]", &catmullRomPoints_[0].x, 0.1f);
+	ImGui::DragFloat3("catmullRomPoint[1]", &catmullRomPoints_[1].x, 0.1f);
+	ImGui::DragFloat3("catmullRomPoint[2]", &catmullRomPoints_[2].x, 0.1f);
+	ImGui::DragFloat3("catmullRomPoint[3]", &catmullRomPoints_[3].x, 0.1f);
 }
 #endif // _DEBUG
 
@@ -73,7 +77,7 @@ void Line::DrawBezier() {
 		//ベジエ曲線
 		Vector3 bezier[2];
 		for (int j = 0; j < 2; j++) {
-			bezier[j] = Math::Bezier(bezierControlPoints, frame[j]);
+			bezier[j] = Math::Bezier(bezierPoints_, frame[j]);
 		}
 		//ベジエ曲線の始点と終点
 		Vector3 start{};
@@ -85,6 +89,29 @@ void Line::DrawBezier() {
 		Novice::DrawLine(
 			(int)bezier[0].x, (int)bezier[0].y,
 			(int)bezier[1].x, (int)bezier[1].y,
+			color_
+		);
+	}
+}
+
+// スプライン曲線
+void Line::DrawCatmullRom(){
+	for (int i = 0; i < kDivision; i++) {
+		//フレームを分割
+		float frame[2] = { static_cast<float>(i) / kDivision,static_cast<float>(i + 1) / kDivision };
+		//ベジエ曲線
+		Vector3 catmullRom[2];
+		for (int j = 0; j < 2; j++) {
+			catmullRom[j] = Math::CatmullRomPosition(catmullRomPoints_, frame[j]);
+		}
+
+		//スクリーン座標に変換
+		CameraScreenTransform(camera_, catmullRom[0], catmullRom[0]);
+		CameraScreenTransform(camera_, catmullRom[1], catmullRom[1]);
+		//描画
+		Novice::DrawLine(
+			(int)catmullRom[0].x, (int)catmullRom[0].y,
+			(int)catmullRom[1].x, (int)catmullRom[1].y,
 			color_
 		);
 	}
@@ -146,15 +173,25 @@ void Line::SetIsHit(bool isHit) {
 }
 
 // ベジエ曲線の制御点のセッター
-void Line::SetBezierControlPoints(Vector3* controlPoints) {
+void Line::SetBezierPoints(Vector3* controlPoints) {
 	for (int i = 0; i < 3; i++) {
-		bezierControlPoints[i] = controlPoints[i];
+		bezierPoints_[i] = controlPoints[i];
 	}
 }
 
 // ベジエ曲線の制御点のゲッター
-Vector3* Line::GetBezierControlPoints(){
-	return bezierControlPoints;
+Vector3* Line::GetBezierPoints(){
+	return bezierPoints_;
+}
+
+// スプライン曲線の制御点のセッター
+void Line::SetCatmullRomPoints(std::vector<Vector3> controlPoints){
+	catmullRomPoints_ = controlPoints;
+}
+
+// スプライン曲線の制御点のゲッター
+std::vector<Vector3> Line::GetCatmullRomPoints(){
+	return catmullRomPoints_;
 }
 
 //正射影ベクトル

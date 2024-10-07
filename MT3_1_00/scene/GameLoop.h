@@ -56,7 +56,14 @@ private://メンバ変数
 		{1.76f,1.0f,-0.3f},
 		{0.94f,-0.7f,2.3f},
 	};
-	std::unique_ptr<Sphere>bezierControlPointSpheres_[3] = { nullptr };
+	std::vector<Vector3>catmullRomPoints_{
+		{-1.07f,0.13f,1.0f},
+		{1.76f,1.0f,-0.3f},
+		{0.94f,-0.7f,2.3f},
+		{-0.53f,-0.26f,-0.15f},
+	};
+	std::unique_ptr<Sphere>bezierPointSpheres_[3] = { nullptr };
+	std::vector<Sphere*>catmullRomPointSpheres_;
 
 	Plane* plane_ = nullptr;
 

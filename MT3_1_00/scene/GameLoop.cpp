@@ -59,7 +59,7 @@ void GameLoop::Create() {
 	plane_ = new Plane();
 	line_ = std::make_unique<Line>();
 	for (int i = 0; i < 3; i++) {
-		bezierControlPointSpheres_[i] = std::make_unique<Sphere>();
+		bezierPointSpheres_[i] = std::make_unique<Sphere>();
 	}
 	point1_ = new Sphere();
 	point2_ = new Sphere();
@@ -85,11 +85,12 @@ void GameLoop::Initialize() {
 	line_->Initialize(camera_, std::move(segment_));
 	line_->SetPoint({ -1.5f,0.6f,0.6f });
 	line_->SetSegment({ {-0.8f,-0.3f,0.0f},{0.5f,0.5f,0.5f} });
-	line_->SetBezierControlPoints(bezierControlPoints);
+	line_->SetBezierPoints(bezierControlPoints);
 	line_->SetColor(BLUE);
+	line_->SetCatmullRomPoints(catmullRomPoints_);
 	for (int i = 0; i < 3; i++) {
-		bezierControlPointSpheres_[i]->Initialize(camera_);
-		bezierControlPointSpheres_[i]->SetSphere({ line_->GetBezierControlPoints()[i],0.01f,BLACK,false });
+		bezierPointSpheres_[i]->Initialize(camera_);
+		bezierPointSpheres_[i]->SetSphere({ line_->GetBezierPoints()[i],0.01f,BLACK,false });
 	}
 	grid_->Initialize(camera_);
 	for (int i = 0; i < kSphereNum; i++) {
@@ -162,7 +163,13 @@ void GameLoop::Update() {
 	}
 
 	for (int i = 0; i < 3; i++) {
-		bezierControlPointSpheres_[i]->SetSphere({ line_->GetBezierControlPoints()[i],0.01f,BLACK,false });
+		bezierPointSpheres_[i]->SetSphere({ line_->GetBezierPoints()[i],0.01f,BLACK,false });
+	}
+	for (int i = 0; i < 4; i++) {
+		catmullRomPointSpheres_.resize(4);
+		catmullRomPointSpheres_[i] = new Sphere();
+		catmullRomPointSpheres_[i]->Initialize(camera_);
+		catmullRomPointSpheres_[i]->SetSphere({ line_->GetCatmullRomPoints()[i],0.01f,BLACK,false});
 	}
 }
 
@@ -175,7 +182,7 @@ void GameLoop::DebugText() {
 	//plane_->DebugText();
 	//spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
-	camera_->DebugText();
+//	camera_->DebugText();
 	/*for (int i = 0; i < Grid::kElementCount; i++) {
 		grid_->DebugText(i);
 	}*/
@@ -183,9 +190,9 @@ void GameLoop::DebugText() {
 	//aabbs_[1]->DebugText("aabb2");
 	/*obbs_[0]->DebagText("obb1");
 	obbs_[1]->DebagText("obb2");*/
-	bezierControlPointSpheres_[0]->DebugText("controlpoints1");
-	bezierControlPointSpheres_[1]->DebugText("controlpoints2");
-	bezierControlPointSpheres_[2]->DebugText("controlpoints3");
+	/*bezierPointSpheres_[0]->DebugText("controlpoints1");
+	bezierPointSpheres_[1]->DebugText("controlpoints2");
+	bezierPointSpheres_[2]->DebugText("controlpoints3");*/
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -211,8 +218,12 @@ void GameLoop::Draw() {
 	//	aabb->Draw();
 	//}
 	//line_->DrawSegment();
-	line_->DrawBezier();
-	for (auto& controlPoint : bezierControlPointSpheres_) {
+	//line_->DrawBezier();
+	line_->DrawCatmullRom();
+	/*for (auto& controlPoint : bezierPointSpheres_) {
+		controlPoint->Draw();
+	}*/
+	for (auto controlPoint : catmullRomPointSpheres_) {
 		controlPoint->Draw();
 	}
 	////plane_->Draw();
