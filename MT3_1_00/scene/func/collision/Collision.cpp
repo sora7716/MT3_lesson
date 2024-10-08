@@ -371,10 +371,6 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 		hexagon->GetVertex()[0] - hexagon->GetVertex()[5],
 	};
 
-	ImGui::Text(" %f: %f : %f", hexagon->GetVertex()[0].x, hexagon->GetVertex()[0].y, hexagon->GetVertex()[0].z);
-	ImGui::Text(" %f: %f : %f", hexagon->GetVertex()[1].x, hexagon->GetVertex()[1].y, hexagon->GetVertex()[1].z);
-	ImGui::Text(" %f: %f : %f", edge[0].x, edge[0].y, edge[0].z);
-
 	//衝突したかどうか
 	bool isHit = false;
 
@@ -392,7 +388,11 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	if (std::abs(dot) < 1e-6f) {
 		isHit = false;
 	}
+
+	//平面を求める
 	float t = (plane.distance - Math::Dot(line->GetSegment().origin, plane.normal)) / dot;
+
+	//六角形の各辺に重なっているかの計算
 	Vector3 intersect = line->GetSegment().origin + t * line->GetSegment().diff;
 	Vector3 v0p = intersect - hexagon->GetVertex()[0];
 	Vector3 v1p = intersect - hexagon->GetVertex()[1];
@@ -400,30 +400,32 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	Vector3 v3p = intersect - hexagon->GetVertex()[3];
 	Vector3 v4p = intersect - hexagon->GetVertex()[4];
 	Vector3 v5p = intersect - hexagon->GetVertex()[5];
-	if (t >= kTMin && t <= kTMax) {
-		isHit = true;
-	}
 
-	if (Math::Dot(Math::Cross(edge[0], v0p), normal) < 0.0f) {
-		isHit = false;
-	}
-	else if (Math::Dot(Math::Cross(edge[1], v1p), normal) < 0.0f) {
-		isHit = false;
-	}
-	else if (Math::Dot(Math::Cross(edge[2], v2p), normal) < 0.0f) {
-		isHit = false;
-	}
-	else if (Math::Dot(Math::Cross(edge[3], v3p), normal) < 0.0f) {
-		isHit = false;
-	}
-	else if (Math::Dot(Math::Cross(edge[4], v4p), normal) < 0.0f) {
-		isHit = false;
-	}
-	else if (Math::Dot(Math::Cross(edge[5], v5p), normal) < 0.0f) {
-		isHit = false;
-	}
-	else {
-		isHit = true;
+	
+	//平面の中にある六角形に線が当たっているかの判定
+	if (t >= kTMin && t <= kTMax) {
+
+		if (Math::Dot(Math::Cross(edge[0], v0p), normal) < 0.0f) {
+			isHit = false;
+		}
+		else if (Math::Dot(Math::Cross(edge[1], v1p), normal) < 0.0f) {
+			isHit = false;
+		}
+		else if (Math::Dot(Math::Cross(edge[2], v2p), normal) < 0.0f) {
+			isHit = false;
+		}
+		else if (Math::Dot(Math::Cross(edge[3], v3p), normal) < 0.0f) {
+			isHit = false;
+		}
+		else if (Math::Dot(Math::Cross(edge[4], v4p), normal) < 0.0f) {
+			isHit = false;
+		}
+		else if (Math::Dot(Math::Cross(edge[5], v5p), normal) < 0.0f) {
+			isHit = false;
+		}
+		else {
+			isHit = true;
+		}
 	}
 
 	return isHit;

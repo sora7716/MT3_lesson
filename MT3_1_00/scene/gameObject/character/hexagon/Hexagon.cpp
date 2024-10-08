@@ -19,8 +19,8 @@ void Hexagon::Update() {
 		float theta = 60.0f * static_cast<float>(i);
 		float angle = theta * rad;
 		vertex[i].x = hexagon_.radius * std::cosf(angle) + hexagon_.center.x;
-		vertex[i].y = hexagon_.radius * std::sinf(angle) + hexagon_.center.y;
-		vertex[i].z = hexagon_.center.z;
+		vertex[i].y = hexagon_.center.y;
+		vertex[i].z = hexagon_.radius * std::sinf(angle) + hexagon_.center.z;
 	}
 	for (int i = 0; i < 6; i++) {
 		CameraScreenTransform(camera_, vertex[i], screenVertex[i]);
@@ -45,7 +45,7 @@ void Hexagon::Draw() {
 }
 
 // 衝突したとき
-void Hexagon::OnCollision(bool isHit){
+void Hexagon::OnCollision(bool isHit) {
 	if (isHit) {
 		hexagon_.color = RED;
 	}
@@ -60,6 +60,6 @@ Vector3* Hexagon::GetVertex() {
 }
 
 // 六角形の素材のゲッター
-GameObject::HexagonMaterial Hexagon::GetHexagonMaterial(){
+GameObject::HexagonMaterial Hexagon::GetHexagonMaterial() {
 	return hexagon_;
 }
