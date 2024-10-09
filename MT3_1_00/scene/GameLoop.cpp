@@ -159,7 +159,7 @@ void GameLoop::Initialize() {
 	wire_->Initialize(camera_, std::move(wireSegment_));
 
 	centerPos_ = {};
-	centerRadius_ = 0.8f;
+	centerRadius_ = { 0.8f ,0.8f };
 }
 
 //更新処理
@@ -202,7 +202,7 @@ void GameLoop::Update() {
 
 	hexagon_->Update();
 	//円運動
-	Math::CircularMoveXY(centerPos_, ball_.position,centerRadius_);
+	Math::CircularMoveZY(centerPos_, ball_.position, centerRadius_);
 
 	//フックの法則
 	//Math::Hook(spring_,ball_,true);
@@ -260,7 +260,7 @@ void GameLoop::DebugText() {
 	ImGui::DragFloat("mass", &ball_.mass, 0.1f);
 	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
 	ImGui::DragFloat3("center", &centerPos_.x, 0.1f);
-	ImGui::SliderFloat("centerRadius", &centerRadius_, 0.0f, 2.0f);
+	ImGui::SliderFloat2("centerRadius", &centerRadius_.x, 0.0f, 2.0f);
 	ImGui::End();
 }
 #endif // _DEBUG

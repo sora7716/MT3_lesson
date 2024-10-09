@@ -88,7 +88,7 @@ private://メンバ変数
 	GameObject::Segment wireSegment_ = {};
 	std::unique_ptr<Line>wire_ = nullptr;
 	Vector3 centerPos_{};
-	float centerRadius_ = 0.0f;
+	Vector2 centerRadius_ = {};
 
 private://メンバ関数
 

@@ -287,9 +287,23 @@ public:
 	static void Hook(const Spring& spring, Ball& ball,bool isGravityOn=false);
 
 	/// <summary>
-	/// 円運動
+	/// 円運動XY
 	/// </summary>
 	/// <param name="centerPos">中心</param>
 	/// <param name="ballPos">現在のボールの位置</param>
-	static void CircularMoveXY(Vector3& centerPos,Vector3& ballPos,float radius);
+	static void CircularMoveXY(const Vector3& centerPos,Vector3& ballPos,const Vector2& radius);
+
+	/// <summary>
+	/// 円運動XZ
+	/// </summary>
+	/// <param name="centerPos">中心</param>
+	/// <param name="ballPos">現在のボールの位置</param>
+	static void CircularMoveXZ(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
+
+	/// <summary>
+	/// 円運動ZY
+	/// </summary>
+	/// <param name="centerPos">中心</param>
+	/// <param name="ballPos">現在のボールの位置</param>
+	static void CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
 };

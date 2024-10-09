@@ -407,13 +407,36 @@ void Math::Hook(const Spring& spring, Ball& ball, bool isGravityOn) {
 	ball.position += ball.velocity * deltaTime;
 }
 
-void Math::CircularMoveXY(Vector3& centerPos, Vector3& ballPos,float radius) {
+// 円運動XY
+void Math::CircularMoveXY(const Vector3& centerPos, Vector3& ballPos,const Vector2& radius) {
 	float angularVelocity = pi_f;//角速度
 	static float angle = 0.0f;//角度
 	angle += angularVelocity * deltaTime;//現在の角度の計算
 	//円運動させる
-	ballPos.x = centerPos.x + cos(angle) * radius;
-	ballPos.y = centerPos.y + sin(angle) * radius;
+	ballPos.x = centerPos.x + cos(angle) * radius.x;
+	ballPos.y = centerPos.y + sin(angle) * radius.y;
 	ballPos.z = centerPos.z;
+}
+
+// 円運動XZ
+void Math::CircularMoveXZ(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius){
+	float angularVelocity = pi_f;//角速度
+	static float angle = 0.0f;//角度
+	angle += angularVelocity * deltaTime;//現在の角度の計算
+	//円運動させる
+	ballPos.x = centerPos.x + cos(angle) * radius.x;
+	ballPos.y = centerPos.y;
+	ballPos.z = centerPos.z + sin(angle) * radius.y;
+}
+
+// 円運動ZY
+void Math::CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius){
+	float angularVelocity = pi_f;//角速度
+	static float angle = 0.0f;//角度
+	angle += angularVelocity * deltaTime;//現在の角度の計算
+	//円運動させる
+	ballPos.x = centerPos.x;
+	ballPos.y = centerPos.y + sin(angle) * radius.y;
+	ballPos.z = centerPos.z + cos(angle) * radius.x;
 }
 
