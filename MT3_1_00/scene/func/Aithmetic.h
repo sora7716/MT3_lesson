@@ -110,6 +110,14 @@ const Vector3 operator-(const Vector3& v);
 const Vector3 operator/(const Vector3& v1, const Vector3& v2);
 
 /// <summary>
+/// 減算(floatとVector3)
+/// </summary>
+/// <param name="num"></param>
+/// <param name="v"></param>
+/// <returns></returns>
+const Vector3 operator-(const float& num, const Vector3& v);
+
+/// <summary>
 /// v1がv2のほうが小さい
 /// </summary>
 /// <param name="v1"></param>

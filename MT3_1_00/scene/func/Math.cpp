@@ -465,3 +465,16 @@ void Math::MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPo
 	ballPos.z = conicalPendulum.anchor.z - sin(conicalPendulum.angle) * radius;
 }
 
+//反射ベクトル
+Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal){
+	return input - 2 * Math::Dot(input, normal) * normal;
+}
+
+//反発
+void Math::Reflection(Vector3& ballVelocity, const Vector3 normal, float e){
+	Vector3 reflected = ReflectVector(ballVelocity, normal);
+	Vector3 projectToNormal = Project(reflected, normal);
+	Vector3 movingDirection = reflected - projectToNormal;
+	ballVelocity = projectToNormal * e + movingDirection;
+}
+

@@ -1,4 +1,4 @@
-﻿#include "Aithmetic.h"
+#include "Aithmetic.h"
 
 const Vector3 operator+(const Vector3& num1,const Vector3& num2){
 	Vector3 result{};
@@ -111,6 +111,14 @@ const Vector3 operator/(const Vector3& v1, const Vector3& v2){
 	result.y = v1.y / v2.y;
 	result.z = v1.z / v2.z;
 
+	return result;
+}
+
+const Vector3 operator-(const float& num, const Vector3& v){
+	Vector3 result;
+	result.x = num - v.x;
+	result.y = num - v.y;
+	result.z = num - v.z;
 	return result;
 }
 

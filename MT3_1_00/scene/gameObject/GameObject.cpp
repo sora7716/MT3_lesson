@@ -1,4 +1,4 @@
-﻿#include"GameObject.h"
+#include"GameObject.h"
 
 //倍率
 void GameObject::Scale(bool front,bool behind){
@@ -161,6 +161,9 @@ void GameObject::Rotation(){
 		else {
 			radian_.x = 0;
 		}
+	}
+	else {
+		radian_ = {};
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "scene/gameObject/character/AABB/AABB.h"
 #include "scene/gameObject/character/OBB/OBB.h"
 #include "scene/gameObject/character/hexagon/Hexagon.h"
+#include "scene/gameObject/character/capsule/Capsule.h"
 #include <algorithm> 
 using namespace std;
 
@@ -34,6 +35,14 @@ void Collision::IsCollision(Sphere* target, const GameObject::SphereMaterial& sp
 		target->SetIsHit(false);
 	}
 	target->OnCollision();//色を変える
+}
+
+bool Collision::IsCollision(const GameObject::SphereMaterial& sphere, const GameObject::PlaneMaterial& plane) {
+	Vector3 normal = plane.normal;
+	float distance = plane.distance;
+	float k = fabsf(Math::Dot(normal, sphere.center) - distance);
+
+	return k <= sphere.radius;
 }
 
 //当たり判定(線と平面)
@@ -401,7 +410,7 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	Vector3 v4p = intersect - hexagon->GetVertex()[4];
 	Vector3 v5p = intersect - hexagon->GetVertex()[5];
 
-	
+
 	//平面の中にある六角形に線が当たっているかの判定
 	if (t >= kTMin && t <= kTMax) {
 
@@ -429,6 +438,47 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	}
 
 	return isHit;
+}
+
+// 衝突判定(カプセルと平面)
+bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const GameObject::PlaneMaterial& plane) {
+	// カプセルの始点と終点
+	Vector3 capsuleStart = capsule.segment.origin;
+	Vector3 capsuleEnd = capsuleStart + capsule.segment.diff;
+
+	//平面上の任意の点(法線ベクトル*平面のオフセット距離)
+	Vector3 planeCenter = plane.normal * plane.distance;
+
+	//平面上の法線
+	Vector3 normal = plane.normal;
+
+	//平面の中心座標とカプセルの始点との距離
+	Vector3 d = planeCenter - capsuleStart;
+
+	//カプセルの始点から終点の差分ベクトル
+	Vector3 ba = capsuleEnd - capsuleStart;
+
+	//長さを求める
+	float len = Math::Length(ba);
+
+	//正規化する
+	Vector3 e = Math::Normalize(ba);
+
+	//内積を求める
+	float dot = Math::Dot(d, e);
+	float t = dot / len;
+
+	//クランプ
+    t = clamp(t, 0.0f, 1.0f);
+
+	//線形補完する
+	Vector3 f = Math::Lerp(capsuleStart, capsuleEnd, t);
+	
+	//カプセルの半径と距離を比較
+	float distance = abs(Math::Dot(normal, f) - plane.distance);
+
+	//距離がカプセルの半径以下なら衝突
+	return distance <= capsule.radius;
 }
 
 

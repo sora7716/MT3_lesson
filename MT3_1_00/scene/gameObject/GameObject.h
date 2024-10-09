@@ -96,8 +96,7 @@ public://構造体など
 
 	//カプセル作るときの素材
 	typedef struct CapsuleMaterial {
-		Vector3 origin;//始点
-		Vector3 diff;//終点への差分ベクトル
+		Segment segment;//線分
 		float radius;//半径
 		uint32_t color = WHITE;//色
 		bool isHit = false;//衝突したかの判定

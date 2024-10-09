@@ -125,7 +125,7 @@ public:
 	/// OBB用のワールド行列
 	/// </summary>
 	/// <param name="orientations">回転行列から抽出したやつ</param>
-    /// <param name="center">センターの値</param>
+	/// <param name="center">センターの値</param>
 	/// <returns>OBBのワールド行列</returns>
 	static Matrix4x4 MakeOBBWorldMatrix(const Vector3* orientations, const Vector3 center);
 
@@ -286,7 +286,7 @@ public:
 	/// <param name="points">制御点</param>
 	/// <param name="t">フレーム</param>
 	/// <returns>ベジエ曲線</returns>
-	static Vector3 Bezier(const Vector3* points,float t);
+	static Vector3 Bezier(const Vector3* points, float t);
 
 	/// <summary>
 	/// 三次元ベジエ曲線(球面線形補間ver)
@@ -302,14 +302,14 @@ public:
 	/// <param name="spring">バネ</param>
 	/// <param name="ball">ボール</param>
 	/// <param name="isGravityOn">重力をつけるかどうか</param>
-	static void Hooklaw(const Spring& spring, Ball& ball,bool isGravityOn=false);
+	static void Hooklaw(const Spring& spring, Ball& ball, bool isGravityOn = false);
 
 	/// <summary>
 	/// 円運動XY
 	/// </summary>
 	/// <param name="centerPos">中心</param>
 	/// <param name="ballPos">現在のボールの位置</param>
-	static void CircularMoveXY(const Vector3& centerPos,Vector3& ballPos,const Vector2& radius);
+	static void CircularMoveXY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
 
 	/// <summary>
 	/// 円運動XZ
@@ -330,12 +330,28 @@ public:
 	/// </summary>
 	/// <param name="pendulum">振り子ワイヤー</param>
 	/// <param name="ballPos">振り子の先につくもの</param>
-	static void MakePendulum(Pendulum&pendulum,Vector3&ballPos);
+	static void MakePendulum(Pendulum& pendulum, Vector3& ballPos);
 
 	/// <summary>
 	/// 円錐状に動く振り子を作成
 	/// </summary>
 	/// <param name="conicalPendulum">円錐状に動く振り子のワイヤー</param>
 	/// <param name="ballPos">振り子の先につくもの</param>
-	static void MakeConicalPendulum(ConicalPendulum& conicalPendulum,Vector3& ballPos);
+	static void MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos);
+
+	/// <summary>
+    /// 反射ベクトル
+    /// </summary>
+    /// <param name="input">入射ベクトル</param>
+    /// <param name="normal">面の法線</param>
+	/// <returns>反射ベクトル</returns>
+	static Vector3 ReflectVector(const Vector3& input, const Vector3& normal);
+
+	/// <summary>
+	/// 反発
+	/// </summary>
+	/// <param name="ballVelocity">反発してほしい物の速度</param>
+	/// <param name="normal">ぶつかる予定のオブジェクトの法線</param>
+	/// <param name="e">反発係数</param>
+	static void Reflection(Vector3& ballVelocity,const Vector3 normal,float e);
 };
