@@ -160,6 +160,18 @@ void GameLoop::Initialize() {
 
 	centerPos_ = {};
 	centerRadius_ = { 0.8f ,0.8f };
+
+	pendulum_.anchor = { 0.0f,1.0f,0.0f };
+	pendulum_.length = 0.8f;
+	pendulum_.angle = 0.7f;
+	pendulum_.angularVelocity = 0.0f;
+	pendulum_.angularaAcceleration = 0.0f;
+
+	conicalPendulum_.anchor = { 0.0f,1.0f,0.0f };
+	conicalPendulum_.length = 0.8f;
+	conicalPendulum_.halfApexAngle = 0.7f;
+	conicalPendulum_.angle = 0.0f;
+	conicalPendulum_.angularVelocity = 0.0f;
 }
 
 //更新処理
@@ -202,19 +214,32 @@ void GameLoop::Update() {
 
 	hexagon_->Update();
 	//円運動
-	Math::CircularMoveZY(centerPos_, ball_.position, centerRadius_);
-
+	//Math::CircularMoveZY(centerPos_, ball_.position, centerRadius_);
+	//振り子
+	//Math::MakePendulum(pendulum_, ball_.position);
 	//フックの法則
 	//Math::Hooklaw(spring_,ball_,true);
+	//円錐状に動く振り子
+	Math::MakeConicalPendulum(conicalPendulum_, ball_.position);
 	//スフィアの素材に代入
 	sphereBallMaterial_.center = ball_.position;
 	sphereBallMaterial_.radius = ball_.radius;
 	sphereBallMaterial_.color = ball_.color;
 	sphreBall_->SetSphere(sphereBallMaterial_);
 	//線分に代入
+	//フックの法則用
 	/*wireSegment_.origin = spring_.anchor;
 	wireSegment_.diff = ball_.position - wireSegment_.origin;
 	wire_->SetSegment(wireSegment_);*/
+	//振り子用
+	/*wireSegment_.origin = pendulum_.anchor;
+	wireSegment_.diff = ball_.position - wireSegment_.origin;
+	wire_->SetSegment(wireSegment_);*/
+	//円錐の振り子用
+	wireSegment_.origin = conicalPendulum_.anchor;
+	wireSegment_.diff = ball_.position - wireSegment_.origin;
+	wire_->SetSegment(wireSegment_);
+
 
 }
 
@@ -225,7 +250,7 @@ void GameLoop::DebugText() {
 	line_->DebugText();
 	hexagon_->DebugText("hexagon");
 	//triangle_->DebugText();
-	plane_->DebugText();
+	//plane_->DebugText();
 	/*spheres_[0]->DebugText("sphere[0]");
 	spheres_[1]->DebugText("sphere[1]");*/
 	//camera_->DebugText();
@@ -253,7 +278,7 @@ void GameLoop::DebugText() {
 	ImGui::DragFloat("dampingCoefficient", &spring_.dampingCoefficient, 0.1f);
 	ImGui::End();*/
 
-	ImGui::Begin("CircularMove");
+	/*ImGui::Begin("CircularMove");
 	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
 	ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
 	ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
@@ -261,6 +286,26 @@ void GameLoop::DebugText() {
 	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
 	ImGui::DragFloat3("center", &centerPos_.x, 0.1f);
 	ImGui::SliderFloat2("centerRadius", &centerRadius_.x, 0.0f, 2.0f);
+	ImGui::End();*/
+
+	//ImGui::Begin("Pendulum");
+	//ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
+	//ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
+	//ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
+	//ImGui::DragFloat("mass", &ball_.mass, 0.1f);
+	//ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
+	//ImGui::DragFloat3("anchor", &pendulum_.anchor.x, 0.1f);
+	//ImGui::SliderFloat("length", &pendulum_.length, -1.0f, 2.0f);
+	//ImGui::End();
+
+	ImGui::Begin("ConicalPendulum");
+	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
+	ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
+	ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
+	ImGui::DragFloat("mass", &ball_.mass, 0.1f);
+	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
+	ImGui::DragFloat3("anchor", &conicalPendulum_.anchor.x, 0.1f);
+	ImGui::SliderFloat("length", &conicalPendulum_.length, 0.1f, 2.0f);
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -311,6 +356,6 @@ void GameLoop::Draw() {
 	//hexagon_->Draw();
 
 	sphreBall_->Draw();
-	//wire_->DrawSegment();
+	wire_->DrawSegment();
 	Collider();
 }

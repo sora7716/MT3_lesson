@@ -30,6 +30,24 @@ public://構造体など
 		float radius;//ボールの半径
 		int color;//ボールの色
 	}Ball;
+
+	//振り子
+	typedef struct Pendulum {
+		Vector3 anchor;//アンカーポイント。固定された端の位置
+		float length;//紐の長さ
+		float angle;//現在の角度
+		float angularVelocity;//角速度ω
+		float angularaAcceleration;//角加速度
+	}Pendulum;
+
+	//円錐に回る振り子
+	typedef struct ConicalPendulum {
+		Vector3 anchor;//アンカーポイント
+		float length;//紐の長さ
+		float halfApexAngle;//円錐の頂点の半分の角度
+		float angle;//現在の角度
+		float angularVelocity;//角速度ω
+	}ConicalPendulum;
 public:
 
 	/// <summary>
@@ -306,4 +324,18 @@ public:
 	/// <param name="centerPos">中心</param>
 	/// <param name="ballPos">現在のボールの位置</param>
 	static void CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
+
+	/// <summary>
+	/// 振り子の作成
+	/// </summary>
+	/// <param name="pendulum">振り子ワイヤー</param>
+	/// <param name="ballPos">振り子の先につくもの</param>
+	static void MakePendulum(Pendulum&pendulum,Vector3&ballPos);
+
+	/// <summary>
+	/// 円錐状に動く振り子を作成
+	/// </summary>
+	/// <param name="conicalPendulum">円錐状に動く振り子のワイヤー</param>
+	/// <param name="ballPos">振り子の先につくもの</param>
+	static void MakeConicalPendulum(ConicalPendulum& conicalPendulum,Vector3& ballPos);
 };

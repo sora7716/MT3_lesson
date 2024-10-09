@@ -408,7 +408,7 @@ void Math::Hooklaw(const Spring& spring, Ball& ball, bool isGravityOn) {
 }
 
 // 円運動XY
-void Math::CircularMoveXY(const Vector3& centerPos, Vector3& ballPos,const Vector2& radius) {
+void Math::CircularMoveXY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius) {
 	float angularVelocity = pi_f;//角速度
 	static float angle = 0.0f;//角度
 	angle += angularVelocity * deltaTime;//現在の角度の計算
@@ -419,7 +419,7 @@ void Math::CircularMoveXY(const Vector3& centerPos, Vector3& ballPos,const Vecto
 }
 
 // 円運動XZ
-void Math::CircularMoveXZ(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius){
+void Math::CircularMoveXZ(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius) {
 	float angularVelocity = pi_f;//角速度
 	static float angle = 0.0f;//角度
 	angle += angularVelocity * deltaTime;//現在の角度の計算
@@ -430,7 +430,7 @@ void Math::CircularMoveXZ(const Vector3& centerPos, Vector3& ballPos, const Vect
 }
 
 // 円運動ZY
-void Math::CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius){
+void Math::CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius) {
 	float angularVelocity = pi_f;//角速度
 	static float angle = 0.0f;//角度
 	angle += angularVelocity * deltaTime;//現在の角度の計算
@@ -438,5 +438,30 @@ void Math::CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vect
 	ballPos.x = centerPos.x;
 	ballPos.y = centerPos.y + sin(angle) * radius.y;
 	ballPos.z = centerPos.z + cos(angle) * radius.x;
+}
+
+//振り子の作成
+void Math::MakePendulum(Pendulum& pendulum, Vector3& ballPos) {
+	pendulum.angularaAcceleration = -(abs(kGravity.y) / pendulum.length) * sin(pendulum.angle);
+	pendulum.angularVelocity += pendulum.angularaAcceleration * deltaTime;
+	pendulum.angle += pendulum.angularVelocity * deltaTime;
+	//振り子の先端
+	ballPos.x = pendulum.anchor.x + sin(pendulum.angle) * pendulum.length;
+	ballPos.y = pendulum.anchor.y - cos(pendulum.angle) * pendulum.length;
+	ballPos.z = pendulum.anchor.z;
+}
+
+// 円錐状に動く振り子を作成
+void Math::MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos){
+	//角度を計算
+	conicalPendulum.angularVelocity = sqrt(9.8f / (conicalPendulum.length * cos(conicalPendulum.halfApexAngle)));
+	conicalPendulum.angle += conicalPendulum.angularVelocity * deltaTime;
+
+	//求めた角度からボブの位置を算出
+	float radius = sin(conicalPendulum.halfApexAngle) * conicalPendulum.length;
+	float height = cos(conicalPendulum.halfApexAngle) * conicalPendulum.length;
+	ballPos.x = conicalPendulum.anchor.x + cos(conicalPendulum.angle) * radius;
+	ballPos.y = conicalPendulum.anchor.y - height;
+	ballPos.z = conicalPendulum.anchor.z - sin(conicalPendulum.angle) * radius;
 }
 

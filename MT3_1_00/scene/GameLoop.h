@@ -89,6 +89,8 @@ private://メンバ変数
 	std::unique_ptr<Line>wire_ = nullptr;
 	Vector3 centerPos_{};
 	Vector2 centerRadius_ = {};
+	Math::Pendulum pendulum_ = {};
+	Math::ConicalPendulum conicalPendulum_ = {};
 
 private://メンバ関数
 
