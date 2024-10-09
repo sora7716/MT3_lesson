@@ -1,6 +1,7 @@
 #pragma once
 #include "scene/func/Aithmetic.h"
 #include <vector>
+#define kGravity Vector3(0.0f,-9.8f,0.0f)
 
 class Math {
 
@@ -11,6 +12,7 @@ public://構造体など
 		Vector3 anchor;
 		float naturalLength;//自然長
 		float stiffness;//剛性。バネ定数。
+		float dampingCoefficient;//減衰係数
 	}Spring;
 
 	//ボール
@@ -20,7 +22,7 @@ public://構造体など
 		Vector3 acceleration;//加速度
 		float mass;//ボールの重さ
 		float radius;//ボールの半径
-		unsigned int color;//ボールの色
+		int color;//ボールの色
 	}Ball;
 public:
 
@@ -275,5 +277,6 @@ public:
 	/// </summary>
 	/// <param name="spring">バネ</param>
 	/// <param name="ball">ボール</param>
-	static void Hook(const Spring& spring, Ball& ball);
+	/// <param name="isGravityOn">重力をつけるかどうか</param>
+	static void Hook(Spring& spring, Ball& ball,bool isGravityOn=false);
 };

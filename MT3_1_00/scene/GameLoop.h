@@ -85,6 +85,8 @@ private://メンバ変数
 	Math::Ball ball_{};
 	GameObject::SphereMaterial sphereBallMaterial_{};
 	std::unique_ptr<Sphere>sphreBall_ = nullptr;
+	GameObject::Segment springWireSegment_ = {};
+	std::unique_ptr<Line>springWire_ = nullptr;
 
 private://メンバ関数
 

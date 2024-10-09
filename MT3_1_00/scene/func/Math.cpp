@@ -3,6 +3,7 @@
 #include <cmath>
 #include "Math.h"
 #define cont(theta) (1.0f/tanf(theta)) 
+#define deltaTime 1.0f/60.0f
 #include <algorithm>
 using namespace std;
 
@@ -216,7 +217,7 @@ Vector3 Math::Normalize(const Vector3& v) {
 	float len = Length(v);
 	Vector3 result{};
 	result = v / len;
-	return v;
+	return result;
 }
 
 //正規化
@@ -388,24 +389,37 @@ Vector3 Math::BezierS(const Vector3* points, float t) {
 }
 
 //フックの法則
-void Math::Hook(const Spring& spring, Ball& ball) {
+void Math::Hook(Spring& spring, Ball& ball,bool isGravityOn) {
+	//重力加速度
+	if (isGravityOn) {
+		ball.acceleration += kGravity;
+	}
 	Vector3 diff = ball.position - spring.anchor;
 	float length = Length(diff);
 	if (length != 0.0f) {
 		Vector3 direction = Normalize(diff);
-		Vector3 restPosition = spring.anchor + direction * spring.naturalLength;
-		Vector3 displacement = length * (ball.position - restPosition);
-		Vector3 restoringForce = -spring.stiffness * displacement;
-		Vector3 force = restoringForce;
-		ball.acceleration = force / ball.mass;
+		Vector3 restPosition = spring.anchor + direction * spring.naturalLength;//止まる位置
+		Vector3 displacement = length * (ball.position - restPosition);//変位ベクトル
+		Vector3 restoringForce = -spring.stiffness * displacement;//復元力
+		Vector3 dampingForce = -spring.dampingCoefficient * ball.velocity;//減衰抵抗を計算する
+		Vector3 force = restoringForce + dampingForce;//力の向き(減衰抵抗も加味して、物体にかかる力を決定する)
+		ball.acceleration = force / std::abs(ball.mass) + (ball.acceleration / deltaTime);//加速度に力/質量を代入
 	}
 	//加速度も速度どちらも秒を基準とした値である
 	//それが、1/60秒間(deltaTime)適用されたと考える
-	float deltaTime = 1.0f / 60.0f;
 	ball.velocity += ball.acceleration * deltaTime;
 	ball.position += ball.velocity * deltaTime;
 
-	ImGui::DragFloat3("ball.position",&ball.position.x,0.01f);
-	
+	ImGui::Begin("hook");
+	ImGui::DragFloat3("position",&ball.position.x,0.01f);
+	ImGui::DragFloat3("velocity", &ball.velocity.x, 0.01f);
+	ImGui::DragFloat3("acceleration", &ball.acceleration.x, 0.01f);
+	ImGui::DragFloat("mass", &ball.mass, 0.1f);
+	ImGui::SliderFloat("radius", &ball.radius,0.0f, 2.0f);
+	ImGui::DragFloat3("anchor", &spring.anchor.x, 0.1f);
+	ImGui::DragFloat("naturalLength", &spring.naturalLength, 0.1f);
+	ImGui::DragFloat("stiffness", &spring.stiffness, 0.1f);
+	ImGui::DragFloat("dampingCoefficient", &spring.dampingCoefficient, 0.1f);
+	ImGui::End();
 }
 

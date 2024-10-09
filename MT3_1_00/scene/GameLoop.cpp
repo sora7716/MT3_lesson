@@ -77,6 +77,7 @@ void GameLoop::Create() {
 	hexagon_ = std::make_unique<Hexagon>();
 
 	sphreBall_ = std::make_unique<Sphere>();
+	springWire_ = std::make_unique<Line>();
 }
 
 //初期化処理
@@ -142,20 +143,20 @@ void GameLoop::Initialize() {
 	};
 	hexagon_->Initialize(camera_, hexagonMateiral_);
 
-	spring_.anchor = { 0.0f,0.0f,0.0f };
-	spring_.naturalLength = 1.0f;
+	spring_.anchor = { 0.0f,1.0f,0.0f };
+	spring_.naturalLength = 0.7f;
 	spring_.stiffness = 100.0f;
+	spring_.dampingCoefficient = 2.0f;
 
-	ball_.position = { 1.2f,0.0f,0.0f };
+	ball_.position = { 0.8f,0.2f,0.0f };
 	ball_.mass = 2.0f;
 	ball_.radius = 0.05f;
 	ball_.color = BLUE;
 
-	sphereBallMaterial_.center = ball_.position;
-	sphereBallMaterial_.radius = ball_.radius;
-	sphereBallMaterial_.color = ball_.color;
 	sphreBall_->Initialize(camera_);
-	sphreBall_->SetSphere(sphereBallMaterial_);
+	springWireSegment_.origin = spring_.anchor;
+	springWireSegment_.diff = ball_.position - springWireSegment_.origin;
+	springWire_->Initialize(camera_, std::move(springWireSegment_));
 }
 
 //更新処理
@@ -197,11 +198,17 @@ void GameLoop::Update() {
 	}
 
 	hexagon_->Update();
+	//フックの法則
+	Math::Hook(spring_,ball_,true);
+	//スフィアの素材に代入
 	sphereBallMaterial_.center = ball_.position;
 	sphereBallMaterial_.radius = ball_.radius;
 	sphereBallMaterial_.color = ball_.color;
-	Math::Hook(spring_,ball_);
 	sphreBall_->SetSphere(sphereBallMaterial_);
+	//線分に代入
+	springWireSegment_.origin = spring_.anchor;
+	springWireSegment_.diff = ball_.position - springWireSegment_.origin;
+	springWire_->SetSegment(springWireSegment_);
 }
 
 #ifdef _DEBUG
@@ -275,5 +282,6 @@ void GameLoop::Draw() {
 	//hexagon_->Draw();
 
 	sphreBall_->Draw();
+	springWire_->DrawSegment();
 	Collider();
 }
