@@ -1,7 +1,13 @@
 #pragma once
 #include "scene/func/Aithmetic.h"
 #include <vector>
+#include <cmath>
+#include <numbers>
+#include <algorithm>
+#define cont(theta) (1.0f/tanf(theta)) 
+#define deltaTime 1.0f/60.0f
 #define kGravity Vector3(0.0f,-9.8f,0.0f)
+#define pi_f std::numbers::pi_v<float>
 
 class Math {
 
@@ -278,5 +284,12 @@ public:
 	/// <param name="spring">バネ</param>
 	/// <param name="ball">ボール</param>
 	/// <param name="isGravityOn">重力をつけるかどうか</param>
-	static void Hook(Spring& spring, Ball& ball,bool isGravityOn=false);
+	static void Hook(const Spring& spring, Ball& ball,bool isGravityOn=false);
+
+	/// <summary>
+	/// 円運動
+	/// </summary>
+	/// <param name="centerPos">中心</param>
+	/// <param name="ballPos">現在のボールの位置</param>
+	static void CircularMoveXY(Vector3& centerPos,Vector3& ballPos,float radius);
 };

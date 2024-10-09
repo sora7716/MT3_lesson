@@ -77,7 +77,7 @@ void GameLoop::Create() {
 	hexagon_ = std::make_unique<Hexagon>();
 
 	sphreBall_ = std::make_unique<Sphere>();
-	springWire_ = std::make_unique<Line>();
+	wire_ = std::make_unique<Line>();
 }
 
 //初期化処理
@@ -154,9 +154,12 @@ void GameLoop::Initialize() {
 	ball_.color = BLUE;
 
 	sphreBall_->Initialize(camera_);
-	springWireSegment_.origin = spring_.anchor;
-	springWireSegment_.diff = ball_.position - springWireSegment_.origin;
-	springWire_->Initialize(camera_, std::move(springWireSegment_));
+	wireSegment_.origin = spring_.anchor;
+	wireSegment_.diff = ball_.position - wireSegment_.origin;
+	wire_->Initialize(camera_, std::move(wireSegment_));
+
+	centerPos_ = {};
+	centerRadius_ = 0.8f;
 }
 
 //更新処理
@@ -198,17 +201,21 @@ void GameLoop::Update() {
 	}
 
 	hexagon_->Update();
+	//円運動
+	Math::CircularMoveXY(centerPos_, ball_.position,centerRadius_);
+
 	//フックの法則
-	Math::Hook(spring_,ball_,true);
+	//Math::Hook(spring_,ball_,true);
 	//スフィアの素材に代入
 	sphereBallMaterial_.center = ball_.position;
 	sphereBallMaterial_.radius = ball_.radius;
 	sphereBallMaterial_.color = ball_.color;
 	sphreBall_->SetSphere(sphereBallMaterial_);
 	//線分に代入
-	springWireSegment_.origin = spring_.anchor;
-	springWireSegment_.diff = ball_.position - springWireSegment_.origin;
-	springWire_->SetSegment(springWireSegment_);
+	/*wireSegment_.origin = spring_.anchor;
+	wireSegment_.diff = ball_.position - wireSegment_.origin;
+	wire_->SetSegment(wireSegment_);*/
+
 }
 
 #ifdef _DEBUG
@@ -232,6 +239,28 @@ void GameLoop::DebugText() {
 	 /*bezierPointSpheres_[0]->DebugText("controlpoints1");
 	 bezierPointSpheres_[1]->DebugText("controlpoints2");
 	 bezierPointSpheres_[2]->DebugText("controlpoints3");*/
+	ImGui::End();
+
+	/*ImGui::Begin("hook");
+	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
+	ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
+	ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
+	ImGui::DragFloat("mass", &ball_.mass, 0.1f);
+	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
+	ImGui::DragFloat3("anchor", &spring_.anchor.x, 0.1f);
+	ImGui::DragFloat("naturalLength", &spring_.naturalLength, 0.1f);
+	ImGui::DragFloat("stiffness", &spring_.stiffness, 0.1f);
+	ImGui::DragFloat("dampingCoefficient", &spring_.dampingCoefficient, 0.1f);
+	ImGui::End();*/
+
+	ImGui::Begin("CircularMove");
+	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
+	ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
+	ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
+	ImGui::DragFloat("mass", &ball_.mass, 0.1f);
+	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
+	ImGui::DragFloat3("center", &centerPos_.x, 0.1f);
+	ImGui::SliderFloat("centerRadius", &centerRadius_, 0.0f, 2.0f);
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -282,6 +311,6 @@ void GameLoop::Draw() {
 	//hexagon_->Draw();
 
 	sphreBall_->Draw();
-	springWire_->DrawSegment();
+	//wire_->DrawSegment();
 	Collider();
 }

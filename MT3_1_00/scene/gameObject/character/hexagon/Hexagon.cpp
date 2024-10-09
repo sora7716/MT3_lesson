@@ -4,7 +4,6 @@
 #include <string>
 #include <cmath>
 #include <numbers>
-#define pi_f std::numbers::pi_v<float>
 #define rad pi_f/180.0f
 
 //初期化

@@ -1,11 +1,10 @@
-﻿#include "Sphere.h"
+#include "Sphere.h"
 #include "scene/gameObject/camera/Camera.h"
 #include "scene/gameObject/character/plane/Plane.h"
 #include "scene/gameObject/character/grid/Grid.h"
 #include <cmath>
 #define _USE_MATH_DEFINES
 #include <numbers>
-#define pi_f numbers::pi_v<float>
 #include <string>
 using namespace std;
 

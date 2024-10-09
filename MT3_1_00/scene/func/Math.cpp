@@ -1,10 +1,6 @@
 #define NOMINMAX
-#include <cassert>
-#include <cmath>
 #include "Math.h"
-#define cont(theta) (1.0f/tanf(theta)) 
-#define deltaTime 1.0f/60.0f
-#include <algorithm>
+#include <cassert>
 using namespace std;
 
 #include<imgui.h>
@@ -389,7 +385,7 @@ Vector3 Math::BezierS(const Vector3* points, float t) {
 }
 
 //フックの法則
-void Math::Hook(Spring& spring, Ball& ball,bool isGravityOn) {
+void Math::Hook(const Spring& spring, Ball& ball, bool isGravityOn) {
 	//重力加速度
 	if (isGravityOn) {
 		ball.acceleration += kGravity;
@@ -409,17 +405,15 @@ void Math::Hook(Spring& spring, Ball& ball,bool isGravityOn) {
 	//それが、1/60秒間(deltaTime)適用されたと考える
 	ball.velocity += ball.acceleration * deltaTime;
 	ball.position += ball.velocity * deltaTime;
+}
 
-	ImGui::Begin("hook");
-	ImGui::DragFloat3("position",&ball.position.x,0.01f);
-	ImGui::DragFloat3("velocity", &ball.velocity.x, 0.01f);
-	ImGui::DragFloat3("acceleration", &ball.acceleration.x, 0.01f);
-	ImGui::DragFloat("mass", &ball.mass, 0.1f);
-	ImGui::SliderFloat("radius", &ball.radius,0.0f, 2.0f);
-	ImGui::DragFloat3("anchor", &spring.anchor.x, 0.1f);
-	ImGui::DragFloat("naturalLength", &spring.naturalLength, 0.1f);
-	ImGui::DragFloat("stiffness", &spring.stiffness, 0.1f);
-	ImGui::DragFloat("dampingCoefficient", &spring.dampingCoefficient, 0.1f);
-	ImGui::End();
+void Math::CircularMoveXY(Vector3& centerPos, Vector3& ballPos,float radius) {
+	float angularVelocity = pi_f;//角速度
+	static float angle = 0.0f;//角度
+	angle += angularVelocity * deltaTime;//現在の角度の計算
+	//円運動させる
+	ballPos.x = centerPos.x + cos(angle) * radius;
+	ballPos.y = centerPos.y + sin(angle) * radius;
+	ballPos.z = centerPos.z;
 }
 
