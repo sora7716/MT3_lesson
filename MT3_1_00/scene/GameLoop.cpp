@@ -205,7 +205,7 @@ void GameLoop::Update() {
 	Math::CircularMoveZY(centerPos_, ball_.position, centerRadius_);
 
 	//フックの法則
-	//Math::Hook(spring_,ball_,true);
+	//Math::Hooklaw(spring_,ball_,true);
 	//スフィアの素材に代入
 	sphereBallMaterial_.center = ball_.position;
 	sphereBallMaterial_.radius = ball_.radius;

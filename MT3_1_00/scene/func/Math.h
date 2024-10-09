@@ -284,7 +284,7 @@ public:
 	/// <param name="spring">バネ</param>
 	/// <param name="ball">ボール</param>
 	/// <param name="isGravityOn">重力をつけるかどうか</param>
-	static void Hook(const Spring& spring, Ball& ball,bool isGravityOn=false);
+	static void Hooklaw(const Spring& spring, Ball& ball,bool isGravityOn=false);
 
 	/// <summary>
 	/// 円運動XY

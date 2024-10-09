@@ -385,7 +385,7 @@ Vector3 Math::BezierS(const Vector3* points, float t) {
 }
 
 //フックの法則
-void Math::Hook(const Spring& spring, Ball& ball, bool isGravityOn) {
+void Math::Hooklaw(const Spring& spring, Ball& ball, bool isGravityOn) {
 	//重力加速度
 	if (isGravityOn) {
 		ball.acceleration += kGravity;
