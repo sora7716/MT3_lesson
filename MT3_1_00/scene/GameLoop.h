@@ -81,6 +81,11 @@ private://メンバ変数
 	std::unique_ptr<Hexagon>hexagon_ = nullptr;
 	GameObject::HexagonMaterial hexagonMateiral_ = {};
 
+	Math::Spring spring_{};
+	Math::Ball ball_{};
+	GameObject::SphereMaterial sphereBallMaterial_{};
+	std::unique_ptr<Sphere>sphreBall_ = nullptr;
+
 private://メンバ関数
 
 	/// <summary>

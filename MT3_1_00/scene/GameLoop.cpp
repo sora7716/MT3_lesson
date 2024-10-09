@@ -75,6 +75,8 @@ void GameLoop::Create() {
 	capsule_ = std::make_unique<Capsule>();
 
 	hexagon_ = std::make_unique<Hexagon>();
+
+	sphreBall_ = std::make_unique<Sphere>();
 }
 
 //初期化処理
@@ -139,6 +141,21 @@ void GameLoop::Initialize() {
 		1.0f,
 	};
 	hexagon_->Initialize(camera_, hexagonMateiral_);
+
+	spring_.anchor = { 0.0f,0.0f,0.0f };
+	spring_.naturalLength = 1.0f;
+	spring_.stiffness = 100.0f;
+
+	ball_.position = { 1.2f,0.0f,0.0f };
+	ball_.mass = 2.0f;
+	ball_.radius = 0.05f;
+	ball_.color = BLUE;
+
+	sphereBallMaterial_.center = ball_.position;
+	sphereBallMaterial_.radius = ball_.radius;
+	sphereBallMaterial_.color = ball_.color;
+	sphreBall_->Initialize(camera_);
+	sphreBall_->SetSphere(sphereBallMaterial_);
 }
 
 //更新処理
@@ -180,6 +197,11 @@ void GameLoop::Update() {
 	}
 
 	hexagon_->Update();
+	sphereBallMaterial_.center = ball_.position;
+	sphereBallMaterial_.radius = ball_.radius;
+	sphereBallMaterial_.color = ball_.color;
+	Math::Hook(spring_,ball_);
+	sphreBall_->SetSphere(sphereBallMaterial_);
 }
 
 #ifdef _DEBUG
@@ -219,7 +241,7 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(obb_.get(),spheres_[0]->GetSphereMaterial());
 	//collision_->IsCollision(obb_.get(), line_->GetSegment());
 	//collision_->IsCollision(obbs_[0].get(), obbs_[1].get());
-	hexagon_->OnCollision(collision_->IsCollision(hexagon_.get(), line_.get()));
+	//hexagon_->OnCollision(collision_->IsCollision(hexagon_.get(), line_.get()));
 }
 
 //描画処理
@@ -228,7 +250,7 @@ void GameLoop::Draw() {
 	//for (AABB* aabb : aabbs_) {
 	//	aabb->Draw();
 	//}
-	line_->DrawSegment();
+	//line_->DrawSegment();
 	//line_->DrawBezier();
 	//line_->DrawCatmullRom();
 	/*for (auto& controlPoint : bezierPointSpheres_) {
@@ -250,6 +272,8 @@ void GameLoop::Draw() {
 
 	/*capsule_->Draw();*/
 
-	hexagon_->Draw();
+	//hexagon_->Draw();
+
+	sphreBall_->Draw();
 	Collider();
 }

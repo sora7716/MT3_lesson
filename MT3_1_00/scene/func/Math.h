@@ -3,6 +3,25 @@
 #include <vector>
 
 class Math {
+
+public://構造体など
+	//バネ
+	typedef struct Spring {
+		//アンカー｡固定された端の位置
+		Vector3 anchor;
+		float naturalLength;//自然長
+		float stiffness;//剛性。バネ定数。
+	}Spring;
+
+	//ボール
+	typedef struct Ball {
+		Vector3 position;//位置
+		Vector3 velocity;//速度
+		Vector3 acceleration;//加速度
+		float mass;//ボールの重さ
+		float radius;//ボールの半径
+		unsigned int color;//ボールの色
+	}Ball;
 public:
 
 	/// <summary>
@@ -250,4 +269,11 @@ public:
 	/// <param name="t">フレーム</param>
 	/// <returns>ベジエ曲線</returns>
 	static Vector3 BezierS(const Vector3* points, float t);
+
+	/// <summary>
+	/// フックの法則
+	/// </summary>
+	/// <param name="spring">バネ</param>
+	/// <param name="ball">ボール</param>
+	static void Hook(const Spring& spring, Ball& ball);
 };

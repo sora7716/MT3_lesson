@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Novice.h>
 #include <cmath>
 #include <array>

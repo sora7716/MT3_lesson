@@ -6,6 +6,8 @@
 #include <algorithm>
 using namespace std;
 
+#include<imgui.h>
+
 //転置行列
 Matrix4x4 Math::Transpose(Matrix4x4 m) {
 	Matrix4x4 result{};
@@ -383,5 +385,27 @@ Vector3 Math::BezierS(const Vector3* points, float t) {
 	Vector3 p1p2 = SLerp(p1, p2, t);  // p1とp2の間を補間
 	Vector3 p = SLerp(p0p1, p1p2, t); // 上記2つの補間結果をさらに補間
 	return p;
+}
+
+//フックの法則
+void Math::Hook(const Spring& spring, Ball& ball) {
+	Vector3 diff = ball.position - spring.anchor;
+	float length = Length(diff);
+	if (length != 0.0f) {
+		Vector3 direction = Normalize(diff);
+		Vector3 restPosition = spring.anchor + direction * spring.naturalLength;
+		Vector3 displacement = length * (ball.position - restPosition);
+		Vector3 restoringForce = -spring.stiffness * displacement;
+		Vector3 force = restoringForce;
+		ball.acceleration = force / ball.mass;
+	}
+	//加速度も速度どちらも秒を基準とした値である
+	//それが、1/60秒間(deltaTime)適用されたと考える
+	float deltaTime = 1.0f / 60.0f;
+	ball.velocity += ball.acceleration * deltaTime;
+	ball.position += ball.velocity * deltaTime;
+
+	ImGui::DragFloat3("ball.position",&ball.position.x,0.01f);
+	
 }
 
