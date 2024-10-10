@@ -7,7 +7,7 @@
 #define rad pi_f/180.0f
 
 //初期化
-void Hexagon::Initialize(Camera* camera, HexagonMaterial hexagonMaterial) {
+void Hexagon::Initialize(Camera* camera, const HexagonMaterial&& hexagonMaterial) {
 	camera_ = camera;
 	hexagon_ = hexagonMaterial;
 }

@@ -1,6 +1,7 @@
 #include "Line.h"
 #include "scene/gameObject/camera/Camera.h"
 #include <algorithm>
+#include <string>
 using namespace std;
 
 //コンストラクタ
@@ -40,9 +41,11 @@ void Line::Update() {
 /// <summary>
 /// デバックテキスト
 /// </summary>
-void Line::DebugText() {
-	ImGui::DragFloat3("segment origin", &segment_.origin.x, 0.1f);
-	ImGui::DragFloat3("segment diff", &segment_.diff.x, 0.1f);
+void Line::DebugText(const char*name) {
+	string originLabel = string(name) + ".origin";
+	ImGui::DragFloat3(originLabel.c_str(), &segment_.origin.x, 0.1f);
+	string diffLabel = string(name) + ".diff";
+	ImGui::DragFloat3(diffLabel.c_str(), &segment_.diff.x, 0.1f);
 	//ImGui::DragFloat3("bezierPints[0]", &bezierPoints_[0].x, 0.1f);
 	//ImGui::DragFloat3("bezierPints[1]", &bezierPoints_[1].x, 0.1f);
 	//ImGui::DragFloat3("bezierPints[2]", &bezierPoints_[2].x, 0.1f);

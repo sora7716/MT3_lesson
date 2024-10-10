@@ -22,7 +22,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="hexagonMaterial">六角形を作成するときに使用する素材</param>
-	void Initialize(Camera* camera, HexagonMaterial hexagonMaterial);
+	void Initialize(Camera* camera, const HexagonMaterial&& hexagonMaterial);
 
 	/// <summary>
 	/// 更新
@@ -33,7 +33,7 @@ public://メンバ関数
 	/// デバックテキスト
 	/// </summary>
 	/// <param name="name">名前</param>
-	void DebugText(const char* name);
+	void DebugText(const char* name = "hexagon");
 
 	/// <summary>
 	/// 描画

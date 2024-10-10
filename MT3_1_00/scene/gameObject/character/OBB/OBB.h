@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/character/Character.h"
 
 //前方宣言
@@ -19,13 +19,13 @@ public://メンバ関数
 	/// </summary>
 	~OBB() = default;
 
-	
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="obbMaterial">obbの素材</param>
-	void Initialize(Camera* camera,OBBMaterial obbMaterial);
+	void Initialize(Camera* camera, const OBBMaterial&& obbMaterial);
 
 	/// <summary>
 	/// 更新
@@ -35,7 +35,8 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	void DebagText(const char* type);
+	/// <param name="type">名前</param>
+	void DebagText(const char* type = "obb");
 
 	/// <summary>
 	/// 描画

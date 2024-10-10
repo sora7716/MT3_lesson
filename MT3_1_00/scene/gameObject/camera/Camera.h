@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/GameObject.h"
 class Camera :public GameObject {
 
@@ -20,7 +20,8 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	void DebugText();
+	/// <param name="name">名前</param>
+	void DebugText(const char* name="camera");
 
 	/// <summary>
 	/// 描画処理

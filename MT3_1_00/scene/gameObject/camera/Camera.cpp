@@ -1,5 +1,7 @@
-﻿#include "Camera.h"
+#include "Camera.h"
 #include "Vector2.h"
+#include <string>
+using namespace std;
 
 //初期化
 void Camera::Initialize(int kWindowWidth, int kWindowHeight) {
@@ -36,9 +38,11 @@ void Camera::Update(char* keys, char* preKeys) {
 
 #ifdef _DEBUG
 //デバックテキスト
-void Camera::DebugText() {
-	ImGui::DragFloat3("CamereRotate", &rotate_.x, 0.01f);
-	ImGui::DragFloat3("CameraTranslate", &translate_.x, 0.01f);
+void Camera::DebugText(const char*name) {
+	string rotateLabel = string(name) + ".rotate";
+	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.01f);
+	string translateLabel = string(name) + ".translate";
+	ImGui::DragFloat3(translateLabel.c_str(), &translate_.x, 0.01f);
 }
 #endif // _DEBUG
 

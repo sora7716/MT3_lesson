@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/character/Character.h"
 
 //前方宣言
@@ -20,7 +20,7 @@ public://メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Camera* camera,const Segment&& segment);
+	void Initialize(Camera* camera, const Segment&& segment);
 
 	/// <summary>
 	/// 更新処理
@@ -31,7 +31,8 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	void DebugText();
+	/// <param name="name">名前</param>
+	void DebugText(const char* name = "segment");
 #endif // _DEBUG
 
 	/// <summary>

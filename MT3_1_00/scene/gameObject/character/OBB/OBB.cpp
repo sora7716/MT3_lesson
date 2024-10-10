@@ -1,4 +1,4 @@
-﻿#include "OBB.h"
+#include "OBB.h"
 #include "scene/func/Math.h"
 #include "scene/gameObject/camera/Camera.h"
 #include "scene/gameObject/character/AABB/AABB.h"
@@ -10,7 +10,7 @@ using namespace std;
 
 
 //初期化
-void OBB::Initialize(Camera* camera, OBBMaterial obbMaterial) {
+void OBB::Initialize(Camera* camera, const OBBMaterial&& obbMaterial) {
 	camera_ = camera;//カメラを受け取る
 	//OBBの値を設定
 	obb_ = obbMaterial;
