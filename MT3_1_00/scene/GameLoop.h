@@ -39,6 +39,7 @@ public://静的メンバ変数
 	static inline const int kSphereNum = 2;//スフィアの数
 	static inline const int kAABBNum = 1;//AABBの数
 	static inline const int kOBBNum = 2;//OBBの数
+	static inline const int kBallNum = 2;//ボールの数
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};
@@ -82,15 +83,18 @@ private://メンバ変数
 	GameObject::HexagonMaterial hexagonMateiral_ = {};
 
 	Math::Spring spring_{};
-	Math::Ball ball_{};
-	GameObject::SphereMaterial sphereBallMaterial_{};
-	std::unique_ptr<Sphere>sphreBall_ = nullptr;
+	Math::Ball ball_[kBallNum]{};
+	GameObject::SphereMaterial sphereBallMaterial_[kBallNum]{};
+	std::unique_ptr<Sphere>sphereBall_[kBallNum] = { nullptr };
 	GameObject::Segment wireSegment_ = {};
 	std::unique_ptr<Line>wire_ = nullptr;
 	Vector3 centerPos_{};
 	Vector2 centerRadius_ = {};
 	Math::Pendulum pendulum_ = {};
 	Math::ConicalPendulum conicalPendulum_ = {};
+	float k = 10.6f;//空気抵抗の係数
+	float e = 0.8f;//反発係数
+	float miu = 0.4f;//摩擦係数
 
 private://メンバ関数
 

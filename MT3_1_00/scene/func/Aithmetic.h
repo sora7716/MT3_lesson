@@ -76,7 +76,7 @@ const Vector3& operator/=(Vector3& num, const float& len);
 /// <param name="num"></param>
 /// <param name="len"></param>
 /// <returns></returns>
-const Vector3 operator/(const Vector3& num, const float& len);
+const Vector3 operator/(const Vector3& v, const float& num);
 
 /// <summary>
 /// スカラー倍(float*Vector3)

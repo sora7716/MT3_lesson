@@ -75,12 +75,12 @@ const Vector3& operator/=(Vector3& num, const float& len){
 	return num;
 }
 
-const Vector3 operator/(const Vector3& num, const float& len){
+const Vector3 operator/(const Vector3& v, const float& num){
 	Vector3 result{};
-	if (len != 0.0f) {
-		result.x = num.x / len;
-		result.y = num.y / len;
-		result.z = num.z / len;
+	if (num != 0.0f) {
+		result.x = v.x / num;
+		result.y = v.y / num;
+		result.z = v.z / num;
 	}
 	return result;
 }

@@ -198,11 +198,18 @@ public:
 	static float Dot(const Vector3& v1, const Vector3& v2);
 
 	/// <summary>
-	///	ノルム
+	///	ノルム(Vector3)
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <returns></returns>
 	static float Length(const Vector3& v);
+
+	/// <summary>
+	/// ノルム(float)
+	/// </summary>
+	/// <param name="num">数字</param>
+	/// <returns></returns>
+	static float Length(float num);
 
 	/// <summary>
 	/// 正規化vector
@@ -354,4 +361,18 @@ public:
 	/// <param name="normal">ぶつかる予定のオブジェクトの法線</param>
 	/// <param name="e">反発係数</param>
 	static void Reflection(Vector3& ballVelocity,const Vector3 normal,float e);
+
+	/// <summary>
+	/// 空気抵抗
+	/// </summary>
+	/// <param name="ball">ボール</param>
+	/// <param name="k">比例定数</param>
+	static void AirResistance(Ball& ball, float k);
+
+	/// <summary>
+	/// 摩擦
+	/// </summary>
+	/// <param name="ball">ボール</param>
+	/// <param name="miu">摩擦係数</param>
+	static void Friction(Ball& ball, float miu);
 };

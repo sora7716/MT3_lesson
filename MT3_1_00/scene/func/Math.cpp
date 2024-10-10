@@ -207,6 +207,11 @@ float Math::Length(const Vector3& v) {
 	return length;
 }
 
+//ノルム
+float Math::Length(float num) {
+	return sqrtf((float)pow(num, 2));
+}
+
 
 //単位ベクトル
 Vector3 Math::Normalize(const Vector3& v) {
@@ -452,7 +457,7 @@ void Math::MakePendulum(Pendulum& pendulum, Vector3& ballPos) {
 }
 
 // 円錐状に動く振り子を作成
-void Math::MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos){
+void Math::MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos) {
 	//角度を計算
 	conicalPendulum.angularVelocity = sqrt(9.8f / (conicalPendulum.length * cos(conicalPendulum.halfApexAngle)));
 	conicalPendulum.angle += conicalPendulum.angularVelocity * deltaTime;
@@ -466,15 +471,63 @@ void Math::MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPo
 }
 
 //反射ベクトル
-Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal){
+Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal) {
 	return input - 2 * Math::Dot(input, normal) * normal;
 }
 
 //反発
-void Math::Reflection(Vector3& ballVelocity, const Vector3 normal, float e){
+void Math::Reflection(Vector3& ballVelocity, const Vector3 normal, float e) {
 	Vector3 reflected = ReflectVector(ballVelocity, normal);
 	Vector3 projectToNormal = Project(reflected, normal);
 	Vector3 movingDirection = reflected - projectToNormal;
 	ballVelocity = projectToNormal * e + movingDirection;
 }
+
+//空気抵抗
+void Math::AirResistance(Ball& ball, float k) {
+	// 速度の大きさ（ノルム）を計算
+	float speed = Math::Length(ball.velocity);
+
+	// 速度がゼロでない場合のみ空気抵抗を計算
+	if (speed > 0.0f) {
+		// 空気抵抗の力を計算 (速度の二乗に比例)
+		Vector3 airResistance = -k * pow(speed, 2.0f) * Math::Normalize(ball.velocity);
+
+		// 空気抵抗による加速度を計算
+		Vector3 airResistanceAcceleration = airResistance / ball.mass;
+
+		// 総合加速度に空気抵抗と重力を加算
+		ball.acceleration = kGravity + airResistanceAcceleration;
+	}
+	else {
+		// 速度がゼロの場合は重力のみを適用
+		ball.acceleration = kGravity;
+	}
+}
+
+//摩擦
+void Math::Friction(Ball& ball, float miu) {
+	// 動いていたら
+	if (abs(ball.velocity.x) > 0.01f || abs(ball.velocity.y) > 0.01f || abs(ball.velocity.z) > 0.01f) {
+		// 摩擦力の大きさを計算
+		float magnitude = miu * Math::Length(-ball.mass * kGravity.y);
+
+		// 摩擦力の向き（速度の逆方向）
+		Vector3 direction = Normalize(-ball.velocity);
+
+		// 摩擦力を計算
+		Vector3 frictionalForce = magnitude * direction;
+
+		// 加速度に摩擦力を反映（力を質量で割る）
+		ball.acceleration += frictionalForce / ball.mass;
+
+		// 摩擦力によって速度がゼロになる場合、速度と加速度を停止
+		if (abs(frictionalForce.x * deltaTime) > abs(ball.velocity.x) ||
+			abs(frictionalForce.y * deltaTime) > abs(ball.velocity.y) ||
+			abs(frictionalForce.z * deltaTime) > abs(ball.velocity.z)) {
+			ball.acceleration = ball.velocity * 60.0f;
+		}
+	}
+}
+
 
