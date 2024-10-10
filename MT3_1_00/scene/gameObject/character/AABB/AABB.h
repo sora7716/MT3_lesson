@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/character/Character.h"
 
 class Camera;
@@ -22,7 +22,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="aabb">aabb</param>
-	void Initialize(Camera* camera, const AABBMaterial& aabb);
+	void Initialize(Camera* camera, const AABBMaterial&& aabb);
 
 	/// <summary>
 	/// 更新
@@ -35,7 +35,7 @@ public://メンバ関数
 	void OnCollision();
 
 #ifdef _DEBUG
-	void DebugText(const char* type);
+	void DebugText(const char* type = "aabb");
 #endif // _DEBUG
 
 	/// <summary>

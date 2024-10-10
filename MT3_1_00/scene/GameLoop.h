@@ -5,6 +5,11 @@
 #include "scene/gameObject/character/hexagon/Hexagon.h"
 #include "scene/gameObject/character/line/Line.h"
 #include "scene/gameObject/character/grid/Grid.h"
+#include "scene/gameObject/character/AABB/AABB.h"
+#include "scene/gameObject/character/capsule/Capsule.h"
+#include "scene/gameObject/character/plane/Plane.h"
+#include "scene/gameObject/character/sphere/Sphere.h"
+#include "scene/gameObject/character/triangle/Triangle.h"
 #include "scene/func/collision/Collision.h"
 #include <memory>
 
@@ -64,6 +69,9 @@ public://静的メンバ変数
 	static inline const int kKeysNums = 256;//読み込むキーの数
 	static inline const int kWindowWidth = 1280;//画面の横幅
 	static inline const int kWindowHeight = 720;//画面の縦幅
+	static inline const int kOBBNum = 2;//OBBの数
+	static inline const int kAABBNum = 2;//AABBの数
+	static inline const int kSphereNum = 2;//球の数
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};
@@ -76,11 +84,24 @@ private://メンバ変数
 	std::unique_ptr<Hexagon>hexagon_ = nullptr;
 	GameObject::HexagonMaterial hexagonMaterial_ = {};
 	//OBB
-	std::unique_ptr<OBB>obb_ = nullptr;
-	GameObject::OBBMaterial obbMaterial_ = {};
+	std::unique_ptr<OBB>obbs_[kOBBNum] = { nullptr };
+	GameObject::OBBMaterial obbMaterial_[kOBBNum] = {};
 	//グリッド線
 	std::unique_ptr<Grid>grid_ = nullptr;
-	//当たり判定
-	std::unique_ptr<Collision>collision_ = nullptr;
+	//AABB
+	std::unique_ptr<AABB>aabbs_[kAABBNum] = { nullptr };
+	GameObject::AABBMaterial aabbMaterial_[kAABBNum] = {};
+	//平面
+	std::unique_ptr<Plane>plane_ = nullptr;
+	GameObject::PlaneMaterial planeMaterial_ = {};
+	//三角形
+	std::unique_ptr<Triangle>triangle_ = nullptr;
+	GameObject::TriangleMaterial triangleMaterial_ = {};
+	//球
+	std::unique_ptr<Sphere>spheres_[kSphereNum] = { nullptr };
+	GameObject::SphereMaterial sphrereMaterial_[kSphereNum] = {};
+	//カプセル
+	std::unique_ptr<Capsule>capsule_ = nullptr;
+	GameObject::CapsuleMaterial capsuleMaterial_ = {};
 };
 

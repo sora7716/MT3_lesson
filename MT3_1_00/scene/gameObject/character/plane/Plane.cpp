@@ -1,6 +1,8 @@
-﻿#include "Plane.h"
+#include "Plane.h"
 #include "scene/gameObject/camera/Camera.h"
 #include "scene/gameObject/character/grid/Grid.h"
+#include <string>
+using namespace std;
 //コンストラクタ
 Plane::Plane() {
 	camera_ = nullptr;
@@ -24,10 +26,12 @@ void Plane::Update() {
 
 #ifdef _DEBUG
 //デバックテキスト
-void Plane::DebugText(){
-	ImGui::DragFloat3("Plane.Normalize", &plane_.normal.x, 0.01f);
+void Plane::DebugText(const char* name){
+	string nomalLabel = (string)name + ".normal";
+	ImGui::DragFloat3(nomalLabel.c_str(), &plane_.normal.x, 0.01f);
 	plane_.normal = Math::Normalize(plane_.normal);
-	ImGui::DragFloat("Plane.distance", &plane_.distance, 0.01f);
+	string distanceLabel = (string)name + ".distance";
+	ImGui::DragFloat(distanceLabel.c_str(), &plane_.distance, 0.01f);
 }
 #endif // _DEBUG
 

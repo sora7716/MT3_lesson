@@ -121,7 +121,8 @@ void Line::DrawCatmullRom(){
 }
 
 //衝突した場合の判定
-void Line::OnCollision() {
+void Line::OnCollision(bool isHit) {
+	isHit_ = isHit;
 	if (isHit_) {
 		SetColor(RED);
 	}

@@ -53,7 +53,8 @@ public://メンバ関数
 	/// <summary>
 	/// 衝突した場合の判定
 	/// </summary>
-	void OnCollision();
+	/// <param name="isHit">衝突したかどうか</param>
+	void OnCollision(bool isHit);
 
 	/// <summary>
 	/// 最近接点のゲッター

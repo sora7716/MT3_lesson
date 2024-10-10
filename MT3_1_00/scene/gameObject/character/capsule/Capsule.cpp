@@ -12,7 +12,7 @@ void Capsule::Initialize(Camera* camera, const CapsuleMaterial&& capsule) {
 	capsule_ = capsule;
 	for (int i = 0; i < 2; i++) {
 		sphere_[i] = make_unique<Sphere>();
-		sphere_[i]->Initialize(camera_);
+		sphere_[i]->Initialize(camera_, { capsule_.segment.origin,capsule_.radius,capsule_.color,capsule_.isHit });
 	}
 	for (int i = 0; i < kLineNum; i++) {
 		lines_[i] = make_unique<Line>();

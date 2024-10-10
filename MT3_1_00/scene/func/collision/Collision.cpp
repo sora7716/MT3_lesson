@@ -11,32 +11,21 @@
 #include <algorithm> 
 using namespace std;
 
-// 当たり判定(球と球)
-void Collision::IsCollision(Sphere* target, const GameObject::SphereMaterial& sphere1, const GameObject::SphereMaterial& sphere2) {
+//インスタンスのゲッター
+Collision* Collision::GetInstance() {
+	//関数内にstatic変数として宣言する
+	static Collision instance;
+
+	return &instance;
+}
+
+//球同士
+bool Collision::IsCollision(const GameObject::SphereMaterial& sphere1, const GameObject::SphereMaterial& sphere2) {
 	float distance = Math::Length(sphere1.center - sphere2.center);
-	if (distance <= sphere1.radius + sphere2.radius) {
-		target->SetIsHit(true);
-	}
-	else {
-		target->SetIsHit(false);
-	}
-	target->OnCollision();
+	return distance <= sphere1.radius + sphere2.radius;
 }
 
-//当たり判定(球と平面)
-void Collision::IsCollision(Sphere* target, const GameObject::SphereMaterial& sphere, const GameObject::PlaneMaterial& plane) {
-	Vector3 normal = plane.normal;
-	float distance = plane.distance;
-	float k = fabsf(Math::Dot(normal, sphere.center) - distance);
-	if (k <= sphere.radius) {
-		target->SetIsHit(true);
-	}
-	else {
-		target->SetIsHit(false);
-	}
-	target->OnCollision();//色を変える
-}
-
+//球と平面
 bool Collision::IsCollision(const GameObject::SphereMaterial& sphere, const GameObject::PlaneMaterial& plane) {
 	Vector3 normal = plane.normal;
 	float distance = plane.distance;
@@ -45,26 +34,23 @@ bool Collision::IsCollision(const GameObject::SphereMaterial& sphere, const Game
 	return k <= sphere.radius;
 }
 
-//当たり判定(線と平面)
-void Collision::IsCollision(Line* target, const GameObject::Segment& segment, const GameObject::PlaneMaterial& plane) {
+//線と平面
+bool Collision::IsCollision(const GameObject::Segment& segment, const GameObject::PlaneMaterial& plane) {
 	//垂直判定を行うための、法線と線の内積を求める
 	float dot = Math::Dot(plane.normal, segment.diff);
 	if (std::abs(dot) < 1e-6f) {
-		target->SetIsHit(false);
+		return false;
 	}
 
 	float t = (plane.distance - Math::Dot(segment.origin, plane.normal)) / dot;
 	if (t >= 0.0f && t <= 1.0f) {
-		target->SetIsHit(true);
+		return true;
 	}
-	else {
-		target->SetIsHit(false);
-	}
-	target->OnCollision();
+	return false;
 }
 
-// 当たり判定(線と三角形)
-void Collision::IsCollision(Line* target, const GameObject::Segment& segment, const GameObject::TriangleMaterial& triangle) {
+// 線と三角形
+bool Collision::IsCollision(const GameObject::Segment& segment, const GameObject::TriangleMaterial& triangle) {
 
 	Vector3 v01 = triangle.kLocalVertices_[1] - triangle.kLocalVertices_[0];
 	Vector3 v12 = triangle.kLocalVertices_[2] - triangle.kLocalVertices_[1];
@@ -81,79 +67,54 @@ void Collision::IsCollision(Line* target, const GameObject::Segment& segment, co
 	Vector3 v20 = triangle.kLocalVertices_[0] - triangle.kLocalVertices_[2];
 
 	if (std::abs(dot) < 1e-6f) {
-		target->SetIsHit(false);
+		return false;
 	}
 	if (t >= kTMin && t <= kTMax) {
-		target->SetIsHit(true);
+		return true;
 	}
 
 	if (Math::Dot(Math::Cross(v01, v1p), normal) < 0.0f) {
-		target->SetIsHit(false);
+		return false;
 	}
 	else if (Math::Dot(Math::Cross(v12, v2p), normal) < 0.0f) {
-		target->SetIsHit(false);
+		return false;
 	}
 	else if (Math::Dot(Math::Cross(v20, v0p), normal) < 0.0f) {
-		target->SetIsHit(false);
+		return false;
 	}
-	else {
-		target->SetIsHit(true);
-	}
-	target->OnCollision();
+	return true;
 }
 
-//AABBの当たり判定
-void Collision::IsCollision(AABB* target, GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2) {
+// AABB同士
+bool Collision::IsCollision(GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2) {
 	//X座標の当たってない判定
 	if (aabb1.min.x < aabb2.max.x && aabb1.max.x < aabb2.min.x) {
-		target->SetIsHit(false);
+		return false;
 	}
 	else if (aabb2.max.x < aabb1.min.x && aabb2.min.x < aabb1.max.x) {
-		target->SetIsHit(false);
+		return false;
 	}
 
 	// Y座標の当たってない判定
 	else if (aabb1.max.y > aabb2.min.y && aabb1.min.y > aabb2.max.y) {
-		target->SetIsHit(false);
+		return false;
 	}
 	else if (aabb2.max.y > aabb1.min.y && aabb2.min.y > aabb1.max.y) {
-		target->SetIsHit(false);
+		return false;
 	}
 
 	// Z座標の当たってない判定
 	else if (aabb1.min.z < aabb2.max.z && aabb1.max.z < aabb2.min.z) {
-		target->SetIsHit(false);
+		return false;
 	}
 	else if (aabb2.max.z < aabb1.min.z && aabb2.min.z < aabb1.max.z) {
-		target->SetIsHit(false);
+		return false;
 	}
 
-	else {
-		target->SetIsHit(true);
-	}
-	target->OnCollision();
+	return true;
 }
 
-//ボックスと球の当たり判定
-void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere) {
-	Vector3 closestPoint = {
-		clamp(sphere.center.x,aabb.min.x,aabb.max.x),
-		clamp(sphere.center.y,aabb.min.y,aabb.max.y),
-		clamp(sphere.center.z,aabb.min.z,aabb.max.z),
-	};
-	//最近接点と球の中心との距離を求める
-	float distance = Math::Length(closestPoint - sphere.center);
-	//球の半径より上記の距離が小さかったら衝突
-	if (distance <= sphere.radius) {
-		target->SetIsHit(true);
-	}
-	else {
-		target->SetIsHit(false);
-	}
-	target->OnCollision();
-}
-
-// AABBと球の当たり判定
+// AABBと球
 bool Collision::IsCollision(GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere) {
 	Vector3 closestPoint = {
 		clamp(sphere.center.x,aabb.min.x,aabb.max.x),
@@ -166,50 +127,7 @@ bool Collision::IsCollision(GameObject::AABBMaterial& aabb, const GameObject::Sp
 	return distance <= sphere.radius;
 }
 
-//ボックスと線分の当たり判定
-void Collision::IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment) {
-	GameObject::AABBMaterial t;
-	Vector3 tNear;
-	Vector3 tFar;
-
-
-	t.min.x = (aabb.min.x - segment.origin.x) / segment.diff.x;
-	t.max.x = (aabb.max.x - segment.origin.x) / segment.diff.x;
-
-	t.min.y = (aabb.min.y - segment.origin.y) / segment.diff.y;
-	t.max.y = (aabb.max.y - segment.origin.y) / segment.diff.y;
-
-	t.min.z = (aabb.min.z - segment.origin.z) / segment.diff.z;
-	t.max.z = (aabb.max.z - segment.origin.z) / segment.diff.z;
-
-	tNear.x = min(t.min.x, t.max.x);
-	tFar.x = max(t.min.x, t.max.x);
-
-	tNear.y = min(t.min.y, t.max.y);
-	tFar.y = max(t.min.y, t.max.y);
-
-	tNear.z = min(t.min.z, t.max.z);
-	tFar.z = max(t.min.z, t.max.z);
-
-	float tMin = max(tNear.x, max(tNear.z, tNear.y));
-	float tMax = min(tFar.x, min(tFar.z, tFar.y));
-	bool isHit = false;
-	if (tMin <= tMax) {
-		if (tMin * tMax < 0.0f) {
-			isHit = true;
-		}
-		if (kTMin <= tMin && tMin <= kTMax || kTMin <= tMax && tMax <= kTMax) {
-			isHit = true;
-		}
-	}
-	else {
-		isHit = false;
-	}
-	target->SetIsHit(isHit);
-	target->OnCollision();
-}
-
-// AABBと線分の当たり判定(返り値あり)
+// AABBと線分
 bool Collision::IsCollision(const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment) {
 	GameObject::AABBMaterial t;
 	Vector3 tNear;
@@ -250,65 +168,65 @@ bool Collision::IsCollision(const GameObject::AABBMaterial& aabb, const GameObje
 	return isHit;
 }
 
-// OBBと球の当たり判定
-void Collision::IsCollision(OBB* target, const GameObject::SphereMaterial& sphere) {
-	Vector3 centerInOBBLocalSpace = Math::Transform(sphere.center, target->GetOBBWorldMatrixInvers());
-	GameObject::AABBMaterial aabbOBBLocal = { .min = -target->GetSize(),.max = target->GetSize() };
+// OBBと球
+bool Collision::IsCollision(OBB* obb, const GameObject::SphereMaterial& sphere) {
+	Vector3 centerInOBBLocalSpace = Math::Transform(sphere.center, obb->GetOBBWorldMatrixInvers());
+	GameObject::AABBMaterial aabbOBBLocal = { .min = -obb->GetSize(),.max = obb->GetSize() };
 	GameObject::SphereMaterial sphereOBBLocal{ centerInOBBLocalSpace,sphere.radius };
 	//ローカル空間で衝突判定
-	target->OnCollision(IsCollision(aabbOBBLocal, sphereOBBLocal));
+	return IsCollision(aabbOBBLocal, sphereOBBLocal);
 }
 
 // OBBと線分の当たり判定
-void Collision::IsCollision(OBB* target, const GameObject::Segment segment) {
-	Vector3 localSegmentOrigin = Math::Transform(segment.origin, target->GetOBBWorldMatrixInvers());
-	Vector3 localSegmentEnd = Math::Transform(segment.origin + segment.diff, target->GetOBBWorldMatrixInvers());
+bool Collision::IsCollision(OBB* obb, const GameObject::Segment segment) {
+	Vector3 localSegmentOrigin = Math::Transform(segment.origin, obb->GetOBBWorldMatrixInvers());
+	Vector3 localSegmentEnd = Math::Transform(segment.origin + segment.diff, obb->GetOBBWorldMatrixInvers());
 	GameObject::AABBMaterial localAABB{
-		.min = -target->GetSize(),
-		.max = target->GetSize(),
+		.min = -obb->GetSize(),
+		.max = obb->GetSize(),
 	};
 	GameObject::Segment localSegment;
 	localSegment.origin = localSegmentOrigin;
 	localSegment.diff = localSegmentEnd - localSegmentOrigin;
-	target->OnCollision(IsCollision(localAABB, localSegment));
+	return IsCollision(localAABB, localSegment);
 }
 
-// OBBとAABB/OBBの当たり判定
-void Collision::IsCollision(OBB* target, OBB* obb) {
+// OBBとAABB/OBB
+bool Collision::IsCollision(OBB* obb1, OBB* obb2) {
 	//分割軸の数
 	Vector3 separateAxes[15];
 	//面の法線
 	/*ターゲット*/
-	separateAxes[0] = target->GetOBBMaterial().orientations[0];
-	separateAxes[1] = target->GetOBBMaterial().orientations[1];
-	separateAxes[2] = target->GetOBBMaterial().orientations[2];
+	separateAxes[0] = obb1->GetOBBMaterial().orientations[0];
+	separateAxes[1] = obb1->GetOBBMaterial().orientations[1];
+	separateAxes[2] = obb1->GetOBBMaterial().orientations[2];
 	/*ターゲットではないほう*/
-	separateAxes[3] = obb->GetOBBMaterial().orientations[0];
-	separateAxes[4] = obb->GetOBBMaterial().orientations[1];
-	separateAxes[5] = obb->GetOBBMaterial().orientations[2];
+	separateAxes[3] = obb2->GetOBBMaterial().orientations[0];
+	separateAxes[4] = obb2->GetOBBMaterial().orientations[1];
+	separateAxes[5] = obb2->GetOBBMaterial().orientations[2];
 	//9つの辺のクロス積
-	separateAxes[6] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[0]);
-	separateAxes[7] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[1]);
-	separateAxes[8] = Math::Cross(target->GetOBBMaterial().orientations[0], obb->GetOBBMaterial().orientations[2]);
-	separateAxes[9] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[0]);
-	separateAxes[10] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[1]);
-	separateAxes[11] = Math::Cross(target->GetOBBMaterial().orientations[1], obb->GetOBBMaterial().orientations[2]);
-	separateAxes[12] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[0]);
-	separateAxes[13] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[1]);
-	separateAxes[14] = Math::Cross(target->GetOBBMaterial().orientations[2], obb->GetOBBMaterial().orientations[2]);
+	separateAxes[6] = Math::Cross(obb1->GetOBBMaterial().orientations[0], obb2->GetOBBMaterial().orientations[0]);
+	separateAxes[7] = Math::Cross(obb1->GetOBBMaterial().orientations[0], obb2->GetOBBMaterial().orientations[1]);
+	separateAxes[8] = Math::Cross(obb1->GetOBBMaterial().orientations[0], obb2->GetOBBMaterial().orientations[2]);
+	separateAxes[9] = Math::Cross(obb1->GetOBBMaterial().orientations[1], obb2->GetOBBMaterial().orientations[0]);
+	separateAxes[10] = Math::Cross(obb1->GetOBBMaterial().orientations[1], obb2->GetOBBMaterial().orientations[1]);
+	separateAxes[11] = Math::Cross(obb1->GetOBBMaterial().orientations[1], obb2->GetOBBMaterial().orientations[2]);
+	separateAxes[12] = Math::Cross(obb1->GetOBBMaterial().orientations[2], obb2->GetOBBMaterial().orientations[0]);
+	separateAxes[13] = Math::Cross(obb1->GetOBBMaterial().orientations[2], obb2->GetOBBMaterial().orientations[1]);
+	separateAxes[14] = Math::Cross(obb1->GetOBBMaterial().orientations[2], obb2->GetOBBMaterial().orientations[2]);
 
 	//半分のベクトル
 	/*ターゲット*/
 	Vector3 targetDirection[3]{
-		target->GetOBBMaterial().orientations[0] * target->GetOBBMaterial().size.x,
-		target->GetOBBMaterial().orientations[1] * target->GetOBBMaterial().size.y,
-		target->GetOBBMaterial().orientations[2] * target->GetOBBMaterial().size.z,
+		obb1->GetOBBMaterial().orientations[0] * obb1->GetOBBMaterial().size.x,
+		obb1->GetOBBMaterial().orientations[1] * obb1->GetOBBMaterial().size.y,
+		obb1->GetOBBMaterial().orientations[2] * obb1->GetOBBMaterial().size.z,
 	};
 	/*OBB*/
 	Vector3 obbDirection[3]{
-		obb->GetOBBMaterial().orientations[0] * obb->GetOBBMaterial().size.x,
-		obb->GetOBBMaterial().orientations[1] * obb->GetOBBMaterial().size.y,
-		obb->GetOBBMaterial().orientations[2] * obb->GetOBBMaterial().size.z,
+		obb2->GetOBBMaterial().orientations[0] * obb2->GetOBBMaterial().size.x,
+		obb2->GetOBBMaterial().orientations[1] * obb2->GetOBBMaterial().size.y,
+		obb2->GetOBBMaterial().orientations[2] * obb2->GetOBBMaterial().size.z,
 	};
 
 	//頂点の数
@@ -316,27 +234,27 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 
 	// 点(頂点)
 	Vector3 targetCorners[kCornerNum] = {
-	  target->GetOBBMaterial().center + targetDirection[0] + targetDirection[1] + targetDirection[2],//背面の右上
-	  target->GetOBBMaterial().center + targetDirection[0] + targetDirection[1] - targetDirection[2],//正面の右上
-	  target->GetOBBMaterial().center + targetDirection[0] - targetDirection[1] + targetDirection[2],//背面の右下
-	  target->GetOBBMaterial().center + targetDirection[0] - targetDirection[1] - targetDirection[2],//正面の右下
-	  target->GetOBBMaterial().center - targetDirection[0] + targetDirection[1] + targetDirection[2],//背面の左上
-	  target->GetOBBMaterial().center - targetDirection[0] + targetDirection[1] - targetDirection[2],//正面の左上
-	  target->GetOBBMaterial().center - targetDirection[0] - targetDirection[1] + targetDirection[2],//背面の左下
-	  target->GetOBBMaterial().center - targetDirection[0] - targetDirection[1] - targetDirection[2],//正面の左下
+	  obb1->GetOBBMaterial().center + targetDirection[0] + targetDirection[1] + targetDirection[2],//背面の右上
+	  obb1->GetOBBMaterial().center + targetDirection[0] + targetDirection[1] - targetDirection[2],//正面の右上
+	  obb1->GetOBBMaterial().center + targetDirection[0] - targetDirection[1] + targetDirection[2],//背面の右下
+	  obb1->GetOBBMaterial().center + targetDirection[0] - targetDirection[1] - targetDirection[2],//正面の右下
+	  obb1->GetOBBMaterial().center - targetDirection[0] + targetDirection[1] + targetDirection[2],//背面の左上
+	  obb1->GetOBBMaterial().center - targetDirection[0] + targetDirection[1] - targetDirection[2],//正面の左上
+	  obb1->GetOBBMaterial().center - targetDirection[0] - targetDirection[1] + targetDirection[2],//背面の左下
+	  obb1->GetOBBMaterial().center - targetDirection[0] - targetDirection[1] - targetDirection[2],//正面の左下
 	};
 	Vector3 obbCorners[kCornerNum] = {
-	 obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の右上
-	 obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の右上
-	 obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の右下
-	 obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の右下
-	 obb->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の左上
-	 obb->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の左上
-	 obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の左下
-	 obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の左下
+	 obb2->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の右上
+	 obb2->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の右上
+	 obb2->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の右下
+	 obb2->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の右下
+	 obb2->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の左上
+	 obb2->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の左上
+	 obb2->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の左下
+	 obb2->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の左下
 	};
 	// 中心点間のベクトル
-	Vector3 centerToCenter = target->GetOBBMaterial().center - obb->GetOBBMaterial().center;
+	Vector3 centerToCenter = obb1->GetOBBMaterial().center - obb2->GetOBBMaterial().center;
 
 	//当たったかの判定
 	bool isHit = true;
@@ -364,11 +282,11 @@ void Collision::IsCollision(OBB* target, OBB* obb) {
 			isHit = false;
 		}
 	}
-	//ターゲットの当たり判定を実行
-	target->OnCollision(isHit);
+	//当たり判定を返す
+	return isHit;
 }
 
-
+//六角形と線分
 bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	// 六角形の各辺
 	Vector3 edge[6]{
@@ -440,7 +358,7 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	return isHit;
 }
 
-// 衝突判定(カプセルと平面)
+// カプセルと平面
 bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const GameObject::PlaneMaterial& plane) {
 	// カプセルの始点と終点
 	Vector3 capsuleStart = capsule.segment.origin;
@@ -469,11 +387,11 @@ bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const Ga
 	float t = dot / len;
 
 	//クランプ
-    t = clamp(t, 0.0f, 1.0f);
+	t = clamp(t, 0.0f, 1.0f);
 
 	//線形補完する
 	Vector3 f = Math::Lerp(capsuleStart, capsuleEnd, t);
-	
+
 	//カプセルの半径と距離を比較
 	float distance = abs(Math::Dot(normal, f) - plane.distance);
 

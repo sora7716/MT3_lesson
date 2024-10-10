@@ -1,4 +1,4 @@
-﻿#include "AABB.h"
+#include "AABB.h"
 #include "scene/gameObject/camera/Camera.h"
 #include <string>
 #ifdef _DEBUG
@@ -15,7 +15,7 @@ AABB::~AABB() {
 }
 
 //初期化
-void AABB::Initialize(Camera* camera, const AABBMaterial& aabb) {
+void AABB::Initialize(Camera* camera, const AABBMaterial&& aabb) {
 	camera_ = camera;
 	aabb_ = aabb;
 }

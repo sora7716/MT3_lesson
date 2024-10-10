@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <cmath>
 #define _USE_MATH_DEFINES
 #include <Vector3.h>
@@ -7,7 +7,7 @@
 class Camera;
 class Grid;
 
-class Plane:public GameObject{
+class Plane :public GameObject {
 public://メンバ関数
 
 	/// <summary>
@@ -35,7 +35,7 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	void DebugText();
+	void DebugText(const char* name = "plane");
 
 	/// <summary>
 	/// 描画処理
@@ -52,7 +52,7 @@ public://メンバ関数
 	///  平面の素材のセッター
 	/// </summary>
 	/// <param name="material">平面の素材</param>
-	void SetPlane(const PlaneMaterial&material);
+	void SetPlane(const PlaneMaterial& material);
 
 private://メンバ関数
 

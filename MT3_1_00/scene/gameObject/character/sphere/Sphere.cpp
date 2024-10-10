@@ -23,8 +23,8 @@ Sphere::~Sphere() {
 }
 
 //初期化
-void Sphere::Initialize(Camera* camera) {
-	sphere_ = { {0,0,0},1.0f ,WHITE };
+void Sphere::Initialize(Camera* camera,const SphereMaterial&&sphereMaterial) {
+	sphere_ = sphereMaterial;
 	scale_ = { 1.0f,1.0f,1.0f };
 	SetCamera(camera);
 }
@@ -36,14 +36,14 @@ void Sphere::Update() {
 
 #ifdef _DEBUG
 //デバックテキスト
-void Sphere::DebugText(const char* label) {
+void Sphere::DebugText(const char* name) {
 	/*string rotateLabel = string(label) + ".rotate";
 	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.1f);*/
 
-	string centerLabel = string(label) + ".center";
+	string centerLabel = string(name) + ".center";
 	ImGui::DragFloat3(centerLabel.c_str(), &sphere_.center.x, 0.01f);
 
-	string radiusLabel = string(label) + ".radius";
+	string radiusLabel = string(name) + ".radius";
 	ImGui::DragFloat(radiusLabel.c_str(), &sphere_.radius, 0.01f);
 }
 #endif // _DEBUG

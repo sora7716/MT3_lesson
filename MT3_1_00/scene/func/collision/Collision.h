@@ -15,25 +15,22 @@ class Capsule;
 /// <summary>
 /// 衝突判定達
 /// </summary>
-class Collision {
+class Collision final{
 
 public://メンバ関数
 
 	/// <summary>
-	///  衝突判定(球同士)
+	/// インスタンスのゲッター
 	/// </summary>
-	/// <param name="target">ターゲット</param>
-	/// <param name="sphere1">球1</param>
-	/// <param name="sphere2">球2</param>
-	void IsCollision(Sphere* target, const GameObject::SphereMaterial& sphere1, const GameObject::SphereMaterial& sphere2);
+	/// <returns></returns>
+	static Collision* GetInstance();
 
 	/// <summary>
-	///  衝突判定(球と平面)
+	///  衝突判定(球同士)
 	/// </summary>
-	/// <param name="target">ターゲット</param>
-	/// <param name="sphere">球</param>
-	/// <param name="plane">平面</param>
-	void IsCollision(Sphere* target, const GameObject::SphereMaterial& sphere, const GameObject::PlaneMaterial& plane);
+	/// <param name="sphere1">球1</param>
+	/// <param name="sphere2">球2</param>
+	bool IsCollision(const GameObject::SphereMaterial& sphere1, const GameObject::SphereMaterial& sphere2);
 
 	/// <summary>
 	/// 衝突判定(球と平面)
@@ -46,49 +43,31 @@ public://メンバ関数
 	/// <summary>
 	/// 衝突判定(線と平面)
 	/// </summary>
-	/// <param name="target">ターゲット</param>
 	/// <param name="segment">線分</param>
 	/// <param name="plane">平面</param>
-	void IsCollision(Line* target, const GameObject::Segment& segment, const GameObject::PlaneMaterial& plane);
+	bool IsCollision(const GameObject::Segment& segment, const GameObject::PlaneMaterial& plane);
 
 	/// <summary>
 	/// 衝突判定(線と三角形)
 	/// </summary>
-	/// <param name="target">ターゲット</param>
 	/// <param name="segment">線分</param>
 	/// <param name="triangle">三角形</param>
-	void IsCollision(Line* target, const GameObject::Segment& segment, const GameObject::TriangleMaterial& triangle);
+	bool IsCollision(const GameObject::Segment& segment, const GameObject::TriangleMaterial& triangle);
 
 	/// <summary>
 	/// 衝突判定(AABB同士)
 	/// </summary>
-	/// <param name="target">ターゲット</param>
 	/// <param name="aabb1">AABB1</param>
 	/// <param name="aabb2">AABB2</param>
-	void IsCollision(AABB* target, GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
+	bool IsCollision(GameObject::AABBMaterial aabb1, GameObject::AABBMaterial aabb2);
 
 	/// <summary>
 	/// 衝突判定(AABBと球)
-	/// </summary>
-	/// <param name="target">ターゲット</param>
-	/// <param name="aabb">AABB</param>
-	/// <param name="sphere">球</param>
-	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
-
-	/// <summary>
-	/// 衝突判定(AABBと球:返り値あり)
 	/// </summary>
 	/// <param name="aabb">AABB</param>
 	/// <param name="sphere">球</param>
 	/// <returns>衝突判定</returns>
 	bool IsCollision(GameObject::AABBMaterial& aabb, const GameObject::SphereMaterial& sphere);
-
-	/// <summary>
-	/// 衝突判定(AABBと線分)
-	/// </summary>
-	/// <param name="target">ターゲット</param>
-	/// <param name="aabb">AABB</param>
-	void IsCollision(AABB* target, const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment);
 
 	/// <summary>
 	/// 衝突判定(AABBと線分:返り値あり)
@@ -103,21 +82,21 @@ public://メンバ関数
 	/// </summary>
     /// <param name="target">ターゲット</param>
 	/// <param name="sphare">球</param>
-	void IsCollision(OBB* target,const GameObject::SphereMaterial& sphere);
+	bool IsCollision(OBB* obb,const GameObject::SphereMaterial& sphere);
 
 	/// <summary>
 	/// 衝突判定(OBBと線分)
 	/// </summary>
 	/// <param name="target">ターゲット</param>
 	/// <param name="segment">線分</param>
-	void IsCollision(OBB* target, const GameObject::Segment segment);
+	bool IsCollision(OBB* obb, const GameObject::Segment segment);
 
 	/// <summary>
 	/// 衝突判定(OBB同士:AABB/OBB)
 	/// </summary>
 	/// <param name="target">ターゲット</param>
 	/// <param name="obb">OBB</param>
-	void IsCollision(OBB* target, OBB* obb);
+	bool IsCollision(OBB* obb1, OBB* obb2);
 
 	/// <summary>
 	/// 衝突判定(六角形と線)
@@ -132,7 +111,24 @@ public://メンバ関数
 	/// </summary>
 	bool IsCollision(const GameObject::CapsuleMaterial& capsule, const GameObject::PlaneMaterial& plane);
 
+	//コピーコンストラクタを禁止する
+	Collision(const Collision& collision) = delete;
+
+	//代入演算子を禁止する
+	Collision& operator=(const Collision& collision) = delete;
+
 public://静的メンバ変数
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Collision() = default;
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Collision() = default;
+
 	static inline const float kTMin = 0.0f;
 	static inline const float kTMax = 1.0f;
 };

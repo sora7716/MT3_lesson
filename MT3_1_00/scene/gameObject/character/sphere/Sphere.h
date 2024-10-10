@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/character/Character.h"
 
 //前方宣言
@@ -25,7 +25,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="sphere">スフィアの素材{positon,radius,color}</param>
-	void Initialize(Camera* camera);
+	void Initialize(Camera* camera, const SphereMaterial&& sphereMaterial);
 
 	/// <summary>
 	/// 更新処理
@@ -36,9 +36,8 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	/// <param name="label_center">centerのラベル</param>
-	/// <param name="label_radius">radiusのラベル</param>
-	void DebugText(const char* label);
+	/// <param name="label">名前</param>
+	void DebugText(const char* name = "sphere");
 #endif
 
 	/// <summary>

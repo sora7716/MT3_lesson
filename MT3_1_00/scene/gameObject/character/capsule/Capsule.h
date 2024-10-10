@@ -34,7 +34,7 @@ public://メンバ関数
 	/// <summary>
 	/// デバックテキスト
 	/// </summary>
-	void DebugText(const char* name);
+	void DebugText(const char* name = "capsule");
 
 	/// <summary>
 	/// 描画
@@ -54,8 +54,8 @@ public://メンバ関数
 	CapsuleMaterial GetCapsuleMaterial();
 
 	/// <summary>
-    /// 衝突したら
-    /// </summary>
+	/// 衝突したら
+	/// </summary>
 	/// <param name="isHit">衝突したかどうか</param>
 	void OnCollision(bool isHit);
 
