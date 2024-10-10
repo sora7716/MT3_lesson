@@ -233,8 +233,6 @@ void GameLoop::Update() {
 	//円錐状に動く振り子
 	//Math::MakeConicalPendulum(conicalPendulum_, ball_.position);
 
-	//空気抵抗
-	//Math::AirResistance(ball_[0], k);
 	static bool isFall = false;
 	static bool isMove = false;
 	if (ImGui::Button("Fall")) {
@@ -248,14 +246,16 @@ void GameLoop::Update() {
 		for (int i = 0; i < kBallNum; i++) {
 			ball_[i].velocity += ball_[i].acceleration * deltaTime;
 			ball_[i].position += ball_[i].velocity * deltaTime;
-			if (ball_[i].position.y < 0.0f) {
+			//空気抵抗
+			ball_[0].acceleration.y = Math::AirResistance(ball_[0], k).y;
+			/*if (ball_[i].position.y < 0.0f) {
 				ball_[i].position.y = 0.0f;
 				ball_[i].acceleration = {};
-				Math::Friction(ball_[0],miu);
-			}
+				ball_[0].acceleration.x = Math::Friction(ball_[0], miu).x;
+			}*/
 		}
 		if (isMove) {
-			ball_[0].velocity.x = 5.0f;
+			ball_[0].velocity.x = 1.0f;
 			ball_[1].velocity.x = 1.0f;
 			isMove = false;
 		}
@@ -363,7 +363,7 @@ void GameLoop::DebugText() {
 	ImGui::SliderFloat("radius", &ball_[0].radius, 0.0f, 2.0f);
 	ImGui::End();
 
-	ImGui::Begin("friction");
+	ImGui::Begin("physics");
 	ImGui::DragFloat("miu", &miu, 0.01f);
 	ImGui::Text("friction");
 	ImGui::DragFloat3("friction.position", &ball_[0].position.x, 0.01f);
@@ -397,13 +397,13 @@ void GameLoop::Collider() {
 	static float h = 0.1f;
 	for (int i = 0; i < kBallNum; i++) {
 		/*if (collision_->IsCollision(capsuleMaterial_, plane_->GetPlaneMaterial())) {*/
-			if (collision_->IsCollision(sphereBallMaterial_[i], plane_->GetPlaneMaterial())) {
-				//反発している
-				Math::Reflection(ball_[i].velocity, plane_->GetPlaneMaterial().normal, e);
-				ball_[i].position.y += h;//少し上げる
-				h *= e;//反発係数を掛ける
-			}
-			
+		if (collision_->IsCollision(sphereBallMaterial_[i], plane_->GetPlaneMaterial())) {
+			//反発している
+			Math::Reflection(ball_[i].velocity, plane_->GetPlaneMaterial().normal, e);
+			ball_[i].position.y += h;//少し上げる
+			h *= e;//反発係数を掛ける
+		}
+
 		//}
 	}
 	ImGui::Text("%f", h);

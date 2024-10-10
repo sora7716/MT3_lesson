@@ -367,12 +367,14 @@ public:
 	/// </summary>
 	/// <param name="ball">ボール</param>
 	/// <param name="k">比例定数</param>
-	static void AirResistance(Ball& ball, float k);
+	/// <returns>空気抵抗</returns>
+	static Vector3 AirResistance(const Ball& ball, float k);
 
 	/// <summary>
-	/// 摩擦
-	/// </summary>
-	/// <param name="ball">ボール</param>
-	/// <param name="miu">摩擦係数</param>
-	static void Friction(Ball& ball, float miu);
+    /// 摩擦
+    /// </summary>
+    /// <param name="ball">ボール</param>
+    /// <param name="miu">摩擦係数</param>
+	/// <returns>摩擦</returns>
+	static Vector3 Friction(const Ball& ball, float miu);
 };

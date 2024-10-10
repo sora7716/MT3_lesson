@@ -484,7 +484,8 @@ void Math::Reflection(Vector3& ballVelocity, const Vector3 normal, float e) {
 }
 
 //空気抵抗
-void Math::AirResistance(Ball& ball, float k) {
+Vector3 Math::AirResistance(const Ball& ball, float k) {
+	Vector3 result{};
 	// 速度の大きさ（ノルム）を計算
 	float speed = Math::Length(ball.velocity);
 
@@ -497,16 +498,14 @@ void Math::AirResistance(Ball& ball, float k) {
 		Vector3 airResistanceAcceleration = airResistance / ball.mass;
 
 		// 総合加速度に空気抵抗と重力を加算
-		ball.acceleration = kGravity + airResistanceAcceleration;
+		result = kGravity + airResistanceAcceleration;
 	}
-	else {
-		// 速度がゼロの場合は重力のみを適用
-		ball.acceleration = kGravity;
-	}
+	return result;
 }
 
 //摩擦
-void Math::Friction(Ball& ball, float miu) {
+Vector3 Math::Friction(const Ball& ball, float miu) {
+	Vector3 result{};
 	// 動いていたら
 	if (abs(ball.velocity.x) > 0.01f || abs(ball.velocity.y) > 0.01f || abs(ball.velocity.z) > 0.01f) {
 		// 摩擦力の大きさを計算
@@ -519,15 +518,16 @@ void Math::Friction(Ball& ball, float miu) {
 		Vector3 frictionalForce = magnitude * direction;
 
 		// 加速度に摩擦力を反映（力を質量で割る）
-		ball.acceleration += frictionalForce / ball.mass;
+		result += frictionalForce / ball.mass;
 
 		// 摩擦力によって速度がゼロになる場合、速度と加速度を停止
 		if (abs(frictionalForce.x * deltaTime) > abs(ball.velocity.x) ||
 			abs(frictionalForce.y * deltaTime) > abs(ball.velocity.y) ||
 			abs(frictionalForce.z * deltaTime) > abs(ball.velocity.z)) {
-			ball.acceleration = ball.velocity * 60.0f;
+			result = ball.velocity * 60.0f;
 		}
 	}
+	return result;
 }
 
 
