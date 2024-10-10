@@ -46,20 +46,27 @@ public://メンバ関数
 	/// <param name="isHit">衝突したかどうか</param>
 	void OnCollision(bool isHit);
 
-	/// <summary>
+    /// <summary>
 	/// 頂点のゲッター
 	/// </summary>
-	Vector3* GetVertex();
+	/// <param name="i">表か裏か</param>
+	/// <returns></returns>
+	Vector3* GetVertex(int i);
 
 	/// <summary>
 	/// 六角形の素材のゲッター
 	/// </summary>
 	HexagonMaterial GetHexagonMaterial();
 
+public://静的メンバ変数
+
+	static inline const int kVertexNum = 6;
+	static inline const int Surface = 2;
+
 private://メンバ変数
 	Camera* camera_ = nullptr;//カメラ
 	HexagonMaterial hexagon_;//六角形を作成の素材
-	Vector3 vertex[6] = {};//頂点
-	Vector3 screenVertex[6] = {};//スクリーン座標の頂点
+	Vector3 vertex[Surface][kVertexNum] = {};//頂点
+	Vector3 screenVertex[Surface][kVertexNum] = {};//スクリーン座標の頂点
 };
 

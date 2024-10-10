@@ -110,6 +110,13 @@ public://構造体など
 	typedef struct HexagonMaterial {
 		Vector3 center;//中心
 		float radius;//半径
+		Vector3 size = { 1.0f,1.0f,1.0f };//座標軸方向の長さの半分。中心から面までの距離 scale
+		Vector3 rotation = {};//回転
+		Vector3 orientations[3] = {
+			{1.0f,0.0f,0.0f},
+			{0.0f,1.0f,0.0f},
+			{0.0f,0.0f,1.0f},
+		};//座標軸。正規化・直行必須 rotation
 		uint32_t color = WHITE;//色
 		bool isHit = false;//衝突したか
 	}HexagonMaterial;

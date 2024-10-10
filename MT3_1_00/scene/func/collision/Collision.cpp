@@ -66,23 +66,26 @@ bool Collision::IsCollision(const GameObject::Segment& segment, const GameObject
 	Vector3 v0p = intersect - triangle.kLocalVertices_[0];
 	Vector3 v20 = triangle.kLocalVertices_[0] - triangle.kLocalVertices_[2];
 
+	//衝突したかどうかのフラグ
+	bool isHit = false;
+
 	if (std::abs(dot) < 1e-6f) {
-		return false;
+		isHit = false;
 	}
 	if (t >= kTMin && t <= kTMax) {
-		return true;
+		isHit = true;
 	}
 
 	if (Math::Dot(Math::Cross(v01, v1p), normal) < 0.0f) {
-		return false;
+		isHit = false;
 	}
 	else if (Math::Dot(Math::Cross(v12, v2p), normal) < 0.0f) {
-		return false;
+		isHit = false;
 	}
 	else if (Math::Dot(Math::Cross(v20, v0p), normal) < 0.0f) {
-		return false;
+		isHit = false;
 	}
-	return true;
+	return isHit;
 }
 
 // AABB同士
@@ -290,12 +293,12 @@ bool Collision::IsCollision(OBB* obb1, OBB* obb2) {
 bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 	// 六角形の各辺
 	Vector3 edge[6]{
-		hexagon->GetVertex()[1] - hexagon->GetVertex()[0],
-		hexagon->GetVertex()[2] - hexagon->GetVertex()[1],
-		hexagon->GetVertex()[3] - hexagon->GetVertex()[2],
-		hexagon->GetVertex()[4] - hexagon->GetVertex()[3],
-		hexagon->GetVertex()[5] - hexagon->GetVertex()[4],
-		hexagon->GetVertex()[0] - hexagon->GetVertex()[5],
+		hexagon->GetVertex(0)[1] - hexagon->GetVertex(0)[0],
+		hexagon->GetVertex(0)[2] - hexagon->GetVertex(0)[1],
+		hexagon->GetVertex(0)[3] - hexagon->GetVertex(0)[2],
+		hexagon->GetVertex(0)[4] - hexagon->GetVertex(0)[3],
+		hexagon->GetVertex(0)[5] - hexagon->GetVertex(0)[4],
+		hexagon->GetVertex(0)[0] - hexagon->GetVertex(0)[5],
 	};
 
 	//衝突したかどうか
@@ -306,7 +309,7 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 
 
 	//疑似的に平面を作成
-	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetVertex()[0],normal) };
+	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetVertex(0)[0],normal) };
 
 	//平面の法線とラインの差分が向き合っているかどうか
 	float dot = Math::Dot(plane.normal, line->GetSegment().diff);
@@ -321,12 +324,12 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 
 	//六角形の各辺に重なっているかの計算
 	Vector3 intersect = line->GetSegment().origin + t * line->GetSegment().diff;
-	Vector3 v0p = intersect - hexagon->GetVertex()[0];
-	Vector3 v1p = intersect - hexagon->GetVertex()[1];
-	Vector3 v2p = intersect - hexagon->GetVertex()[2];
-	Vector3 v3p = intersect - hexagon->GetVertex()[3];
-	Vector3 v4p = intersect - hexagon->GetVertex()[4];
-	Vector3 v5p = intersect - hexagon->GetVertex()[5];
+	Vector3 v0p = intersect - hexagon->GetVertex(0)[0];
+	Vector3 v1p = intersect - hexagon->GetVertex(0)[1];
+	Vector3 v2p = intersect - hexagon->GetVertex(0)[2];
+	Vector3 v3p = intersect - hexagon->GetVertex(0)[3];
+	Vector3 v4p = intersect - hexagon->GetVertex(0)[4];
+	Vector3 v5p = intersect - hexagon->GetVertex(0)[5];
 
 
 	//平面の中にある六角形に線が当たっているかの判定
@@ -398,28 +401,3 @@ bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const Ga
 	//距離がカプセルの半径以下なら衝突
 	return distance <= capsule.radius;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -184,13 +184,13 @@ void GameLoop::DebugText() {
 	ImGui::Begin("Window");
 	camera_->DebugText();
 	line_->DebugText();
-	//hexagon_->DebugText();
+	hexagon_->DebugText();
 	//obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
 	//aabbs_[1]->DebugText("aabb[1]");
 	//plane_->DebugText();
-	triangle_->DebugText();
+	//triangle_->DebugText();
 	//spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
 	//capsule_->DebugText();
@@ -201,7 +201,8 @@ void GameLoop::DebugText() {
 //当たり判定
 void GameLoop::Collider() {
 	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(),obbs_[1].get()));
-	line_->OnCollision(Collision::GetInstance()->IsCollision(line_->GetSegment(), triangle_->GetTriangleMaterial()));
+	//line_->OnCollision(Collision::GetInstance()->IsCollision(line_->GetSegment(), triangle_->GetTriangleMaterial()));
+	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get()));
 }
 
 //描画処理
@@ -211,7 +212,7 @@ void GameLoop::Draw() {
 	//ライン
 	line_->DrawSegment();
 	//六角形
-	//hexagon_->Draw();
+	hexagon_->Draw();
 	//OBB
 	/*for (auto& obb : obbs_) {
 		obb->Draw();
@@ -223,7 +224,7 @@ void GameLoop::Draw() {
 	//平面
 	//plane_->Draw();
 	//三角形
-	triangle_->DrawWireFrame();
+	//triangle_->DrawWireFrame();
 	//球
 	/*for (auto& sphere : spheres_) {
 		sphere->Update();
