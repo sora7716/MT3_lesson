@@ -40,7 +40,6 @@ void Hexagon::Draw() {
 		Novice::DrawLine((int)screenVertex[i - 1].x, (int)screenVertex[i - 1].y, (int)screenVertex[i].x, (int)screenVertex[i].y, hexagon_.color);
 	}
 	Novice::DrawLine((int)screenVertex[5].x, (int)screenVertex[5].y, (int)screenVertex[0].x, (int)screenVertex[0].y, hexagon_.color);
-
 }
 
 // 衝突したとき

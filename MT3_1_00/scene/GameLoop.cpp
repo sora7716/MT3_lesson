@@ -346,7 +346,7 @@ void GameLoop::Collider() {
 			ball_.position.y += 0.1f;//少し上げる
 		}
 	}
-	//capsule_->OnCollision(collision_->IsCollision(capsule_.get(), plane_));
+	//capsule_->OnCollision(collision_->IsCollision(capsule_.get()->GetCapsuleMaterial(), plane_->GetPlaneMaterial()));
 }
 
 //描画処理
