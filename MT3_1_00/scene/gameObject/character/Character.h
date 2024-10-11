@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/GameObject.h"
 #include "scene/gameObject/camera/Camera.h"
 class Character :public GameObject {

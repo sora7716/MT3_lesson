@@ -103,13 +103,25 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="hexagon">六角形</param>
 	/// <param name="line">線分</param>
+	/// <param name="surface">面</param>
 	/// <returns>衝突したか</returns>
-	bool IsCollision(Hexagon*hexagon,Line*line);
+	bool IsCollision(Hexagon*hexagon,Line*line,int surface);
 
 	/// <summary>
 	/// 衝突判定(カプセルと平面)
 	/// </summary>
+	/// <param name="capsule">カプセル</param>
+	/// <param name="plane">平面</param>
+	/// <returns>衝突したか</returns>
 	bool IsCollision(const GameObject::CapsuleMaterial& capsule, const GameObject::PlaneMaterial& plane);
+
+	/// <summary>
+	/// 衝突判定(線と四角)
+	/// </summary>
+	/// <param name="vertices">頂点</param>
+	/// <param name="line">線</param>
+	/// <returns>衝突したか</returns>
+	bool IsCollision(Hexagon* hexagon, OBB* obb);
 
 	//コピーコンストラクタを禁止する
 	Collision(const Collision& collision) = delete;
@@ -117,7 +129,7 @@ public://メンバ関数
 	//代入演算子を禁止する
 	Collision& operator=(const Collision& collision) = delete;
 
-public://静的メンバ変数
+private://静的メンバ変数
 
 	/// <summary>
 	/// コンストラクタ

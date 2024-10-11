@@ -19,13 +19,14 @@ void Hexagon::Update() {
 		float angle = theta * rad;
 		//正面
 		vertex[0][i].x = hexagon_.radius * std::cosf(angle) + hexagon_.center.x;
-		vertex[0][i].y = hexagon_.center.y - hexagon_.size.y;
+		vertex[0][i].y = hexagon_.center.y + hexagon_.height;
 		vertex[0][i].z = hexagon_.radius * std::sinf(angle) + hexagon_.center.z;
 		//背面
 		vertex[1][i].x = hexagon_.radius * std::cosf(angle) + hexagon_.center.x;
-		vertex[1][i].y = hexagon_.center.y + hexagon_.size.y;
+		vertex[1][i].y = hexagon_.center.y - hexagon_.height;
 		vertex[1][i].z = hexagon_.radius * std::sinf(angle) + hexagon_.center.z;
 	}
+
 	for (int i = 0; i < Surface; i++) {
 		for (int j = 0; j < 6; j++) {
 			CameraScreenTransform(camera_, vertex[i][j], screenVertex[i][j]);
@@ -39,8 +40,10 @@ void Hexagon::DebugText(const char* name) {
 	ImGui::DragFloat3(centerText.c_str(), &hexagon_.center.x, 0.1f);
 	std::string radiusText = static_cast<std::string>(name) + ".radius";
 	ImGui::DragFloat(radiusText.c_str(), &hexagon_.radius, 0.1f);
-	std::string sizeText = static_cast<std::string>(name) + ".size";
-	ImGui::SliderFloat3(sizeText.c_str(), &hexagon_.size.x, 0.0f, 2.0f);
+	std::string sizeText = static_cast<std::string>(name) + ".height";
+	ImGui::SliderFloat(sizeText.c_str(), &hexagon_.height, 0.0f, 2.0f);
+	std::string rotationText = static_cast<std::string>(name) + ".rotation";
+	ImGui::DragFloat3(rotationText.c_str(), &hexagon_.rotation.x, 0.1f);
 }
 
 //描画

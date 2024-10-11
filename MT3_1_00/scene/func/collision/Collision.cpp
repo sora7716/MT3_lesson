@@ -290,15 +290,15 @@ bool Collision::IsCollision(OBB* obb1, OBB* obb2) {
 }
 
 //六角形と線分
-bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
+bool Collision::IsCollision(Hexagon* hexagon, Line* line, int surface) {
 	// 六角形の各辺
 	Vector3 edge[6]{
-		hexagon->GetVertex(0)[1] - hexagon->GetVertex(0)[0],
-		hexagon->GetVertex(0)[2] - hexagon->GetVertex(0)[1],
-		hexagon->GetVertex(0)[3] - hexagon->GetVertex(0)[2],
-		hexagon->GetVertex(0)[4] - hexagon->GetVertex(0)[3],
-		hexagon->GetVertex(0)[5] - hexagon->GetVertex(0)[4],
-		hexagon->GetVertex(0)[0] - hexagon->GetVertex(0)[5],
+		hexagon->GetVertex(surface)[1] - hexagon->GetVertex(surface)[0],
+		hexagon->GetVertex(surface)[2] - hexagon->GetVertex(surface)[1],
+		hexagon->GetVertex(surface)[3] - hexagon->GetVertex(surface)[2],
+		hexagon->GetVertex(surface)[4] - hexagon->GetVertex(surface)[3],
+		hexagon->GetVertex(surface)[5] - hexagon->GetVertex(surface)[4],
+		hexagon->GetVertex(surface)[0] - hexagon->GetVertex(surface)[5],
 	};
 
 	//衝突したかどうか
@@ -309,7 +309,7 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line) {
 
 
 	//疑似的に平面を作成
-	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetVertex(0)[0],normal) };
+	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetVertex(surface)[0],normal) };
 
 	//平面の法線とラインの差分が向き合っているかどうか
 	float dot = Math::Dot(plane.normal, line->GetSegment().diff);
@@ -400,4 +400,25 @@ bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const Ga
 
 	//距離がカプセルの半径以下なら衝突
 	return distance <= capsule.radius;
+}
+
+bool Collision::IsCollision(Hexagon* hexagon, OBB* obb){
+	//分割軸の数
+	Vector3 separateAxes[15];
+
+	//面の法線を算出
+	Vector3 v01 = hexagon->GetVertex(0)[1] - hexagon->GetVertex(0)[0];
+	Vector3 v111 = hexagon->GetVertex(0)[2] - hexagon->GetVertex(1)[1];
+
+	Vector3 v12 = hexagon->GetVertex(0)[2] - hexagon->GetVertex(0)[1];
+	Vector3 v112 = hexagon->GetVertex(0)[2] - hexagon->GetVertex(1)[2];
+
+	Vector3 v23 = hexagon->GetVertex(0)[3] - hexagon->GetVertex(0)[2];
+	Vector3 v113 = hexagon->GetVertex(0)[3] - hexagon->GetVertex(1)[3];
+	//面の法線
+	Vector3 normal[4];
+	normal[0] = Math::Normalize(Math::Cross(v01, v111));
+	normal[1] = Math::Normalize(Math::Cross(v12, v112));
+	normal[2] = Math::Normalize(Math::Cross(v23, v113));
+	
 }

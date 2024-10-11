@@ -86,15 +86,16 @@ void GameLoop::Initialize() {
 	};
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
-	hexagonMaterial_ = { {},1 };
+	hexagonMaterial_ = { .center = {},.radius = 1.0f,.height = 0.1f };
 	hexagon_->Initialize(camera_.get(), move(hexagonMaterial_));
 	//OBB
 	obbMaterial_[0] = {
-		.center = {5,0.0f,5.0f},
+		.center = {0.0f,1.0f,0.0f},
+		.size = {0.5f,0.5f,0.5f}
 	};
-	obbMaterial_[1] = {
+	/*obbMaterial_[1] = {
 		.center = {0,0.0f,5.0f},
-	};
+	};*/
 	for (int i = 0; i < kOBBNum; i++) {
 		obbs_[i]->Initialize(camera_.get(), move(obbMaterial_[i]));
 	}
@@ -163,9 +164,9 @@ void GameLoop::Update() {
 		obb->Update();
 	}
 	//AABB
-	for (auto& aabb : aabbs_) {
+	/*for (auto& aabb : aabbs_) {
 		aabb->Update();
-	}
+	}*/
 	//平面
 	plane_->Update();
 	//三角形
@@ -182,7 +183,7 @@ void GameLoop::Update() {
 //デバックテキスト
 void GameLoop::DebugText() {
 	ImGui::Begin("Window");
-	camera_->DebugText();
+	//camera_->DebugText();
 	line_->DebugText();
 	hexagon_->DebugText();
 	//obbs_[0]->DebagText("obb[0]");
@@ -202,7 +203,8 @@ void GameLoop::DebugText() {
 void GameLoop::Collider() {
 	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(),obbs_[1].get()));
 	//line_->OnCollision(Collision::GetInstance()->IsCollision(line_->GetSegment(), triangle_->GetTriangleMaterial()));
-	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get()));
+	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),0));
+	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));
 }
 
 //描画処理

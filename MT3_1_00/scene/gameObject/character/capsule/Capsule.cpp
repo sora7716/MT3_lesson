@@ -37,9 +37,9 @@ void Capsule::Updata() {
 		lines_[i]->SetColor(capsule_.color);
 		lines_[i]->SetIsHit(capsule_.isHit);
 	}
-		centerLine_->SetSegment({ capsule_.segment.origin,capsule_.segment.diff });
-		centerLine_->SetColor(GREEN);
-		centerLine_->SetIsHit(capsule_.isHit);
+	centerLine_->SetSegment({ capsule_.segment.origin,capsule_.segment.diff });
+	centerLine_->SetColor(GREEN);
+	centerLine_->SetIsHit(capsule_.isHit);
 }
 
 //デバックテキスト
@@ -48,6 +48,8 @@ void Capsule::DebugText(const char* name) {
 	ImGui::DragFloat3(originMove.c_str(), &capsule_.segment.origin.x, 0.1f);
 	string diffMove = (string)name + ".diff";
 	ImGui::DragFloat3(diffMove.c_str(), &capsule_.segment.diff.x, 0.1f);
+	string radiusMove = (string)name + ".radius";
+	ImGui::SliderFloat(radiusMove.c_str(), &capsule_.radius, 0.1f, 2.0f);
 }
 
 //描画
@@ -67,12 +69,12 @@ void Capsule::SetCapsuleMaterial(const CapsuleMaterial& capsuleMaterial) {
 }
 
 // カプセルの素材のゲッター
-GameObject::CapsuleMaterial Capsule::GetCapsuleMaterial(){
+GameObject::CapsuleMaterial Capsule::GetCapsuleMaterial() {
 	return capsule_;
 }
 
 //衝突したら
-void Capsule::OnCollision(bool isHit){
+void Capsule::OnCollision(bool isHit) {
 	if (isHit) {
 		capsule_.color = RED;
 	}

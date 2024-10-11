@@ -1,4 +1,4 @@
-﻿#include "Character.h"
+#include "Character.h"
 
 //ワールドビュープロジェクション
 void Character::WvpMatrix(Camera* camera) {
