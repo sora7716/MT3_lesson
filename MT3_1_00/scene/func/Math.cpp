@@ -530,4 +530,13 @@ Vector3 Math::Friction(const Ball& ball, float miu) {
 	return result;
 }
 
+// リサージュ曲線(閉曲)
+Vector3 Math::LissajousCurve(const Vector3& theta, const Vector3& center, const Vector3& scalar) {
+	Vector3 result{};
+	result.x = scalar.x * sin(theta.x) + center.x;
+	result.y = scalar.y * sin(theta.y) + center.y;
+	result.z = scalar.z * sin(theta.z) + center.z;
+	return result;
+}
+
 

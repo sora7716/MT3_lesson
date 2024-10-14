@@ -23,7 +23,7 @@ Sphere::~Sphere() {
 }
 
 //初期化
-void Sphere::Initialize(Camera* camera,const SphereMaterial&&sphereMaterial) {
+void Sphere::Initialize(Camera* camera, const SphereMaterial&& sphereMaterial) {
 	sphere_ = sphereMaterial;
 	scale_ = { 1.0f,1.0f,1.0f };
 	SetCamera(camera);
@@ -31,7 +31,10 @@ void Sphere::Initialize(Camera* camera,const SphereMaterial&&sphereMaterial) {
 
 //更新処理
 void Sphere::Update() {
-	translate_ = sphere_.center;
+	theta_ += 0.1f;
+	lissajousPos_ = { sqrt(2.0f) * theta_ + pi_f / 6.0f,theta_ + pi_f / 4.0f,0.0f * theta_ };
+	// sphereの中心をリサージュ曲線上に移動させる
+	sphere_.center = Math::LissajousCurve(lissajousPos_, lissajousCenter_, { 2.0f,1.0f,1.0f });
 }
 
 #ifdef _DEBUG
@@ -45,6 +48,8 @@ void Sphere::DebugText(const char* name) {
 
 	string radiusLabel = string(name) + ".radius";
 	ImGui::DragFloat(radiusLabel.c_str(), &sphere_.radius, 0.01f);
+
+	ImGui::DragFloat3("ce", &lissajousCenter_.x, 0.1f);
 }
 #endif // _DEBUG
 
@@ -72,9 +77,9 @@ void Sphere::Draw() {
 			};
 
 			c = {
-				sphere_.center.x + sphere_.radius * cos(lat+ kLatEvery) * cos(lon + kLonEvery),
-				sphere_.center.y + sphere_.radius * sin(lat+ kLatEvery),
-				sphere_.center.z + sphere_.radius * cos(lat+ kLatEvery) * sin(lon + kLonEvery)
+				sphere_.center.x + sphere_.radius * cos(lat + kLatEvery) * cos(lon + kLonEvery),
+				sphere_.center.y + sphere_.radius * sin(lat + kLatEvery),
+				sphere_.center.z + sphere_.radius * cos(lat + kLatEvery) * sin(lon + kLonEvery)
 			};
 
 			////ワールド座標系
@@ -86,9 +91,9 @@ void Sphere::Draw() {
 			//screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
 			//translate_ = sphere_.center;
 			//スクリーン座標を求める
-			CameraScreenTransform(camera_,a, screenA_);
-			CameraScreenTransform(camera_,b, screenB_);
-			CameraScreenTransform(camera_,c, screenC_);
+			CameraScreenTransform(camera_, a, screenA_);
+			CameraScreenTransform(camera_, b, screenB_);
+			CameraScreenTransform(camera_, c, screenC_);
 
 			//縦の線の描画
 			Novice::DrawLine(

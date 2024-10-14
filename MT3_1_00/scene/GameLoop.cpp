@@ -108,7 +108,7 @@ void GameLoop::Initialize() {
 		 .min{1.0f,1.0f,1.0f},
 		.max{2.0f,2.0f,2.0f}
 	};
-	for (int i = 0; i < kOBBNum; i++) {
+	for (int i = 0; i < kAABBNum; i++) {
 		aabbs_[i]->Initialize(camera_.get(), move(aabbMaterial_[i]));
 	}
 	//平面
@@ -123,12 +123,12 @@ void GameLoop::Initialize() {
 	//球
 	sphrereMaterial_[0] = {
 		{0,0,0},
-		1.0f
+		0.1f
 	};
-	sphrereMaterial_[1] = {
+	/*sphrereMaterial_[1] = {
 		{1,1,1},
 		1.0f
-	};
+	};*/
 	for (int i = 0; i < kSphereNum; i++) {
 		spheres_[i]->Initialize(camera_.get(), move(sphrereMaterial_[i]));
 	}
@@ -164,9 +164,9 @@ void GameLoop::Update() {
 		obb->Update();
 	}
 	//AABB
-	/*for (auto& aabb : aabbs_) {
+	for (auto& aabb : aabbs_) {
 		aabb->Update();
-	}*/
+	}
 	//平面
 	plane_->Update();
 	//三角形
@@ -184,15 +184,15 @@ void GameLoop::Update() {
 void GameLoop::DebugText() {
 	ImGui::Begin("Window");
 	//camera_->DebugText();
-	line_->DebugText();
-	hexagon_->DebugText();
+	/*line_->DebugText();
+	hexagon_->DebugText();*/
 	//obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
 	//aabbs_[1]->DebugText("aabb[1]");
 	//plane_->DebugText();
 	//triangle_->DebugText();
-	//spheres_[0]->DebugText("sphere[0]");
+	spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
 	//capsule_->DebugText();
 	ImGui::End();
@@ -203,8 +203,8 @@ void GameLoop::DebugText() {
 void GameLoop::Collider() {
 	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(),obbs_[1].get()));
 	//line_->OnCollision(Collision::GetInstance()->IsCollision(line_->GetSegment(), triangle_->GetTriangleMaterial()));
-	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),0));
-	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));
+	/*hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),0));
+	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));*/
 }
 
 //描画処理
@@ -212,9 +212,9 @@ void GameLoop::Draw() {
 	//グリッド線
 	grid_->Draw();
 	//ライン
-	line_->DrawSegment();
+	//line_->DrawSegment();
 	//六角形
-	hexagon_->Draw();
+	//hexagon_->Draw();
 	//OBB
 	/*for (auto& obb : obbs_) {
 		obb->Draw();
@@ -228,9 +228,11 @@ void GameLoop::Draw() {
 	//三角形
 	//triangle_->DrawWireFrame();
 	//球
-	/*for (auto& sphere : spheres_) {
-		sphere->Update();
-	}*/
+	for (auto& sphere : spheres_) {
+		sphere->Draw();
+	}
+	//球の通った道を表示
+	line_->DrawObjectRoad(spheres_[0]->GetSphereMaterial().center);
 	//カプセル
 	//capsule_->Draw();
 }

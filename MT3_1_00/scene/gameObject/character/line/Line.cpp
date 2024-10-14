@@ -120,6 +120,35 @@ void Line::DrawCatmullRom(){
 	}
 }
 
+// オブジェクトの通った道を表示する
+void Line::DrawObjectRoad(const Vector3& pos){
+	// 軌跡を保存するための可変長配列
+	static std::vector<Vector3> path;
+	path.push_back(pos); // sphereの現在位置を保存
+	// 保存した軌跡を線でつなげる
+	for (size_t i = 1; i < path.size(); i++) {
+		Vector3 start = path[i - 1];
+		Vector3 end = path[i];
+
+		// スクリーン座標に変換
+		CameraScreenTransform(camera_, start, start);
+		CameraScreenTransform(camera_, end, end);
+
+		// 線を描画
+		Novice::DrawLine(
+			static_cast<int>(start.x), static_cast<int>(start.y),
+			static_cast<int>(end.x), static_cast<int>(end.y),
+			WHITE
+		);
+	}
+
+	// 軌跡のサイズを制限（必要であれば）
+	const size_t maxPathSize = 1000; // 軌跡の最大保存数(分割数)
+	if (path.size() > maxPathSize) {
+		path.erase(path.begin()); // 最も古い位置を削除
+	}
+}
+
 //衝突した場合の判定
 void Line::OnCollision(bool isHit) {
 	isHit_ = isHit;

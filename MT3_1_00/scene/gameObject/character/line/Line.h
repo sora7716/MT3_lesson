@@ -51,6 +51,12 @@ public://メンバ関数
 	void DrawCatmullRom();
 
 	/// <summary>
+	/// オブジェクトの通った道を表示する
+	/// </summary>
+	/// <param name="pos">ポジション</param>
+	void DrawObjectRoad(const Vector3& pos);
+
+	/// <summary>
 	/// 衝突した場合の判定
 	/// </summary>
 	/// <param name="isHit">衝突したかどうか</param>

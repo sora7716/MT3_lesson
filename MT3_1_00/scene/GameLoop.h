@@ -71,7 +71,7 @@ public://静的メンバ変数
 	static inline const int kWindowHeight = 720;//画面の縦幅
 	static inline const int kOBBNum = 1;//OBBの数
 	static inline const int kAABBNum = 2;//AABBの数
-	static inline const int kSphereNum = 2;//球の数
+	static inline const int kSphereNum = 1;//球の数
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};

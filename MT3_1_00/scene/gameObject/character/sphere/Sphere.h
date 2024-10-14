@@ -101,5 +101,8 @@ private://メンバ変数
 	Vector3 screenA_;//スクリーン座標
 	Vector3 screenB_;//スクリーン座標
 	Vector3 screenC_;//スクリーン座標
+	Vector3 lissajousCenter_;//リサージュ曲線の中心点
+	float theta_ = 0.0f;//θ
+	Vector3 lissajousPos_ = {};//リサージュ曲線のポジション
 };
 

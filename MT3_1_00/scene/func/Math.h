@@ -377,4 +377,14 @@ public:
     /// <param name="miu">摩擦係数</param>
 	/// <returns>摩擦</returns>
 	static Vector3 Friction(const Ball& ball, float miu);
+
+	/// <summary>
+	/// リサージュ曲線(閉曲線)
+	/// </summary>
+	/// <param name="theta">θ</param>
+	/// <param name="center">中心点</param>
+	/// <param name="scalar">スカラー</param>
+	/// <returns>閉曲線</returns>
+	static Vector3 LissajousCurve(const Vector3& theta, const Vector3& center,const Vector3& scalar={1.0f,1.0f,1.0f});
+
 };

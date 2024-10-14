@@ -403,8 +403,10 @@ bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const Ga
 }
 
 bool Collision::IsCollision(Hexagon* hexagon, OBB* obb){
+	(void)hexagon;
+	(void)obb;
 	//分割軸の数
-	Vector3 separateAxes[15];
+	//Vector3 separateAxes[15];
 
 	//面の法線を算出
 	Vector3 v01 = hexagon->GetVertex(0)[1] - hexagon->GetVertex(0)[0];
@@ -420,5 +422,6 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb){
 	normal[0] = Math::Normalize(Math::Cross(v01, v111));
 	normal[1] = Math::Normalize(Math::Cross(v12, v112));
 	normal[2] = Math::Normalize(Math::Cross(v23, v113));
+	return false;
 	
 }
