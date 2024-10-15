@@ -32,7 +32,7 @@ void Sphere::Initialize(Camera* camera, const SphereMaterial&& sphereMaterial) {
 //更新処理
 void Sphere::Update() {
 	theta_ += 0.1f;
-	lissajousPos_ = { sqrt(2.0f) * theta_ + pi_f / 6.0f,theta_ + pi_f / 4.0f,0.0f * theta_ };
+	lissajousPos_ = { sqrt(2.0f) * theta_ + pi_f / 6.0f,theta_ + pi_f / 4.0f,2.0f * theta_ };
 	// sphereの中心をリサージュ曲線上に移動させる
 	sphere_.center = Math::LissajousCurve(lissajousPos_, lissajousCenter_, { 2.0f,1.0f,1.0f });
 }
