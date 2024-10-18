@@ -1,15 +1,61 @@
 #pragma once
 #include "scene/func/Aithmetic.h"
+#include <vector>
+#include <cmath>
+#include <numbers>
+#include <algorithm>
+#define cont(theta) (1.0f/tanf(theta)) 
+#define deltaTime 1.0f/60.0f
+#define kGravity Vector3(0.0f,-9.8f,0.0f)
+#define pi_f std::numbers::pi_v<float>
 
 class Math {
+
+public://構造体など
+	//バネ
+	typedef struct Spring {
+		//アンカー｡固定された端の位置
+		Vector3 anchor;
+		float naturalLength;//自然長
+		float stiffness;//剛性。バネ定数。
+		float dampingCoefficient;//減衰係数
+	}Spring;
+
+	//ボール
+	typedef struct Ball {
+		Vector3 position;//位置
+		Vector3 velocity;//速度
+		Vector3 acceleration;//加速度
+		float mass;//ボールの重さ
+		float radius;//ボールの半径
+		int color;//ボールの色
+	}Ball;
+
+	//振り子
+	typedef struct Pendulum {
+		Vector3 anchor;//アンカーポイント。固定された端の位置
+		float length;//紐の長さ
+		float angle;//現在の角度
+		float angularVelocity;//角速度ω
+		float angularaAcceleration;//角加速度
+	}Pendulum;
+
+	//円錐に回る振り子
+	typedef struct ConicalPendulum {
+		Vector3 anchor;//アンカーポイント
+		float length;//紐の長さ
+		float halfApexAngle;//円錐の頂点の半分の角度
+		float angle;//現在の角度
+		float angularVelocity;//角速度ω
+	}ConicalPendulum;
 public:
-	
+
 	/// <summary>
 	/// 転置行列
 	/// </summary>
 	/// <param name="m">マトリック</param>
 	/// <returns>matrixの転置行列</returns>
-	static MyMatrix4x4 Transpose(MyMatrix4x4 m);
+	static Matrix4x4 Transpose(Matrix4x4 m);
 
 	/// <summary>
 	/// 単位行列
@@ -22,14 +68,14 @@ public:
 	/// </summary>
 	/// <param name="scale">倍率</param>
 	/// <returns>倍率のmatrix</returns>
-	static MyMatrix4x4 MakeScaleMatrix(MyVector3 scale);
+	static Matrix4x4 MakeScaleMatrix(const Vector3& scale);
 
 	/// <summary>
 	/// 平行移動
 	/// </summary>
 	/// <param name="translate">移動</param>
 	/// <returns>移動のmatrix</returns>
-	static MyMatrix4x4 MakeTranslateMatrix(MyVector3 translate);
+	static Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 
 	/// <summary>
 	/// 同次座標系で計算し、デカルト座標系で返す
@@ -37,35 +83,51 @@ public:
 	/// <param name="vector">vector</param>
 	/// <param name="matrix">matrix</param>
 	/// <returns>デカルト座標系</returns>
-	static MyVector3 Transform(MyVector3 vector, MyMatrix4x4 matrix);
+	static Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 	/// <summary>
 	/// x座標を軸に回転
 	/// </summary>
 	/// <param name="radian">角度</param>
 	/// <returns>x座標を軸の回転</returns>
-	static MyMatrix4x4 MakeRotateXMatrix(float radian);
+	static Matrix4x4 MakeRotateXMatrix(const float& radian);
 
 	/// <summary>
 	/// y座標を軸に回転
 	/// </summary>
 	/// <param name="radian">角度</param>
 	/// <returns>y座標を軸の回転</returns>
-	static MyMatrix4x4 MakeRotateYMatrix(float radian);
+	static Matrix4x4 MakeRotateYMatrix(const float& radian);
 
 	/// <summary>
 	/// z座標を軸に回転
 	/// </summary>
 	/// <param name="radian">角度</param>
 	/// <returns>z座標を軸の回転</returns>
-	static MyMatrix4x4 MakeRotateZMatrix(float radian);
+	static Matrix4x4 MakeRotateZMatrix(const float& radian);
 
 	/// <summary>
 	/// x,y,z座標で回転
 	/// </summary>
 	/// <param name="radian">角度</param>
 	/// <returns>回転</returns>
-	static MyMatrix4x4 MakeRotateXYZMatrix(MyVector3 radian);
+	static Matrix4x4 MakeRotateXYZMatrix(const Vector3& radian);
+
+	/// <summary>
+	/// OBB用の回転行列
+	/// </summary>
+	/// <param name="orientations">回転行列から抽出するやつ</param>
+	/// <param name="rotate">回転する値</param>
+	static void MakeOBBRotateMatrix(Vector3* orientations, const Vector3& rotate);
+
+
+	/// <summary>
+	/// OBB用のワールド行列
+	/// </summary>
+	/// <param name="orientations">回転行列から抽出したやつ</param>
+	/// <param name="center">センターの値</param>
+	/// <returns>OBBのワールド行列</returns>
+	static Matrix4x4 MakeOBBWorldMatrix(const Vector3* orientations, const Vector3 center);
 
 	/// <summary>
 	/// アフィン関数
@@ -73,8 +135,17 @@ public:
 	/// <param name="scale">倍率</param>
 	/// <param name="radian">角度</param>
 	/// <param name="translate">移動</param>
-	/// <returns>SRT</returns>
-	static MyMatrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate);
+	/// <returns>アフィン行列</returns>
+	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate);
+
+	/// <summary>
+	/// STRの変換
+	/// </summary>
+	/// <param name="scale">倍率</param>
+	/// <param name="radian">角度</param>
+	/// <param name="translate">移動</param>
+	/// <returns>STRの変換</returns>
+	static Matrix4x4 MakeSTRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate);
 
 	/// <summary>
 	/// 正射影行列
@@ -86,7 +157,7 @@ public:
 	/// <param name="nearClip">近平面</param>
 	/// <param name="farClip">遠平面</param>
 	/// <returns>OrthographicMatrix</returns>
-	static MyMatrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+	static Matrix4x4 MakeOrthographicMatrix(const float& left, const float& top, const float& right, const float& bottom, const float& nearClip, const float& farClip);
 
 	/// <summary>
 	/// 透視投影行列
@@ -96,7 +167,7 @@ public:
 	/// <param name="nearClip">近平面への距離</param>
 	/// <param name="farClip">遠平面への距離</param>
 	/// <returns>PerspectiveFovMatrix</returns>
-	static MyMatrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRation, float nearClip, float farClip);
+	static Matrix4x4 MakePerspectiveFovMatrix(const float& fovY, const float& aspectRation, const float& nearClip, const float& farClip);
 
 	/// <summary>
 	/// ビューポートmatrix
@@ -108,7 +179,7 @@ public:
 	/// <param name="minDepth">最小深度値</param>
 	/// <param name="maxDepth">最大深度値</param>
 	/// <returns>ViewportMatrix</returns>
-	static MyMatrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth);
+	static Matrix4x4 MakeViewportMatrix(const float& left, const float& top, const float& width, const float& height, const float& minDepth, const float& maxDepth);
 
 	/// <summary>
 	/// クロス積
@@ -116,7 +187,7 @@ public:
 	/// <param name="v1">vector1</param>
 	/// <param name="v2">vector2</param>
 	/// <returns></returns>
-	static MyVector3 Cross(MyVector3 v1, MyVector3 v2);
+	static Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
 	/// <summary>
 	/// 内積
@@ -124,19 +195,196 @@ public:
 	/// <param name="v1">vector1</param>
 	/// <param name="v2">vector2</param>
 	/// <returns></returns>
-	static float Dot(MyVector3 v1, MyVector3 v2);
+	static float Dot(const Vector3& v1, const Vector3& v2);
 
 	/// <summary>
-	///	ノルム
+	///	ノルム(Vector3)
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <returns></returns>
-	static float Length(MyVector3 v);
+	static float Length(const Vector3& v);
 
 	/// <summary>
-	/// 単位vector
+	/// ノルム(float)
+	/// </summary>
+	/// <param name="num">数字</param>
+	/// <returns></returns>
+	static float Length(float num);
+
+	/// <summary>
+	/// 正規化vector
 	/// </summary>
 	/// <param name="v">vector</param>
 	/// <returns></returns>
-	static MyVector3 Normalize(MyVector3 v);
+	static Vector3 Normalize(const Vector3& v);
+
+	/// <summary>
+	/// 正規化
+	/// </summary>
+	/// <param name="num">数字</param>
+	/// <returns></returns>
+	static float Normalize(const float& num);
+
+	/// <summary>
+	/// 正射影ベクトル
+	/// </summary>
+	/// <param name="v1">ベクトル</param>
+	/// <param name="v2">ベクトル</param>
+	/// <returns>正射影</returns>
+	static Vector3 Project(const Vector3& v1, const Vector3& v2);
+
+	/// <summary>
+	/// トランスフォームノーマル
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <param name="m">マトリックス</param>
+	/// <returns></returns>
+	static Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+	/// <summary>
+	/// 線形補間
+	/// </summary>
+	/// <param name="v1">ベクトル1</param>
+	/// <param name="v2">ベクトル2</param>
+	/// <param name="t">媒介変数</param>
+	/// <returns>線形補間</returns>
+	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+	/// <summary>
+	/// 線形補間
+	/// </summary>
+	/// <param name="num1">数字1</param>
+	/// <param name="num2">数字2</param>
+	/// <param name="t">媒介変数</param>
+	/// <returns>線形補間</returns>
+	static float Lerp(const float& num1, const float& num2, float t);
+
+	/// <summary>
+	/// 球面線形補間
+	/// </summary>
+	/// <param name="v1">ベクトル1</param>
+	/// <param name="v2">ベクトル2</param>
+	/// <param name="t">媒介変数</param>
+	/// <returns> 球面線形補間</returns>
+	static Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
+
+	/// <summary>
+	/// CatmullRom補間
+	/// </summary>
+	/// <param name="p0">点0の座標</param>
+	/// <param name="p1">点1の座標</param>
+	/// <param name="p2">点2の座標</param>
+	/// <param name="p3">点3の座標</param>
+	/// <param name= "t">点 1を0.0f点2を1.0fとした割合指定</param>
+	/// <returns>CatmullRom補間</returns>
+	static Vector3 CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
+
+	/// <summary>
+	/// CatmullRomスプライン曲線上の座標を得る
+	/// </summary>
+	/// <param name="points">制御点の集合</param>
+	/// <param name="t">スプラインの全区間の中での割合指定[0,1]</param>
+	/// <returns>CatmullRomスプライン曲線上</returns>
+	static Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t);
+
+	/// <summary>
+	/// 三次元のベジエ曲線
+	/// </summary>
+	/// <param name="points">制御点</param>
+	/// <param name="t">フレーム</param>
+	/// <returns>ベジエ曲線</returns>
+	static Vector3 Bezier(const Vector3* points, float t);
+
+	/// <summary>
+	/// 三次元ベジエ曲線(球面線形補間ver)
+	/// </summary>
+	/// <param name="points">制御点</param>
+	/// <param name="t">フレーム</param>
+	/// <returns>ベジエ曲線</returns>
+	static Vector3 BezierS(const Vector3* points, float t);
+
+	/// <summary>
+	/// フックの法則
+	/// </summary>
+	/// <param name="spring">バネ</param>
+	/// <param name="ball">ボール</param>
+	/// <param name="isGravityOn">重力をつけるかどうか</param>
+	static void Hooklaw(const Spring& spring, Ball& ball, bool isGravityOn = false);
+
+	/// <summary>
+	/// 円運動XY
+	/// </summary>
+	/// <param name="centerPos">中心</param>
+	/// <param name="ballPos">現在のボールの位置</param>
+	static void CircularMoveXY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
+
+	/// <summary>
+	/// 円運動XZ
+	/// </summary>
+	/// <param name="centerPos">中心</param>
+	/// <param name="ballPos">現在のボールの位置</param>
+	static void CircularMoveXZ(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
+
+	/// <summary>
+	/// 円運動ZY
+	/// </summary>
+	/// <param name="centerPos">中心</param>
+	/// <param name="ballPos">現在のボールの位置</param>
+	static void CircularMoveZY(const Vector3& centerPos, Vector3& ballPos, const Vector2& radius);
+
+	/// <summary>
+	/// 振り子の作成
+	/// </summary>
+	/// <param name="pendulum">振り子ワイヤー</param>
+	/// <param name="ballPos">振り子の先につくもの</param>
+	static void MakePendulum(Pendulum& pendulum, Vector3& ballPos);
+
+	/// <summary>
+	/// 円錐状に動く振り子を作成
+	/// </summary>
+	/// <param name="conicalPendulum">円錐状に動く振り子のワイヤー</param>
+	/// <param name="ballPos">振り子の先につくもの</param>
+	static void MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos);
+
+	/// <summary>
+    /// 反射ベクトル
+    /// </summary>
+    /// <param name="input">入射ベクトル</param>
+    /// <param name="normal">面の法線</param>
+	/// <returns>反射ベクトル</returns>
+	static Vector3 ReflectVector(const Vector3& input, const Vector3& normal);
+
+	/// <summary>
+	/// 反発
+	/// </summary>
+	/// <param name="ballVelocity">反発してほしい物の速度</param>
+	/// <param name="normal">ぶつかる予定のオブジェクトの法線</param>
+	/// <param name="e">反発係数</param>
+	static void Reflection(Vector3& ballVelocity,const Vector3 normal,float e);
+
+	/// <summary>
+	/// 空気抵抗
+	/// </summary>
+	/// <param name="ball">ボール</param>
+	/// <param name="k">比例定数</param>
+	/// <returns>空気抵抗</returns>
+	static Vector3 AirResistance(const Ball& ball, float k);
+
+	/// <summary>
+    /// 摩擦
+    /// </summary>
+    /// <param name="ball">ボール</param>
+    /// <param name="miu">摩擦係数</param>
+	/// <returns>摩擦</returns>
+	static Vector3 Friction(const Ball& ball, float miu);
+
+	/// <summary>
+	/// リサージュ曲線(閉曲線)
+	/// </summary>
+	/// <param name="theta">θ</param>
+	/// <param name="center">中心点</param>
+	/// <param name="scalar">スカラー</param>
+	/// <returns>閉曲線</returns>
+	static Vector3 LissajousCurve(const Vector3& theta, const Vector3& center,const Vector3& scalar={1.0f,1.0f,1.0f});
+
 };
