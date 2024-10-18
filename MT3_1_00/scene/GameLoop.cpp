@@ -86,7 +86,7 @@ void GameLoop::Initialize() {
 	};
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
-	hexagonMaterial_ = { .center = {},.radius = 1.0f,.height = 0.1f };
+	hexagonMaterial_ = { .center = {},.radius = {1.0f,1.0f},.height = 0.1f };
 	hexagon_->Initialize(camera_.get(), move(hexagonMaterial_));
 	//OBB
 	obbMaterial_[0] = {
@@ -184,15 +184,15 @@ void GameLoop::Update() {
 void GameLoop::DebugText() {
 	ImGui::Begin("Window");
 	//camera_->DebugText();
-	/*line_->DebugText();
-	hexagon_->DebugText();*/
-	//obbs_[0]->DebagText("obb[0]");
+	/*line_->DebugText();*/
+	hexagon_->DebugText();
+	obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
 	//aabbs_[1]->DebugText("aabb[1]");
 	//plane_->DebugText();
 	//triangle_->DebugText();
-	spheres_[0]->DebugText("sphere[0]");
+	//spheres_[0]->DebugText("sphere[0]");
 	//spheres_[1]->DebugText("sphere[1]");
 	//capsule_->DebugText();
 	ImGui::End();
@@ -205,6 +205,7 @@ void GameLoop::Collider() {
 	//line_->OnCollision(Collision::GetInstance()->IsCollision(line_->GetSegment(), triangle_->GetTriangleMaterial()));
 	/*hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),0));
 	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));*/
+	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), obbs_[0].get()));
 }
 
 //描画処理
@@ -214,11 +215,11 @@ void GameLoop::Draw() {
 	//ライン
 	//line_->DrawSegment();
 	//六角形
-	//hexagon_->Draw();
+	hexagon_->Draw();
 	//OBB
-	/*for (auto& obb : obbs_) {
+	for (auto& obb : obbs_) {
 		obb->Draw();
-	}*/
+	}
 	//AABB
 	/*for (auto& aabb : aabbs_) {
 		aabb->Update();
@@ -228,11 +229,11 @@ void GameLoop::Draw() {
 	//三角形
 	//triangle_->DrawWireFrame();
 	//球
-	for (auto& sphere : spheres_) {
+	/*for (auto& sphere : spheres_) {
 		sphere->Draw();
-	}
+	}*/
 	//球の通った道を表示
-	line_->DrawObjectRoad(spheres_[0]->GetSphereMaterial().center);
+	//line_->DrawObjectRoad(spheres_[0]->GetSphereMaterial().center);
 	//カプセル
 	//capsule_->Draw();
 }

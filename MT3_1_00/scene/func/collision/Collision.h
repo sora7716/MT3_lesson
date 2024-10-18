@@ -116,10 +116,10 @@ public://メンバ関数
 	bool IsCollision(const GameObject::CapsuleMaterial& capsule, const GameObject::PlaneMaterial& plane);
 
 	/// <summary>
-	/// 衝突判定(線と四角)
+	/// 衝突判定(六角形と四角)
 	/// </summary>
-	/// <param name="vertices">頂点</param>
-	/// <param name="line">線</param>
+	/// <param name="hexagon">六角形</param>
+	/// <param name="obb">OBB</param>
 	/// <returns>衝突したか</returns>
 	bool IsCollision(Hexagon* hexagon, OBB* obb);
 

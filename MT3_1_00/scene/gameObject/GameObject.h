@@ -109,7 +109,7 @@ public://構造体など
 	//六角形を作るときに使う素材
 	typedef struct HexagonMaterial {
 		Vector3 center;//中心
-		float radius;//半径
+		float radius[2];//半径
 		float height = 1.0f;//座標軸方向の長さの半分。中心から面までの距離 scale
 		Vector3 rotation = {};//回転
 		uint32_t color = WHITE;//色
