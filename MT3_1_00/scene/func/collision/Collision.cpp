@@ -404,11 +404,6 @@ bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const Ga
 
 //衝突判定(六角形とOBB)
 bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
-	Vector3 orientations[3]{
-		{1.0f,0.0f,0.0f},
-		{0.0f,1.0f,0.0f},
-		{0.0f,0.0f,1.0f},
-	};
 	//分割軸の数
 	Vector3 separateAxes[19];
 
