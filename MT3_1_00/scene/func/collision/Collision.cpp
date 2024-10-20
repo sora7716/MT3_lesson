@@ -480,14 +480,14 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	Vector3 hexagonConers[kHexagonConerNum];
 
 	// 半径と高さ
-	float radius = hexagon->GetHexagonMaterial().radius[0];
-	float height = hexagon->GetHexagonMaterial().height / 2.0f; // 半分の高さ
+	float radius[2] = { hexagon->GetHexagonMaterial().radius[0],hexagon->GetHexagonMaterial().radius[1] };
+	float height = hexagon->GetHexagonMaterial().height;
 
 	// 六角形の頂点計算
 	for (int i = 0; i < 6; i++) {
 		float angle = i * (pi_f / 3.0f);  // 60度ごとに頂点がある
-		float x = radius * cos(angle);
-		float z = radius * sin(angle);
+		float x = radius[0] * cos(angle);
+		float z = radius[1] * sin(angle);
 
 		// 底面の頂点 (z = -height)
 		hexagonConers[i] = Vector3(x, -height, z) + hexagon->GetHexagonMaterial().center;
