@@ -38,10 +38,10 @@ void Hexagon::Update() {
 void Hexagon::DebugText(const char* name) {
 	std::string centerText = static_cast<std::string>(name) + ".center";
 	ImGui::DragFloat3(centerText.c_str(), &hexagon_.center.x, 0.1f);
-	std::string radiusText = static_cast<std::string>(name) + ".radius"+".x";
-	ImGui::DragFloat(radiusText.c_str(), &hexagon_.radius[0], 0.1f);
+	std::string radiusText = static_cast<std::string>(name) + ".radius" + ".x";
+	ImGui::SliderFloat(radiusText.c_str(), &hexagon_.radius[0], 0.0f, 2.0f);
 	radiusText = static_cast<std::string>(name) + ".radius" + ".z";
-	ImGui::DragFloat(radiusText.c_str(), &hexagon_.radius[1], 0.1f);
+	ImGui::SliderFloat(radiusText.c_str(), &hexagon_.radius[1], 0.0f, 2.0f);
 	std::string sizeText = static_cast<std::string>(name) + ".height";
 	ImGui::SliderFloat(sizeText.c_str(), &hexagon_.height, 0.0f, 2.0f);
 	//std::string rotationText = static_cast<std::string>(name) + ".rotation";
