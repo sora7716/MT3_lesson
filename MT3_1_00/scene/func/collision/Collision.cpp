@@ -1,10 +1,5 @@
 #define NOMINMAX
 #include "Collision.h"
-#include "scene/gameObject/character/sphere/Sphere.h"
-#include "scene/gameObject/character/plane/Plane.h"
-#include "scene/gameObject/character/line/Line.h"
-#include "scene/gameObject/character/triangle/Triangle.h"
-#include "scene/gameObject/character/AABB/AABB.h"
 #include "scene/gameObject/character/OBB/OBB.h"
 #include "scene/gameObject/character/hexagon/Hexagon.h"
 #include "scene/gameObject/character/capsule/Capsule.h"
@@ -453,13 +448,6 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 		obb->GetOBBMaterial().orientations[0] * obb->GetOBBMaterial().size.x,
 		obb->GetOBBMaterial().orientations[1] * obb->GetOBBMaterial().size.y,
 		obb->GetOBBMaterial().orientations[2] * obb->GetOBBMaterial().size.z,
-	};
-	/*六角柱*/
-	Vector3 hexagonDirection[4]{
-		normal[0] * hexagon->GetHexagonMaterial().height,
-		normal[1] * hexagon->GetHexagonMaterial().height,
-		normal[2] * hexagon->GetHexagonMaterial().height,
-		normal[3] * hexagon->GetHexagonMaterial().radius[1],
 	};
 
 	//頂点の数
