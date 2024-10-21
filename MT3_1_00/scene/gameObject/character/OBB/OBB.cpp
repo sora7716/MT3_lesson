@@ -98,6 +98,11 @@ void OBB::OnCollision(bool isHit) {
 	}
 }
 
+// ポジションのセッター
+void OBB::SetPosition(const Vector3& pos){
+	obb_.center = pos;
+}
+
 //頂点を作成
 void OBB::MakeVertecies() {
 	localVertecies_[0].leftTop = { aabb_.min.x,aabb_.max.y,aabb_.min.z };

@@ -476,11 +476,11 @@ Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal) {
 }
 
 //反発
-void Math::Reflection(Vector3& ballVelocity, const Vector3 normal, float e) {
-	Vector3 reflected = ReflectVector(ballVelocity, normal);
+void Math::Reflection(Vector3& objectVelocity, const Vector3 normal, float e) {
+	Vector3 reflected = ReflectVector(objectVelocity, normal);
 	Vector3 projectToNormal = Project(reflected, normal);
 	Vector3 movingDirection = reflected - projectToNormal;
-	ballVelocity = projectToNormal * e + movingDirection;
+	objectVelocity = projectToNormal * e + movingDirection;
 }
 
 //空気抵抗

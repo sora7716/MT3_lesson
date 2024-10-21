@@ -93,6 +93,15 @@ void GameLoop::Initialize() {
 		.center = {0.0f,1.0f,0.0f},
 		.size = {0.5f,0.5f,0.5f}
 	};
+	//ボール
+	box_ = {
+		.position = obbMaterial_[0].center,
+		.velocity = {},
+		.acceleration = kGravity,
+		.mass = 2.0f,
+		.size = obbMaterial_[0].size,
+		.color = obbMaterial_[0].color
+	};
 	/*obbMaterial_[1] = {
 		.center = {0,0.0f,5.0f},
 	};*/
@@ -177,6 +186,10 @@ void GameLoop::Update() {
 	}
 	//カプセル
 	capsule_->Updata();
+
+	box_.velocity += box_.acceleration * deltaTime; 
+	box_.position += box_.velocity * deltaTime;
+	obbs_[0]->SetPosition(box_.position);
 }
 
 #ifdef _DEBUG
@@ -206,6 +219,9 @@ void GameLoop::Collider() {
 	/*hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),0));
 	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));*/
 	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), obbs_[0].get()));
+	if (Collision::GetInstance()->IsCollision(hexagon_.get(), obbs_[0].get())) {
+		Math::Reflection(box_.velocity,)
+	}
 }
 
 //描画処理

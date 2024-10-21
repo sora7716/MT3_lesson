@@ -103,5 +103,7 @@ private://メンバ変数
 	//カプセル
 	std::unique_ptr<Capsule>capsule_ = nullptr;
 	GameObject::CapsuleMaterial capsuleMaterial_ = {};
+	//ボール
+	Math::Box box_ = {};
 };
 

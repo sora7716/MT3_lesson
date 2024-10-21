@@ -28,8 +28,18 @@ public://構造体など
 		Vector3 acceleration;//加速度
 		float mass;//ボールの重さ
 		float radius;//ボールの半径
-		int color;//ボールの色
+		uint32_t color;//ボールの色
 	}Ball;
+
+	//ボックス
+	typedef struct Box {
+		Vector3 position;//位置
+		Vector3 velocity;//速度
+		Vector3 acceleration;//加速度
+		float mass;//ボックスの重さ
+		Vector3 size;//ボックスのサイズ
+		uint32_t color;//ボックスの色
+	}Box;
 
 	//振り子
 	typedef struct Pendulum {
@@ -354,13 +364,8 @@ public:
 	/// <returns>反射ベクトル</returns>
 	static Vector3 ReflectVector(const Vector3& input, const Vector3& normal);
 
-	/// <summary>
-	/// 反発
-	/// </summary>
-	/// <param name="ballVelocity">反発してほしい物の速度</param>
-	/// <param name="normal">ぶつかる予定のオブジェクトの法線</param>
-	/// <param name="e">反発係数</param>
-	static void Reflection(Vector3& ballVelocity,const Vector3 normal,float e);
+	///
+	static void Reflection(Vector3& objectVelocity,const Vector3 normal,float e);
 
 	/// <summary>
 	/// 空気抵抗

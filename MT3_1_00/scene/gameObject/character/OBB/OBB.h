@@ -72,6 +72,12 @@ public://メンバ関数
 	/// </summary>
 	void OnCollision(bool isHit);
 
+	/// <summary>
+	/// ポジションのセッター
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetPosition(const Vector3& pos);
+
 private://メンバ関数
 
 	/// <summary>
