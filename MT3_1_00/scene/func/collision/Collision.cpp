@@ -510,7 +510,6 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 		float sumSpan = maxOBB - minOBB + maxHexagon - minHexagon;
 		//最大範囲を求める
 		float longSpan = (max)(maxOBB, maxHexagon) - (min)(minOBB, minHexagon);
-		//分離軸が見つかる判定
 		if (sumSpan < longSpan) {
 			isHit = false;
 		}
