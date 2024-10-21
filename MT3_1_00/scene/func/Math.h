@@ -364,8 +364,14 @@ public:
 	/// <returns>反射ベクトル</returns>
 	static Vector3 ReflectVector(const Vector3& input, const Vector3& normal);
 
-	///
-	static void Reflection(Vector3& objectVelocity,const Vector3 normal,float e);
+	/// <summary>
+	/// 反発
+	/// </summary>
+	/// <param name="objectVelocity">オブジェクトの速度</param>
+	/// <param name="normal">衝突対象の法線ベクトル</param>
+	/// <param name="e">反発係数</param>
+	/// <param name="isFall">落ちているかどうかのフラグ</param>
+	static void Reflection(Vector3& objectVelocity,const Vector3 normal,float e,bool&isFall);
 
 	/// <summary>
 	/// 空気抵抗

@@ -49,7 +49,9 @@ void GameLoop::Create() {
 	//ライン
 	line_ = make_unique<Line>();
 	//六角形
-	hexagon_ = make_unique<Hexagon>();
+	for (int i = 0; i < kHexagonNum; i++) {
+		hexagons_[i] = make_unique<Hexagon>();
+	}
 	//OBB
 	for (int i = 0; i < kOBBNum; i++) {
 		obbs_[i] = make_unique<OBB>();
@@ -86,8 +88,11 @@ void GameLoop::Initialize() {
 	};
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
-	hexagonMaterial_ = { .center = {},.radius = {1.0f,1.0f},.height = 0.1f };
-	hexagon_->Initialize(camera_.get(), move(hexagonMaterial_));
+	hexagonMaterials_[0] = { .center = {},.radius = {1.0f,1.0f},.height = 0.1f };
+	//hexagonMaterials_[1] = { .center = {2.0f,-3.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	for (int i = 0; i < kHexagonNum; i++) {
+		hexagons_[i]->Initialize(camera_.get(), move(hexagonMaterials_[i]));
+	}
 	//OBB
 	obbMaterial_[0] = {
 		.center = {0.0f,1.0f,0.0f},
@@ -113,10 +118,10 @@ void GameLoop::Initialize() {
 		.min{},
 		.max{1.0f,1.0f,1.0f}
 	};
-	aabbMaterial_[1] = {
+	/*aabbMaterial_[1] = {
 		 .min{1.0f,1.0f,1.0f},
 		.max{2.0f,2.0f,2.0f}
-	};
+	};*/
 	for (int i = 0; i < kAABBNum; i++) {
 		aabbs_[i]->Initialize(camera_.get(), move(aabbMaterial_[i]));
 	}
@@ -130,7 +135,7 @@ void GameLoop::Initialize() {
 	};
 	triangle_->Initialize(camera_.get(), kWindowWidth, kWindowHeight, move(triangleMaterial_));
 	//球
-	sphrereMaterial_[0] = {
+	sphereMaterial_[0] = {
 		{0,0,0},
 		0.1f
 	};
@@ -139,7 +144,7 @@ void GameLoop::Initialize() {
 		1.0f
 	};*/
 	for (int i = 0; i < kSphereNum; i++) {
-		spheres_[i]->Initialize(camera_.get(), move(sphrereMaterial_[i]));
+		spheres_[i]->Initialize(camera_.get(), move(sphereMaterial_[i]));
 	}
 	//カプセル
 	capsuleMaterial_ = {
@@ -157,8 +162,7 @@ void GameLoop::Update() {
 #ifdef _DEBUG
 	DebugText();//デバックテキスト
 #endif // _DEBUG
-	//衝突判定
-	Collider();
+
 
 	//カメラ
 	camera_->Update(keys_, preKeys_);
@@ -167,7 +171,9 @@ void GameLoop::Update() {
 	//ライン
 	line_->Update();
 	//六角形
-	hexagon_->Update();
+	for (auto& hexagon : hexagons_) {
+		hexagon->Update();
+	}
 	//OBB
 	for (auto& obb : obbs_) {
 		obb->Update();
@@ -187,9 +193,20 @@ void GameLoop::Update() {
 	//カプセル
 	capsule_->Updata();
 
-	box_.velocity += box_.acceleration * deltaTime; 
-	box_.position += box_.velocity * deltaTime;
-	obbs_[0]->SetPosition(box_.position);
+
+
+	//衝突判定
+	Collider();
+	if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE] && !isFall_) {
+		isFall_ = true;
+		box_.velocity.y = 3.0f;
+	}
+	if (isFall_) {
+		box_.velocity += box_.acceleration * deltaTime;
+		box_.position += box_.velocity * deltaTime;
+	}
+
+	//obbs_[0]->SetPosition(box_.position);
 }
 
 #ifdef _DEBUG
@@ -198,7 +215,8 @@ void GameLoop::DebugText() {
 	ImGui::Begin("Window");
 	//camera_->DebugText();
 	/*line_->DebugText();*/
-	hexagon_->DebugText();
+	hexagons_[0]->DebugText("hexagon[0]");
+	//hexagons_[1]->DebugText("hexagon[1]");
 	obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
@@ -209,6 +227,10 @@ void GameLoop::DebugText() {
 	//spheres_[1]->DebugText("sphere[1]");
 	//capsule_->DebugText();
 	ImGui::End();
+
+	ImGui::Begin("box");
+	ImGui::DragFloat3("position", &box_.position.x, 0.1f);
+	ImGui::End();
 }
 #endif // _DEBUG
 
@@ -218,9 +240,16 @@ void GameLoop::Collider() {
 	//line_->OnCollision(Collision::GetInstance()->IsCollision(line_->GetSegment(), triangle_->GetTriangleMaterial()));
 	/*hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),0));
 	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));*/
-	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), obbs_[0].get()));
-	if (Collision::GetInstance()->IsCollision(hexagon_.get(), obbs_[0].get())) {
-		Math::Reflection(box_.velocity,)
+	//aabbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(aabbs_[0]->GetAABBMaterial(),plane_->GetPlaneMaterial()));
+	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(), plane_->GetPlaneMaterial()));
+	for (auto& hexagon : hexagons_) {
+		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
+	/*	if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
+			Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], 0.9f, isFall_);
+		}
+		else {
+			isFall_ = true;
+		}*/
 	}
 }
 
@@ -231,14 +260,16 @@ void GameLoop::Draw() {
 	//ライン
 	//line_->DrawSegment();
 	//六角形
-	hexagon_->Draw();
+	for (auto& hexagon : hexagons_) {
+		hexagon->Draw();
+	}
 	//OBB
 	for (auto& obb : obbs_) {
 		obb->Draw();
 	}
 	//AABB
 	/*for (auto& aabb : aabbs_) {
-		aabb->Update();
+		aabb->Draw();
 	}*/
 	//平面
 	//plane_->Draw();
@@ -250,6 +281,7 @@ void GameLoop::Draw() {
 	}*/
 	//球の通った道を表示
 	//line_->DrawObjectRoad(spheres_[0]->GetSphereMaterial().center);
+	//line_->DrawObjectRoad(box_.position);
 	//カプセル
 	//capsule_->Draw();
 }

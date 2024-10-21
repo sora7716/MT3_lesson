@@ -24,7 +24,7 @@ bool Collision::IsCollision(const GameObject::SphereMaterial& sphere1, const Gam
 bool Collision::IsCollision(const GameObject::SphereMaterial& sphere, const GameObject::PlaneMaterial& plane) {
 	Vector3 normal = plane.normal;
 	float distance = plane.distance;
-	float k = fabsf(Math::Dot(normal, sphere.center) - distance);
+	float k = fabs(Math::Dot(normal, sphere.center) - distance);
 
 	return k <= sphere.radius;
 }
@@ -166,11 +166,52 @@ bool Collision::IsCollision(const GameObject::AABBMaterial& aabb, const GameObje
 	return isHit;
 }
 
+// 衝突判定(AABBと平面)
+bool Collision::IsCollision(const GameObject::AABBMaterial& aabb, const GameObject::PlaneMaterial& plane) {
+	Vector3 normal = plane.normal;
+	float distance = plane.distance;
+
+	// AABBの8つの頂点を計算
+	Vector3 vertices[8] = {
+		aabb.min,
+		Vector3(aabb.min.x, aabb.min.y, aabb.max.z),
+		Vector3(aabb.min.x, aabb.max.y, aabb.min.z),
+		Vector3(aabb.min.x, aabb.max.y, aabb.max.z),
+		Vector3(aabb.max.x, aabb.min.y, aabb.min.z),
+		Vector3(aabb.max.x, aabb.min.y, aabb.max.z),
+		Vector3(aabb.max.x, aabb.max.y, aabb.min.z),
+		aabb.max
+	};
+
+	// 平面の方程式を使って、各頂点が平面のどちら側にあるかを判定
+	bool allPositive = true;
+	bool allNegative = true;
+
+	for (int i = 0; i < 8; i++) {
+		float dotProduct = Math::Dot(normal, vertices[i]) - distance;
+
+		if (dotProduct > 0) {
+			allNegative = false;
+		}
+		if (dotProduct < 0) {
+			allPositive = false;
+		}
+	}
+
+	// 全ての頂点が平面の同じ側にあれば衝突していないと判断
+	if (allPositive || allNegative) {
+		return false;
+	}
+
+	return true;
+
+}
+
 // OBBと球
 bool Collision::IsCollision(OBB* obb, const GameObject::SphereMaterial& sphere) {
 	Vector3 centerInOBBLocalSpace = Math::Transform(sphere.center, obb->GetOBBWorldMatrixInvers());
 	GameObject::AABBMaterial aabbOBBLocal = { .min = -obb->GetSize(),.max = obb->GetSize() };
-	GameObject::SphereMaterial sphereOBBLocal{ centerInOBBLocalSpace,sphere.radius };
+	GameObject::SphereMaterial sphereOBBLocal{ centerInOBBLocalSpace, sphere.radius };
 	//ローカル空間で衝突判定
 	return IsCollision(aabbOBBLocal, sphereOBBLocal);
 }
@@ -181,7 +222,7 @@ bool Collision::IsCollision(OBB* obb, const GameObject::Segment segment) {
 	Vector3 localSegmentEnd = Math::Transform(segment.origin + segment.diff, obb->GetOBBWorldMatrixInvers());
 	GameObject::AABBMaterial localAABB{
 		.min = -obb->GetSize(),
-		.max = obb->GetSize(),
+			.max = obb->GetSize(),
 	};
 	GameObject::Segment localSegment;
 	localSegment.origin = localSegmentOrigin;
@@ -282,6 +323,14 @@ bool Collision::IsCollision(OBB* obb1, OBB* obb2) {
 	}
 	//当たり判定を返す
 	return isHit;
+}
+//衝突判定(OBBと平面)
+bool Collision::IsCollision(OBB* obb, const GameObject::PlaneMaterial& plane) {
+	Vector3 centerInOBBLocalSpace = Math::Transform(plane.normal * plane.distance, obb->GetOBBWorldMatrixInvers());
+	GameObject::AABBMaterial aabbOBBLocal = { .min = -obb->GetSize(),.max = obb->GetSize() };
+	GameObject::PlaneMaterial planeOBBLocal{ centerInOBBLocalSpace, plane.distance };
+	//ローカル空間で衝突判定
+	return IsCollision(aabbOBBLocal, planeOBBLocal);
 }
 
 //六角形と線分
@@ -418,6 +467,7 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	normal[1] = Math::Normalize(Math::Cross(v12, v112));
 	normal[2] = Math::Normalize(Math::Cross(v23, v113));
 	normal[3] = Math::Normalize(Math::Cross(v01, v12));
+	normal[0] = Vector3(0.866f, 0.0f, 0.5f);
 
 	//六角柱の面の法線
 	separateAxes[0] = normal[0];

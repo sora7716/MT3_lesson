@@ -58,6 +58,13 @@ public://メンバ関数
 	/// </summary>
 	HexagonMaterial GetHexagonMaterial();
 
+private://メンバ関数
+
+	/// <summary>
+	/// 法線ベクトルを作成
+	/// </summary>
+	void CreateNormal();
+
 public://静的メンバ変数
 
 	static inline const int kVertexNum = 6;

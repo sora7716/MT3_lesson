@@ -476,11 +476,23 @@ Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal) {
 }
 
 //反発
-void Math::Reflection(Vector3& objectVelocity, const Vector3 normal, float e) {
+void Math::Reflection(Vector3& objectVelocity, const Vector3 normal, float e,bool& isFall) {
 	Vector3 reflected = ReflectVector(objectVelocity, normal);
 	Vector3 projectToNormal = Project(reflected, normal);
 	Vector3 movingDirection = reflected - projectToNormal;
-	objectVelocity = projectToNormal * e + movingDirection;
+	Vector3 refrectionVelocity = projectToNormal * e + movingDirection;
+	if (refrectionVelocity.y >= 0.1f){
+		isFall = true;
+	}
+	else{
+		isFall = false;
+	}
+	if (isFall) {
+		objectVelocity = refrectionVelocity;
+	}
+	else {
+		objectVelocity = { refrectionVelocity.x,0.0f,refrectionVelocity.z };
+	}
 }
 
 //空気抵抗

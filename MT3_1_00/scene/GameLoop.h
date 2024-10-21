@@ -70,8 +70,9 @@ public://静的メンバ変数
 	static inline const int kWindowWidth = 1280;//画面の横幅
 	static inline const int kWindowHeight = 720;//画面の縦幅
 	static inline const int kOBBNum = 1;//OBBの数
-	static inline const int kAABBNum = 2;//AABBの数
+	static inline const int kAABBNum = 1;//AABBの数
 	static inline const int kSphereNum = 1;//球の数
+	static inline const int kHexagonNum = 1;//六角柱の数
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};
@@ -81,8 +82,8 @@ private://メンバ変数
 	std::unique_ptr<Line>line_ = nullptr;
 	GameObject::Segment segment_ = {};
 	//六角形
-	std::unique_ptr<Hexagon>hexagon_ = nullptr;
-	GameObject::HexagonMaterial hexagonMaterial_ = {};
+	std::unique_ptr<Hexagon>hexagons_[kHexagonNum] = { nullptr };
+	GameObject::HexagonMaterial hexagonMaterials_[kHexagonNum] = {};
 	//OBB
 	std::unique_ptr<OBB>obbs_[kOBBNum] = { nullptr };
 	GameObject::OBBMaterial obbMaterial_[kOBBNum] = {};
@@ -99,11 +100,12 @@ private://メンバ変数
 	GameObject::TriangleMaterial triangleMaterial_ = {};
 	//球
 	std::unique_ptr<Sphere>spheres_[kSphereNum] = { nullptr };
-	GameObject::SphereMaterial sphrereMaterial_[kSphereNum] = {};
+	GameObject::SphereMaterial sphereMaterial_[kSphereNum] = {};
 	//カプセル
 	std::unique_ptr<Capsule>capsule_ = nullptr;
 	GameObject::CapsuleMaterial capsuleMaterial_ = {};
 	//ボール
 	Math::Box box_ = {};
+	bool isFall_ = true;
 };
 

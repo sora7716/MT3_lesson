@@ -14,6 +14,8 @@ void Hexagon::Initialize(Camera* camera, const HexagonMaterial&& hexagonMaterial
 
 //更新
 void Hexagon::Update() {
+	//法線ベクトルの作成
+	CreateNormal();
 	for (int i = 0; i < kVertexNum; i++) {
 		float theta = 60.0f * static_cast<float>(i);
 		float angle = theta * rad;
@@ -79,4 +81,23 @@ Vector3* Hexagon::GetVertex(int i) {
 // 六角形の素材のゲッター
 GameObject::HexagonMaterial Hexagon::GetHexagonMaterial() {
 	return hexagon_;
+}
+
+//法線ベクトルを作成
+void Hexagon::CreateNormal(){
+	//面の法線を算出
+	Vector3 v01 = GetVertex(0)[1] - GetVertex(0)[0];
+	Vector3 v111 =GetVertex(0)[2] - GetVertex(1)[1];
+
+	Vector3 v12  = GetVertex(0)[2] - GetVertex(0)[1];
+	Vector3 v112 = GetVertex(0)[2] - GetVertex(1)[2];
+
+	Vector3 v23  = GetVertex(0)[3] - GetVertex(0)[2];
+	Vector3 v113 = GetVertex(0)[3] - GetVertex(1)[3];
+
+	//面の法線
+	hexagon_.normal[0] = Math::Normalize(Math::Cross(v01, v111));
+	hexagon_.normal[1] = Math::Normalize(Math::Cross(v12, v112));
+	hexagon_.normal[2] = Math::Normalize(Math::Cross(v23, v113));
+	hexagon_.normal[3] = Math::Normalize(Math::Cross(v01, v12));
 }

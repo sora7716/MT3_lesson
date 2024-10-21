@@ -78,6 +78,14 @@ public://メンバ関数
 	bool IsCollision(const GameObject::AABBMaterial& aabb, const GameObject::Segment& segment);
 
 	/// <summary>
+	/// 衝突判定(AABBと平面)
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="plane">平面</param>
+	/// <returns></returns>
+	bool IsCollision(const GameObject::AABBMaterial& aabb, const GameObject::PlaneMaterial& plane);
+
+	/// <summary>
 	/// 衝突判定(OBBと球)
 	/// </summary>
     /// <param name="target">ターゲット</param>
@@ -97,6 +105,14 @@ public://メンバ関数
 	/// <param name="target">ターゲット</param>
 	/// <param name="obb">OBB</param>
 	bool IsCollision(OBB* obb1, OBB* obb2);
+
+	/// <summary>
+	/// 衝突判定(OBBと平面)
+	/// </summary>
+	/// <param name="obb">OBB</param>
+	/// <param name="plane">平面</param>
+	/// <returns>衝突したか</returns>
+	bool IsCollision(OBB* obb, const GameObject::PlaneMaterial& plane);
 
 	/// <summary>
 	/// 衝突判定(六角形と線)

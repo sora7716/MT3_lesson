@@ -44,7 +44,8 @@ void AABB::Update() {
 
 
 //衝突したときの判定
-void AABB::OnCollision(){
+void AABB::OnCollision(bool isHit){
+	aabb_.isHit = isHit;
 	if (aabb_.isHit) {
 		SetColor(RED);
 	}

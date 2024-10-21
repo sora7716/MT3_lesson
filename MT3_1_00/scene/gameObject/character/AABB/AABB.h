@@ -32,7 +32,7 @@ public://メンバ関数
 	/// <summary>
 	/// 衝突したときの判定
 	/// </summary>
-	void OnCollision();
+	void OnCollision(bool isHit);
 
 #ifdef _DEBUG
 	void DebugText(const char* type = "aabb");
