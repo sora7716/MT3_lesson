@@ -87,7 +87,7 @@ GameObject::HexagonMaterial Hexagon::GetHexagonMaterial() {
 void Hexagon::CreateNormal(){
 	//面の法線を算出
 	Vector3 v01 = GetVertex(0)[1] - GetVertex(0)[0];
-	Vector3 v111 =GetVertex(0)[2] - GetVertex(1)[1];
+	Vector3 v111 =GetVertex(0)[1] - GetVertex(1)[1];
 
 	Vector3 v12  = GetVertex(0)[2] - GetVertex(0)[1];
 	Vector3 v112 = GetVertex(0)[2] - GetVertex(1)[2];

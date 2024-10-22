@@ -451,23 +451,12 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	//分割軸の数
 	Vector3 separateAxes[19];
 
-	//面の法線を算出
-	Vector3 v01 = hexagon->GetVertex(0)[1] - hexagon->GetVertex(0)[0];
-	Vector3 v111 = hexagon->GetVertex(0)[2] - hexagon->GetVertex(1)[1];
-
-	Vector3 v12 = hexagon->GetVertex(0)[2] - hexagon->GetVertex(0)[1];
-	Vector3 v112 = hexagon->GetVertex(0)[2] - hexagon->GetVertex(1)[2];
-
-	Vector3 v23 = hexagon->GetVertex(0)[3] - hexagon->GetVertex(0)[2];
-	Vector3 v113 = hexagon->GetVertex(0)[3] - hexagon->GetVertex(1)[3];
-
 	//面の法線
 	Vector3 normal[4];
-	normal[0] = Math::Normalize(Math::Cross(v01, v111));
-	normal[1] = Math::Normalize(Math::Cross(v12, v112));
-	normal[2] = Math::Normalize(Math::Cross(v23, v113));
-	normal[3] = Math::Normalize(Math::Cross(v01, v12));
-	normal[0] = Vector3(0.866f, 0.0f, 0.5f);
+	normal[0] = hexagon->GetHexagonMaterial().normal[0];
+	normal[1] = hexagon->GetHexagonMaterial().normal[1];
+	normal[2] = hexagon->GetHexagonMaterial().normal[2];
+	normal[3] = hexagon->GetHexagonMaterial().normal[3];
 
 	//六角柱の面の法線
 	separateAxes[0] = normal[0];
@@ -501,11 +490,11 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	};
 
 	//頂点の数
-	const int kOBBConerNum = 8;
-	const int kHexagonConerNum = 12;
+	const int kOBBCornerNum = 8;
+	const int kHexagonCornerNum = 12;
 
 	// 点(頂点)
-	Vector3 obbCorners[kOBBConerNum] = {
+	Vector3 obbCorners[kOBBCornerNum] = {
 	  obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の右上
 	  obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の右上
 	  obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の右下
@@ -515,7 +504,7 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	  obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の左下
 	  obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の左下
 	};
-	Vector3 hexagonConers[kHexagonConerNum];
+	Vector3 hexagonConers[kHexagonCornerNum];
 
 	// 半径と高さ
 	float radius[2] = { hexagon->GetHexagonMaterial().radius[0],hexagon->GetHexagonMaterial().radius[1] };
@@ -546,12 +535,12 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 		float maxOBB = (numeric_limits<float>::lowest)();
 		float minHexagon = minOBB;
 		float maxHexagon = maxOBB;
-		for (auto obbCornerIndex = 0; obbCornerIndex < kOBBConerNum; obbCornerIndex++) {
+		for (auto obbCornerIndex = 0; obbCornerIndex < kOBBCornerNum; obbCornerIndex++) {
 			float obbDistance = Math::Dot(obbCorners[obbCornerIndex], separateAxis);
 			minOBB = (min)(obbDistance, minOBB);
 			maxOBB = (max)(obbDistance, maxOBB);
 		}
-		for (auto hexagonCornerIndex = 0; hexagonCornerIndex < kHexagonConerNum; hexagonCornerIndex++) {
+		for (auto hexagonCornerIndex = 0; hexagonCornerIndex < kHexagonCornerNum; hexagonCornerIndex++) {
 			float hexagonDistance = Math::Dot(hexagonConers[hexagonCornerIndex], separateAxis);
 			minHexagon = (min)(hexagonDistance, minHexagon);
 			maxHexagon = (max)(hexagonDistance, maxHexagon);

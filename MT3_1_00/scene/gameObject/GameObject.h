@@ -10,7 +10,7 @@
 #include "scene/func/ScreenPrintf.h"
 #include "scene/func/Aithmetic.h"
 
-class GameObject{
+class GameObject {
 
 public://構造体など
 
@@ -139,26 +139,26 @@ protected://メンバ関数
 	/// <summary>
 	/// X座標の移動
 	/// </summary>
-	/// <param name="bottom1">左に行くキーを押したか?</param>
-	/// <param name="bottom2">右に行くキーを押したか?</param>
+	/// <param name="left">左に行くキーを押したか?</param>
+	/// <param name="right">右に行くキーを押したか?</param>
 	/// <param name="type">カメラだったら-1,それ以外は1を入れる</param>
-	void TranslateX(bool bottom1, bool bottom2, float type);
+	void TranslateX(bool left, bool right, float type);
 
 	/// <summary>
 	/// Y座標の移動
 	/// </summary>
-	/// <param name="bottom1">上に行くボタン</param>
-	/// <param name="bottom2">下に行くボタン</param>
+	/// <param name="up">上に行くボタン</param>
+	/// <param name="down">下に行くボタン</param>
 	/// <param name="type">カメラだったら-1,それ以外は1を入れる</param>
-	void TranslateY(bool bottom1, bool bottom2, float type);
+	void TranslateY(bool up, bool down, float type);
 
 	/// <summary>
 	/// Z座標の移動
 	/// </summary>
-	/// <param name="bottom1">前に行く</param>
-	/// <param name="bottom2">後ろに行く</param>
+	/// <param name="front">前に行く</param>
+	/// <param name="back">後ろに行く</param>
 	/// <param name="type">カメラだったら-1,それ以外は1を入れる</param>
-	void TranslateZ(bool bottom1, bool bottom2, float type);
+	void TranslateZ(bool front, bool back, float type);
 
 	/// <summary>
 	/// X座標の回転
@@ -191,7 +191,7 @@ protected://メンバ関数
 	/// <param name="front">前</param>
 	/// <param name="behind">後ろ</param>
 	/// <param name="type"></param>
-	void Movement(bool left, bool right, bool up, bool down, bool front, bool behind, float type);
+	void Movement(bool left, bool right, bool up, bool down, bool front, bool behind, float type = 1.0f);
 
 	/// <summary>
 	/// 回転をまとめた

@@ -21,34 +21,34 @@ void GameObject::Rotate(){
 }
 
 //X座標の移動
-void GameObject::TranslateX(bool bottom1,bool bottom2,float type){
+void GameObject::TranslateX(bool left,bool right,float type){
 	//キー入力
-	if (bottom1) {
+	if (left) {
 		velocity_.x = -5.0f / 60.0f * type;
 	}
-	else if (bottom2) {
+	else if (right) {
 		velocity_.x = 5.0f / 60.0f * type;
 	}
 	else { velocity_.x = 0.0f; }
 }
 
 //Y座標の移動
-void GameObject::TranslateY(bool bottom1, bool bottom2, float type){
-	if (bottom1) {
+void GameObject::TranslateY(bool up, bool down, float type){
+	if (up) {
 		velocity_.y = 5.0f / 60.0f * type;
 	}
-	else if (bottom2) {
+	else if (down) {
 		velocity_.y = -5.0f / 60.0f * type;
 	}
 	else { velocity_.y = 0.0f; }
 }
 
 //Z座標の移動
-void GameObject::TranslateZ(bool bottom1, bool bottom2, float type){
-	if (bottom1) {
+void GameObject::TranslateZ(bool front, bool back, float type){
+	if (front) {
 		velocity_.z = 5.0f / 60.0f * type;
 	}
-	else if (bottom2) {
+	else if (back) {
 		velocity_.z = -5.0f / 60.0f * type;
 	}
 	else { velocity_.z = 0.0f; }

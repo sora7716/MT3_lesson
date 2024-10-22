@@ -96,7 +96,7 @@ void GameLoop::Initialize() {
 	//OBB
 	obbMaterial_[0] = {
 		.center = {0.0f,1.0f,0.0f},
-		.size = {0.5f,0.5f,0.5f}
+		.size = {0.1f,0.1f,0.1f}
 	};
 	//ボール
 	box_ = {
@@ -206,7 +206,7 @@ void GameLoop::Update() {
 		box_.position += box_.velocity * deltaTime;
 	}
 
-	//obbs_[0]->SetPosition(box_.position);
+	obbs_[0]->SetPosition(box_.position);
 }
 
 #ifdef _DEBUG
@@ -244,12 +244,12 @@ void GameLoop::Collider() {
 	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(), plane_->GetPlaneMaterial()));
 	for (auto& hexagon : hexagons_) {
 		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
-	/*	if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
+		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
 			Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], 0.9f, isFall_);
 		}
 		else {
 			isFall_ = true;
-		}*/
+		}
 	}
 }
 
