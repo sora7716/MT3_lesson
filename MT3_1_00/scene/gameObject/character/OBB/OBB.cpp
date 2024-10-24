@@ -15,19 +15,22 @@ void OBB::Initialize(Camera* camera, const OBBMaterial&& obbMaterial) {
 	//OBBの値を設定
 	obb_ = obbMaterial;
 	//角度
-	rotate_ = obbMaterial.rotation;
+	obb_.rotation = obbMaterial.rotation;
 	//色を決める
 	aabb_.color = obb_.color;
 }
 
 //更新
 void OBB::Update() {
+	//角度
+	obb_.rotation += 1.0f;
+
 	//サイズを設定
 	aabb_.min = -obb_.size;
 	aabb_.max = obb_.size;
 
 	MakeVertecies();//頂点を作成
-	Math::MakeOBBRotateMatrix(obb_.orientations, rotate_);//OBB用の回転行列を抽出
+	Math::MakeOBBRotateMatrix(obb_.orientations, obb_.rotation);//OBB用の回転行列を抽出
 	worldMatrix_ = Math::MakeOBBWorldMatrix(obb_.orientations, obb_.center);//OBB用のワールド行列を作成
 	//正規化しておく
 	for (int i = 0; i < 3; i++) {
@@ -47,7 +50,7 @@ void OBB::DebagText(const char* type) {
 	string sizeMoji = string(type) + "size";
 	ImGui::SliderFloat3(sizeMoji.c_str(), &obb_.size.x, 0.0f, 3.0f);
 	string rotateMoji = string(type) + ".rotation";
-	ImGui::DragFloat3(rotateMoji.c_str(), &rotate_.x, 0.01f);
+	ImGui::DragFloat3(rotateMoji.c_str(), &obb_.rotation.x, 0.01f);
 	string translationMoji = string(type) + ".translation";
 	ImGui::DragFloat3(translationMoji.c_str(), &obb_.center.x, 0.01f);
 }
@@ -114,4 +117,8 @@ void OBB::MakeVertecies() {
 	localVertecies_[1].rightTop = { aabb_.max.x,aabb_.max.y,aabb_.max.z };
 	localVertecies_[1].leftBottom = { aabb_.min.x,aabb_.min.y,aabb_.max.z };
 	localVertecies_[1].rightBottom = { aabb_.max.x,aabb_.min.y,aabb_.max.z };
+}
+
+void OBB::Control(const char* keys, const char preKeys){
+	(void)keys, preKeys;
 }
