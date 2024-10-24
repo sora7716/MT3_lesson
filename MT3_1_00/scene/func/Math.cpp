@@ -481,10 +481,7 @@ void Math::Reflection(Vector3& objectVelocity, const Vector3 normal, float e,boo
 	Vector3 projectToNormal = Project(reflected, normal);
 	Vector3 movingDirection = reflected - projectToNormal;
 	Vector3 refrectionVelocity = projectToNormal * e + movingDirection;
-	if (refrectionVelocity.y >= 0.1f){
-		isFall = true;
-	}
-	else{
+	if (refrectionVelocity.y < 0.1f){
 		isFall = false;
 	}
 	if (isFall) {
@@ -542,7 +539,7 @@ Vector3 Math::Friction(const Ball& ball, float miu) {
 	return result;
 }
 
-// リサージュ曲線(閉曲)
+// リサージュ曲線
 Vector3 Math::LissajousCurve(const Vector3& theta, const Vector3& center, const Vector3& scalar) {
 	Vector3 result{};
 	result.x = scalar.x * sin(theta.x) + center.x;

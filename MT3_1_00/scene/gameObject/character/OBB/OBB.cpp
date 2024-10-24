@@ -23,7 +23,7 @@ void OBB::Initialize(Camera* camera, const OBBMaterial&& obbMaterial) {
 //更新
 void OBB::Update() {
 	//角度
-	obb_.rotation += 1.0f;
+	//obb_.rotation += 1.0f;
 
 	//サイズを設定
 	aabb_.min = -obb_.size;
@@ -117,8 +117,4 @@ void OBB::MakeVertecies() {
 	localVertecies_[1].rightTop = { aabb_.max.x,aabb_.max.y,aabb_.max.z };
 	localVertecies_[1].leftBottom = { aabb_.min.x,aabb_.min.y,aabb_.max.z };
 	localVertecies_[1].rightBottom = { aabb_.max.x,aabb_.min.y,aabb_.max.z };
-}
-
-void OBB::Control(const char* keys, const char preKeys){
-	(void)keys, preKeys;
 }

@@ -88,8 +88,10 @@ void GameLoop::Initialize() {
 	};
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
-	hexagonMaterials_[0] = { .center = {0.0f,0.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
-	hexagonMaterials_[1] = { .center = {2.0f,-1.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	hexagonMaterials_[0] = { .center = {0.0f, 0.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	hexagonMaterials_[1] = { .center = {2.0f, 0.2f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	hexagonMaterials_[2] = { .center = {-2.0f,0.2f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	hexagonMaterials_[3] = { .center = {0.0f, 0.2f,2.0f},.radius = {1.0f,1.0f},.height = 0.1f };
 	for (int i = 0; i < kHexagonNum; i++) {
 		hexagons_[i]->Initialize(camera_.get(), move(hexagonMaterials_[i]));
 	}
@@ -197,13 +199,33 @@ void GameLoop::Update() {
 
 	//衝突判定
 	Collider();
-	if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE] && !isFall_) {
+	//ボックスの操作
+	if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE] && box_.isHit) {
 		isFall_ = true;
 		box_.velocity.y = 3.0f;
 	}
+	if (keys_[DIK_D]) {
+		box_.velocity.x = 1.0f;
+	}
+	else if (keys_[DIK_A]) {
+		box_.velocity.x = -1.0f;
+	}
+	else {
+		box_.velocity.x = 0.0f;
+	}
+	if (keys_[DIK_W]) {
+		box_.velocity.z = 1.0f;
+	}
+	else if (keys_[DIK_S]) {
+		box_.velocity.z = -1.0f;
+	}
+	else {
+		box_.velocity.z = 0.0f;
+	}
+
+	box_.position += box_.velocity * deltaTime;
 	if (isFall_) {
 		box_.velocity += box_.acceleration * deltaTime;
-		box_.position += box_.velocity * deltaTime;
 	}
 
 	obbs_[0]->SetPosition(box_.position);
@@ -217,6 +239,8 @@ void GameLoop::DebugText() {
 	/*line_->DebugText();*/
 	hexagons_[0]->DebugText("hexagon[0]");
 	hexagons_[1]->DebugText("hexagon[1]");
+	hexagons_[2]->DebugText("hexagon[2]");
+	hexagons_[3]->DebugText("hexagon[3]");
 	obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
@@ -229,7 +253,13 @@ void GameLoop::DebugText() {
 	ImGui::End();
 
 	ImGui::Begin("box");
+	ImGui::DragFloat3("velocity", &box_.velocity.x, 0.1f);
 	ImGui::DragFloat3("position", &box_.position.x, 0.1f);
+	if (ImGui::Button("startPos")) {
+		box_.position = { 0.0f,4.0f,0.0f };
+		box_.velocity = {};
+	}
+	ImGui::Checkbox("isFall", &isFall_);
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -245,18 +275,29 @@ void GameLoop::Collider() {
 	for (auto& hexagon : hexagons_) {
 		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
 		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
-			box_.velocity.y += 1.0f;
-			Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], 0.9f, isFall_);
-			if (!isFall_) {
-				break;
+			box_.isHit = true;//当たっている
+			if (box_.position.y > hexagon->GetHexagonMaterial().center.y) {
+				box_.velocity.y += 1.0f;
+				Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], box_.e, isFall_);
+				if (!isFall_) {
+					break;
+				}
+			}
+			else if (box_.position.y < hexagon->GetHexagonMaterial().center.y) {
+				box_.velocity.y -= 1.0f;
 			}
 		}
 		else {
+			box_.isHit = false;
 			isFall_ = true;
 		}
 	}
-	ImGui::Text("%d", isFall_);
-	ImGui::Text("%f", box_.velocity.y);
+	/*for (auto& hexagon : hexagons_) {
+		if (Collision::GetInstance()->IsCollision(obbs_[0].get(), { hexagon->GetHexagonMaterial().center + hexagon->GetHexagonMaterial().radius[0],hexagon->GetVertex(0)[3] - hexagon->GetVertex(0)[0] })) {
+			box_.velocity.x -= 1.0f;
+		}
+	}*/
+
 }
 
 //描画処理
@@ -287,7 +328,7 @@ void GameLoop::Draw() {
 	}*/
 	//球の通った道を表示
 	//line_->DrawObjectRoad(spheres_[0]->GetSphereMaterial().center);
-	//line_->DrawObjectRoad(box_.position);
+	line_->DrawObjectRoad(box_.position);
 	//カプセル
 	//capsule_->Draw();
 }

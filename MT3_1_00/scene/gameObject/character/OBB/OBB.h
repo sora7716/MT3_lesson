@@ -85,13 +85,6 @@ private://メンバ関数
 	/// </summary>
 	void MakeVertecies();
 
-	/// <summary>
-	/// 操作
-	/// </summary>
-	/// <param name="keys">現在のキー</param>
-	/// <param name="preKeys">過去のキー</param>
-	void Control(const char* keys, const char preKeys);
-
 private://メンバ変数
 
 	OBBMaterial obb_ = {};//obb

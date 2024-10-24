@@ -39,6 +39,10 @@ public://構造体など
 		float mass;//ボックスの重さ
 		Vector3 size;//ボックスのサイズ
 		uint32_t color;//ボックスの色
+		float miu = 0.4f;//摩擦係数(摩擦の時)
+		float k = 0.6f;//比例定数(空気抵抗の時)
+		float e = 0.8f;//反発係数(反発の時)
+		bool isHit = false;//オブジェクトに当たっているかどうか
 	}Box;
 
 	//振り子
@@ -357,10 +361,10 @@ public:
 	static void MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos);
 
 	/// <summary>
-    /// 反射ベクトル
-    /// </summary>
-    /// <param name="input">入射ベクトル</param>
-    /// <param name="normal">面の法線</param>
+	/// 反射ベクトル
+	/// </summary>
+	/// <param name="input">入射ベクトル</param>
+	/// <param name="normal">面の法線</param>
 	/// <returns>反射ベクトル</returns>
 	static Vector3 ReflectVector(const Vector3& input, const Vector3& normal);
 
@@ -371,7 +375,7 @@ public:
 	/// <param name="normal">衝突対象の法線ベクトル</param>
 	/// <param name="e">反発係数</param>
 	/// <param name="isFall">落ちているかどうかのフラグ</param>
-	static void Reflection(Vector3& objectVelocity,const Vector3 normal,float e,bool&isFall);
+	static void Reflection(Vector3& objectVelocity, const Vector3 normal, float e, bool& isFall = defaultFall_);
 
 	/// <summary>
 	/// 空気抵抗
@@ -382,20 +386,22 @@ public:
 	static Vector3 AirResistance(const Ball& ball, float k);
 
 	/// <summary>
-    /// 摩擦
-    /// </summary>
-    /// <param name="ball">ボール</param>
-    /// <param name="miu">摩擦係数</param>
+	/// 摩擦
+	/// </summary>
+	/// <param name="ball">ボール</param>
+	/// <param name="miu">摩擦係数</param>
 	/// <returns>摩擦</returns>
 	static Vector3 Friction(const Ball& ball, float miu);
 
 	/// <summary>
-	/// リサージュ曲線(閉曲線)
+	/// リサージュ曲線
 	/// </summary>
 	/// <param name="theta">θ</param>
 	/// <param name="center">中心点</param>
 	/// <param name="scalar">スカラー</param>
 	/// <returns>閉曲線</returns>
-	static Vector3 LissajousCurve(const Vector3& theta, const Vector3& center,const Vector3& scalar={1.0f,1.0f,1.0f});
+	static Vector3 LissajousCurve(const Vector3& theta, const Vector3& center, const Vector3& scalar = { 1.0f,1.0f,1.0f });
 
+private://メンバ変数
+	static inline bool defaultFall_ = true;
 };
