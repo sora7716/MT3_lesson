@@ -31,6 +31,16 @@ public://構造体など
 		uint32_t color;//ボールの色
 	}Ball;
 
+	//当たった位置
+	typedef struct HitPos {
+		bool up;
+		bool under;
+		bool left;
+		bool right;
+		bool front;
+		bool back;
+	}HitPos;
+
 	//ボックス
 	typedef struct Box {
 		Vector3 position;//位置
@@ -42,7 +52,7 @@ public://構造体など
 		float miu = 0.4f;//摩擦係数(摩擦の時)
 		float k = 0.6f;//比例定数(空気抵抗の時)
 		float e = 0.8f;//反発係数(反発の時)
-		bool isHit = false;//オブジェクトに当たっているかどうか
+		HitPos isHit = { false };//オブジェクトに当たっているかどうか
 	}Box;
 
 	//振り子
@@ -380,18 +390,20 @@ public:
 	/// <summary>
 	/// 空気抵抗
 	/// </summary>
-	/// <param name="ball">ボール</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="mass">質量</param>
 	/// <param name="k">比例定数</param>
-	/// <returns>空気抵抗</returns>
-	static Vector3 AirResistance(const Ball& ball, float k);
+	/// <returns>抵抗(加速度)</returns>
+	static Vector3 AirResistance(const Vector3& velocity,float mass,float k);
 
 	/// <summary>
 	/// 摩擦
 	/// </summary>
-	/// <param name="ball">ボール</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="mass">質量</param>
 	/// <param name="miu">摩擦係数</param>
-	/// <returns>摩擦</returns>
-	static Vector3 Friction(const Ball& ball, float miu);
+	/// <returns>抵抗(加速度)</returns>
+	static Vector3 Friction(Vector3& velocity, float mass, float miu);
 
 	/// <summary>
 	/// リサージュ曲線

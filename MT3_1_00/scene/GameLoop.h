@@ -73,6 +73,7 @@ public://静的メンバ変数
 	static inline const int kAABBNum = 1;//AABBの数
 	static inline const int kSphereNum = 1;//球の数
 	static inline const int kHexagonNum = 4;//六角柱の数
+	static inline const Vector3 kSpeed_ = { 2.0f,3.0f,2.0f };//スピード
 private://メンバ変数
 	char keys_[kKeysNums]{};
 	char preKeys_[kKeysNums]{};
