@@ -318,16 +318,16 @@ void GameLoop::Collider() {
 	}
 	ImGui::Checkbox("isHitLeft", &box_.isHit.left);
 	for (auto& hexagon : hexagons_) {
-		float height = hexagon->GetHexagonMaterial().height;
-		Vector3 center = hexagon->GetHexagonMaterial().center;
-		float hexagonMinY = -height;
-		float hexagonMaxY = center.y + height;
-		float boxMinY = box_.position.y - box_.size.y;
-		float boxMaxY = box_.position.y + box_.size.y;
-		bool range = box_.position.y<hexagonMaxY && box_.position.y>hexagonMinY ||
-			center.y<boxMinY && center.y>boxMaxY;
+		float height = hexagon->GetHexagonMaterial().height;//六角柱の高さ
+		Vector3 center = hexagon->GetHexagonMaterial().center;//六角柱の中心
+		float hexagonMinY = center.y - height;//六角柱の下
+		float hexagonMaxY = center.y + height;//六角柱の上
+		float boxMinY = box_.position.y - box_.size.y + 0.1f;//ボックスの下
+		float boxMaxY = box_.position.y + box_.size.y - 0.1f;//ボックスの上
+		bool range = boxMinY > hexagonMinY && boxMinY<hexagonMaxY || boxMaxY>hexagonMinY && boxMaxY < hexagonMaxY;//どの範囲のときに判定するか
 		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
-			if (box_.position.x < hexagon->GetHexagonMaterial().center.x
+			hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
+			if (box_.position.x - 0.1f < center.x
 				&& range && !box_.isHit.up) {
 				box_.acceleration.x = 9.8f;
 				Math::Reflection(box_.velocity, obbs_[0]->GetOBBMaterial().orientations[0], box_.e);
