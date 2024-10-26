@@ -23,7 +23,7 @@ void OBB::Initialize(Camera* camera, const OBBMaterial&& obbMaterial) {
 //更新
 void OBB::Update() {
 	//角度
-	obb_.rotation += 1.0f;
+	//obb_.rotation += 1.0f;
 
 	//サイズを設定
 	aabb_.min = -obb_.size;

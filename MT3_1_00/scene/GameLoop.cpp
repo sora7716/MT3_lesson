@@ -89,14 +89,14 @@ void GameLoop::Initialize() {
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
 	hexagonMaterials_[0] = { .center = {0.0f,0.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
-	hexagonMaterials_[1] = { .center = {2.0f,-1.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	//hexagonMaterials_[1] = { .center = {2.0f,-1.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
 	for (int i = 0; i < kHexagonNum; i++) {
 		hexagons_[i]->Initialize(camera_.get(), move(hexagonMaterials_[i]));
 	}
 	//OBB
 	obbMaterial_[0] = {
-		.center = {0.0f,3.0f,0.0f},
-		.size = {0.1f,0.1f,0.1f}
+		.center = {0.0f,2.0f,0.0f},
+		.size = {0.5f,0.5f,0.5f}
 	};
 	//ボール
 	box_ = {
@@ -206,7 +206,7 @@ void GameLoop::Update() {
 		box_.position += box_.velocity * deltaTime;
 	}
 
-	obbs_[0]->SetPosition(box_.position);
+	//obbs_[0]->SetPosition(box_.position);
 }
 
 #ifdef _DEBUG
@@ -216,7 +216,7 @@ void GameLoop::DebugText() {
 	//camera_->DebugText();
 	/*line_->DebugText();*/
 	hexagons_[0]->DebugText("hexagon[0]");
-	hexagons_[1]->DebugText("hexagon[1]");
+	//hexagons_[1]->DebugText("hexagon[1]");
 	obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
@@ -244,7 +244,7 @@ void GameLoop::Collider() {
 	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(), plane_->GetPlaneMaterial()));
 	for (auto& hexagon : hexagons_) {
 		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
-		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
+		/*if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
 			box_.velocity.y += 1.0f;
 			Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], 0.9f, isFall_);
 			if (!isFall_) {
@@ -253,7 +253,7 @@ void GameLoop::Collider() {
 		}
 		else {
 			isFall_ = true;
-		}
+		}*/
 	}
 	ImGui::Text("%d", isFall_);
 	ImGui::Text("%f", box_.velocity.y);
