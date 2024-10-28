@@ -35,8 +35,8 @@ public://構造体など
 	typedef struct HitPos {
 		bool up;
 		bool under;
-		bool left;
 		bool right;
+		bool left;
 		bool front;
 		bool back;
 	}HitPos;
@@ -384,8 +384,14 @@ public:
 	/// <param name="objectVelocity">オブジェクトの速度</param>
 	/// <param name="normal">衝突対象の法線ベクトル</param>
 	/// <param name="e">反発係数</param>
-	/// <param name="isFall">落ちているかどうかのフラグ</param>
-	static void Reflection(Vector3& objectVelocity, const Vector3 normal, float e, bool& isFall = defaultFall_);
+	static Vector3 Reflection(const Vector3& objectVelocity, const Vector3 normal, float e);
+
+	/// <summary>
+	/// 重力のオンオフ
+	/// </summary>
+	/// <param name="velocity">速度</param>
+	/// <returns>ON/OFF</returns>
+	static bool GravityOnOff(Vector3& velocity,bool isFall);
 
 	/// <summary>
 	/// 空気抵抗

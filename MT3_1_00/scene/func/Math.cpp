@@ -476,20 +476,23 @@ Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal) {
 }
 
 //反発
-void Math::Reflection(Vector3& objectVelocity, const Vector3 normal, float e,bool& isFall) {
+Vector3 Math::Reflection(const Vector3& objectVelocity, const Vector3 normal, float e) {
 	Vector3 reflected = ReflectVector(objectVelocity, normal);
 	Vector3 projectToNormal = Project(reflected, normal);
 	Vector3 movingDirection = reflected - projectToNormal;
 	Vector3 refrectionVelocity = projectToNormal * e + movingDirection;
-	if (refrectionVelocity.y < 0.1f){
+	return refrectionVelocity;
+}
+
+//重力のオンオフ
+bool Math::GravityOnOff(Vector3& velocity, bool isFall) {
+	if (velocity.y < 0.1f) {
 		isFall = false;
 	}
-	if (isFall) {
-		objectVelocity = refrectionVelocity;
+	if (!isFall) {
+		velocity = { velocity.x,0.0f,velocity.z };
 	}
-	else {
-		objectVelocity = { refrectionVelocity.x,0.0f,refrectionVelocity.z };
-	}
+	return isFall;
 }
 
 //空気抵抗

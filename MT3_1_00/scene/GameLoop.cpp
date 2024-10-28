@@ -88,10 +88,10 @@ void GameLoop::Initialize() {
 	};
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
-	hexagonMaterials_[0] = { .center = {0.0f, 0.0f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
-	hexagonMaterials_[1] = { .center = {2.0f, 0.2f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
-	hexagonMaterials_[2] = { .center = {-2.0f,0.2f,0.0f},.radius = {1.0f,1.0f},.height = 0.1f };
-	hexagonMaterials_[3] = { .center = {0.0f, 0.2f,2.0f},.radius = {1.0f,1.0f},.height = 0.1f };
+	hexagonMaterials_[0] = { .center = {0.0f, 0.0f,0.0f},.size = {1.0f,0.1f,1.0f} };
+	hexagonMaterials_[1] = { .center = {2.0f, 0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
+	hexagonMaterials_[2] = { .center = {-2.0f,0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
+	hexagonMaterials_[3] = { .center = {0.0f, 0.2f,2.0f},.size = {1.0f,0.1f,1.0f} };
 	for (int i = 0; i < kHexagonNum; i++) {
 		hexagons_[i]->Initialize(camera_.get(), move(hexagonMaterials_[i]));
 	}
@@ -204,7 +204,7 @@ void GameLoop::Update() {
 		isFall_ = true;
 		box_.velocity.y = kSpeed_.y;
 	}
-	if (!box_.isHit.left && !box_.isHit.right) {
+	if (!box_.isHit.right && !box_.isHit.left) {
 
 		if (keys_[DIK_D]) {
 			box_.velocity.x = kSpeed_.x;
@@ -213,11 +213,12 @@ void GameLoop::Update() {
 			box_.velocity.x = -kSpeed_.x;
 		}
 		else {
-			if (!isFall_ || box_.isHit.left) {
+			if (!isFall_ || box_.isHit.right || box_.isHit.left) {
 				box_.acceleration.x = Math::Friction(box_.velocity, box_.mass, box_.miu).x;
 			}
 		}
 	}
+
 	if (keys_[DIK_W]) {
 		box_.velocity.z = kSpeed_.z;
 	}
@@ -229,13 +230,15 @@ void GameLoop::Update() {
 			box_.acceleration.z = Math::Friction(box_.velocity, box_.mass, box_.miu).z;
 		}
 	}
+
 	box_.size = obbs_[0]->GetOBBMaterial().size;
-	box_.position += box_.velocity * deltaTime;
-	box_.velocity.x += box_.acceleration.x * deltaTime;
-	box_.velocity.z += box_.acceleration.z * deltaTime;
 	if (isFall_) {
 		box_.velocity.y += box_.acceleration.y * deltaTime;
 	}
+	box_.velocity.x += box_.acceleration.x * deltaTime;
+	box_.velocity.z += box_.acceleration.z * deltaTime;
+	box_.position += box_.velocity * deltaTime;
+
 
 	if (isFall_) {
 		box_.acceleration = Math::AirResistance(box_.velocity, box_.mass, box_.k);
@@ -295,47 +298,75 @@ void GameLoop::Collider() {
 			if (box_.position.y - box_.size.y > hexagon->GetHexagonMaterial().center.y) {
 				box_.isHit.under = true;//当たっている
 				box_.velocity.y += 1.0f;
-				Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], box_.e, isFall_);
+				box_.velocity = Math::Reflection(box_.velocity, hexagon->GetHexagonMaterial().normal[3], box_.e);
+				isFall_ = Math::GravityOnOff(box_.velocity, isFall_);
 				if (!isFall_) {
 					break;
 				}
 			}
-			else {
-				box_.isHit.under = false;
-			}
 			//OBBの上の面が当たったかどうか
-			if (box_.position.y + box_.size.y < hexagon->GetHexagonMaterial().center.y) {
+			if (box_.position.y + box_.size.y > hexagon->GetHexagonMaterial().center.y - hexagon->GetHexagonMaterial().size.y && box_.position.y - box_.size.y < hexagon->GetHexagonMaterial().center.y - hexagon->GetHexagonMaterial().size.y) {
 				box_.isHit.up = true;
-				box_.velocity.y -= 1.0f;
+				isFall_ = true;
+				box_.velocity = Math::Reflection(box_.velocity, -hexagon->GetHexagonMaterial().normal[3], box_.e);
 			}
 			else {
 				box_.isHit.up = false;
 			}
 		}
 		else {
+			box_.isHit.under = false;
 			isFall_ = true;
 		}
 	}
+	ImGui::Checkbox("isHitUp", &box_.isHit.up);
+	ImGui::Checkbox("isHitUnder", &box_.isHit.under);
+	ImGui::Checkbox("isHitRight", &box_.isHit.right);
 	ImGui::Checkbox("isHitLeft", &box_.isHit.left);
 	for (auto& hexagon : hexagons_) {
-		float height = hexagon->GetHexagonMaterial().height;//六角柱の高さ
-		Vector3 center = hexagon->GetHexagonMaterial().center;//六角柱の中心
-		float hexagonMinY = center.y - height;//六角柱の下
-		float hexagonMaxY = center.y + height;//六角柱の上
-		float boxMinY = box_.position.y - box_.size.y + 0.1f;//ボックスの下
-		float boxMaxY = box_.position.y + box_.size.y - 0.1f;//ボックスの上
-		bool range = boxMinY > hexagonMinY && boxMinY<hexagonMaxY || boxMaxY>hexagonMinY && boxMaxY < hexagonMaxY;//どの範囲のときに判定するか
+		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
+		Vector3 hexagonSize = hexagon->GetHexagonMaterial().size;
+		Vector3 hexagonCenter = hexagon->GetHexagonMaterial().center;//六角柱の中心
+		Vector3 hexagonMin = hexagonCenter - hexagonSize;//六角柱マックス
+		Vector3 hexagonMax = hexagonCenter + hexagonSize;//六角柱ミン
+		//ボックスミン
+		Vector3 boxMin = {
+			box_.position.x - box_.size.x,
+			box_.position.y - box_.size.y + 0.05f,
+			box_.position.z - box_.size.z
+		};
+		//ボックスマックス
+		Vector3 boxMax = {
+			box_.position.x + box_.size.x,
+			box_.position.y + box_.size.y - 0.05f,
+			box_.position.z + box_.size.z
+		};
+		bool range = boxMin.y > hexagonMin.y && boxMin.y<hexagonMax.y || boxMax.y>hexagonMin.y && boxMax.y < hexagonMax.y;//どの範囲のときに判定するか
 		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
-			hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
-			if (box_.position.x - 0.1f < center.x
-				&& range && !box_.isHit.up) {
+			if (boxMax.x > hexagonMin.x && boxMin.x < hexagonMin.x
+				&& range && !box_.isHit.left) {
+				box_.acceleration.x = -9.8f;
+				box_.velocity = Math::Reflection(box_.velocity, obbs_[0]->GetOBBMaterial().orientations[0], box_.e);
+				box_.isHit.right = true;
+			}
+			else {
+				box_.isHit.right = false;
+				if (!box_.isHit.left) {
+					box_.acceleration.x = 0.0f;
+				}
+			}
+
+			if (boxMin.x < hexagonMax.x && boxMax.x > hexagonMin.x
+				&& range && !box_.isHit.right) {
 				box_.acceleration.x = 9.8f;
-				Math::Reflection(box_.velocity, obbs_[0]->GetOBBMaterial().orientations[0], box_.e);
+				box_.velocity = Math::Reflection(box_.velocity, -obbs_[0]->GetOBBMaterial().orientations[0], box_.e);
 				box_.isHit.left = true;
 			}
 			else {
 				box_.isHit.left = false;
-				box_.acceleration.x = 0.0f;
+				if (!box_.isHit.right) {
+					box_.acceleration.x = 0.0f;
+				}
 			}
 		}
 	}

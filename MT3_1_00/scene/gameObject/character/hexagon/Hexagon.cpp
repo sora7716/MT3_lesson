@@ -20,13 +20,13 @@ void Hexagon::Update() {
 		float theta = 60.0f * static_cast<float>(i);
 		float angle = theta * rad;
 		//正面
-		vertex[0][i].x = hexagon_.radius[0] * std::cosf(angle) + hexagon_.center.x;
-		vertex[0][i].y = hexagon_.center.y + hexagon_.height;
-		vertex[0][i].z = hexagon_.radius[1] * std::sinf(angle) + hexagon_.center.z;
+		vertex[0][i].x = hexagon_.size.x * std::cosf(angle) + hexagon_.center.x;
+		vertex[0][i].y = hexagon_.center.y + hexagon_.size.y;
+		vertex[0][i].z = hexagon_.size.z * std::sinf(angle) + hexagon_.center.z;
 		//背面
-		vertex[1][i].x = hexagon_.radius[0] * std::cosf(angle) + hexagon_.center.x;
-		vertex[1][i].y = hexagon_.center.y - hexagon_.height;
-		vertex[1][i].z = hexagon_.radius[1] * std::sinf(angle) + hexagon_.center.z;
+		vertex[1][i].x = hexagon_.size.x * std::cosf(angle) + hexagon_.center.x;
+		vertex[1][i].y = hexagon_.center.y - hexagon_.size.y;
+		vertex[1][i].z = hexagon_.size.z * std::sinf(angle) + hexagon_.center.z;
 	}
 
 	for (int i = 0; i < Surface; i++) {
@@ -40,14 +40,8 @@ void Hexagon::Update() {
 void Hexagon::DebugText(const char* name) {
 	std::string centerText = static_cast<std::string>(name) + ".center";
 	ImGui::DragFloat3(centerText.c_str(), &hexagon_.center.x, 0.1f);
-	std::string radiusText = static_cast<std::string>(name) + ".radius" + ".x";
-	ImGui::SliderFloat(radiusText.c_str(), &hexagon_.radius[0], 0.0f, 2.0f);
-	radiusText = static_cast<std::string>(name) + ".radius" + ".z";
-	ImGui::SliderFloat(radiusText.c_str(), &hexagon_.radius[1], 0.0f, 2.0f);
-	std::string sizeText = static_cast<std::string>(name) + ".height";
-	ImGui::SliderFloat(sizeText.c_str(), &hexagon_.height, 0.0f, 2.0f);
-	//std::string rotationText = static_cast<std::string>(name) + ".rotation";
-	//ImGui::DragFloat3(rotationText.c_str(), &hexagon_.rotation.x, 0.1f);
+	std::string radiusText = static_cast<std::string>(name) + ".size";
+	ImGui::SliderFloat3(radiusText.c_str(), &hexagon_.size.x, 0.0f, 2.0f);
 }
 
 //描画
@@ -84,15 +78,15 @@ GameObject::HexagonMaterial Hexagon::GetHexagonMaterial() {
 }
 
 //法線ベクトルを作成
-void Hexagon::CreateNormal(){
+void Hexagon::CreateNormal() {
 	//面の法線を算出
 	Vector3 v01 = GetVertex(0)[1] - GetVertex(0)[0];
-	Vector3 v111 =GetVertex(0)[1] - GetVertex(1)[1];
+	Vector3 v111 = GetVertex(0)[1] - GetVertex(1)[1];
 
-	Vector3 v12  = GetVertex(0)[2] - GetVertex(0)[1];
+	Vector3 v12 = GetVertex(0)[2] - GetVertex(0)[1];
 	Vector3 v112 = GetVertex(0)[2] - GetVertex(1)[2];
 
-	Vector3 v23  = GetVertex(0)[3] - GetVertex(0)[2];
+	Vector3 v23 = GetVertex(0)[3] - GetVertex(0)[2];
 	Vector3 v113 = GetVertex(0)[3] - GetVertex(1)[3];
 
 	//面の法線
