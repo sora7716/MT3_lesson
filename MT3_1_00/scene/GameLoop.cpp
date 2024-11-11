@@ -90,8 +90,8 @@ void GameLoop::Initialize() {
 	//六角形
 	hexagonMaterials_[0] = { .center = {0.0f, 0.0f,0.0f},.size = {4.0f,0.1f,4.0f} };
 	hexagonMaterials_[1] = { .center = {2.0f, 0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
-	hexagonMaterials_[2] = { .center = {-2.0f,0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
-	hexagonMaterials_[3] = { .center = {0.0f, 0.2f,2.0f},.size = {1.0f,0.1f,1.0f} };
+	//hexagonMaterials_[2] = { .center = {-2.0f,0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
+	//hexagonMaterials_[3] = { .center = {0.0f, 0.2f,2.0f},.size = {1.0f,0.1f,1.0f} };
 	for (int i = 0; i < kHexagonNum; i++) {
 		hexagons_[i]->Initialize(camera_.get(), move(hexagonMaterials_[i]));
 	}
@@ -204,7 +204,7 @@ void GameLoop::Update() {
 		isFall_ = true;
 		box_.velocity.y = kSpeed_.y;
 	}
-	if (!box_.isHit.right && !box_.isHit.left) {
+	/*if (!box_.isHit.right && !box_.isHit.left) {
 
 		if (keys_[DIK_D]) {
 			box_.velocity.x = kSpeed_.x;
@@ -232,6 +232,30 @@ void GameLoop::Update() {
 				box_.acceleration.z = Math::Friction(box_.velocity, box_.mass, box_.miu).z;
 			}
 		}
+	}*/
+
+	if (keys_[DIK_D]) {
+		box_.velocity.x = kSpeed_.x;
+	}
+	else if (keys_[DIK_A]) {
+		box_.velocity.x = -kSpeed_.x;
+	}
+	else {
+		if (!isFall_) {
+			box_.acceleration.x = Math::Friction(box_.velocity, box_.mass, box_.miu).x;
+		}
+	}
+
+	if (keys_[DIK_W]) {
+		box_.velocity.z = kSpeed_.z;
+	}
+	else if (keys_[DIK_S]) {
+		box_.velocity.z = -kSpeed_.z;
+	}
+	else {
+		if (!isFall_) {
+			box_.acceleration.z = Math::Friction(box_.velocity, box_.mass, box_.miu).z;
+		}
 	}
 
 	box_.size = obbs_[0]->GetOBBMaterial().size;
@@ -241,7 +265,7 @@ void GameLoop::Update() {
 	box_.velocity.x += box_.acceleration.x * deltaTime;
 	box_.velocity.z += box_.acceleration.z * deltaTime;
 	box_.position += box_.velocity * deltaTime;
-
+	direction_ = box_.position.Normalize();
 
 	if (isFall_) {
 		box_.acceleration = Math::AirResistance(box_.velocity, box_.mass, box_.k);
@@ -257,8 +281,8 @@ void GameLoop::DebugText() {
 	/*line_->DebugText();*/
 	hexagons_[0]->DebugText("hexagon[0]");
 	hexagons_[1]->DebugText("hexagon[1]");
-	hexagons_[2]->DebugText("hexagon[2]");
-	hexagons_[3]->DebugText("hexagon[3]");
+	//hexagons_[2]->DebugText("hexagon[2]");
+	//hexagons_[3]->DebugText("hexagon[3]");
 	obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
@@ -322,85 +346,42 @@ void GameLoop::Collider() {
 			isFall_ = true;
 		}
 	}
-	ImGui::Checkbox("isHitUp", &box_.isHit.up);
-	ImGui::Checkbox("isHitUnder", &box_.isHit.under);
-	ImGui::Checkbox("isHitRight", &box_.isHit.right);
+	//ImGui::Checkbox("isHitUp", &box_.isHit.up);
+	//ImGui::Checkbox("isHitUnder", &box_.isHit.under);
+	//ImGui::Checkbox("isHitRight", &box_.isHit.right);
 	ImGui::Checkbox("isHitLeft", &box_.isHit.left);
-	ImGui::Checkbox("isHitBack", &box_.isHit.back);
+	//ImGui::Checkbox("isHitBack", &box_.isHit.back);
 	for (auto& hexagon : hexagons_) {
 		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
 		Vector3 hexagonSize = hexagon->GetHexagonMaterial().size;
 		Vector3 hexagonCenter = hexagon->GetHexagonMaterial().center;//六角柱の中心
-		Vector3 hexagonMin = hexagonCenter - hexagonSize;//六角柱マックス
-		Vector3 hexagonMax = hexagonCenter + hexagonSize;//六角柱ミン
-		//ボックスミン
-		Vector3 boxMin = {
-			box_.position.x - box_.size.x,
+		Vector3 hexagonNormal[4];
+		for (int i = 0; i < 4; i++) {
+			hexagonNormal[i] = hexagon->GetHexagonMaterial().normal[i];//六角柱の法線ベクトル
+		}
+		//六角形の範囲
+		GameObject::AABBMaterial hexagonRange{
+			hexagonCenter - hexagonSize,
+			hexagonCenter + hexagonSize
+		};
+
+		//ボックスの範囲
+		GameObject::AABBMaterial boxRange{
+			{box_.position.x - box_.size.x,
 			box_.position.y - box_.size.y + 0.05f,
-			box_.position.z - box_.size.z
-		};
-		//ボックスマックス
-		Vector3 boxMax = {
-			box_.position.x + box_.size.x,
+			box_.position.z - box_.size.z},
+			{box_.position.x + box_.size.x,
 			box_.position.y + box_.size.y - 0.05f,
-			box_.position.z + box_.size.z
+			box_.position.z + box_.size.z}
 		};
-		bool range = boxMin.y > hexagonMin.y && boxMin.y<hexagonMax.y || boxMax.y>hexagonMin.y && boxMax.y < hexagonMax.y;//どの範囲のときに判定するか
-		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
+		//bool range = boxMin.y > hexagonMin.y && boxMin.y<hexagonMax.y || boxMax.y>hexagonMin.y && boxMax.y < hexagonMax.y;//どの範囲のときに判定するか
 
-			//OBBの右面が当たっているか
-			if (boxMax.x > hexagonMin.x && boxMin.x < hexagonMax.x
-				&& range && box_.position.x < hexagonCenter.x) {
-				box_.acceleration.x = -9.8f;
-				box_.velocity = Math::Reflection(box_.velocity, obbs_[0]->GetOBBMaterial().orientations[0], box_.e);
-				box_.isHit.right = true;
-			}
-			else {
-				box_.isHit.right = false;
-				if (!box_.isHit.left) {
-					box_.acceleration.x = 0.0f;
-				}
-			}
 
-			//OBBの左面が当たっているか
-			if (boxMin.x < hexagonMax.x && boxMax.x > hexagonMin.x
-				&& range && box_.position.x > hexagonCenter.x) {
-				box_.acceleration.x = 9.8f;
-				box_.velocity = Math::Reflection(box_.velocity, -obbs_[0]->GetOBBMaterial().orientations[0], box_.e);
-				box_.isHit.left = true;
-			}
-			else {
-				box_.isHit.left = false;
-				if (!box_.isHit.right) {
-					box_.acceleration.x = 0.0f;
-				}
-			}
-
-			//OBBの背面が当たっているか
-			if (boxMax.z > hexagonMin.z && boxMin.z < hexagonMax.z && range && box_.position.z<hexagonCenter.z) {
-				box_.acceleration.z = -9.8f;
-				box_.velocity = Math::Reflection(box_.velocity, -obbs_[0]->GetOBBMaterial().orientations[2], box_.e);
-				box_.isHit.back = true;
-			}
-			else {
-				box_.isHit.back = false;
-				if (!box_.isHit.front) {
-					box_.acceleration.z = 0.0f;
-				}
-			}
-
-			//OBBの正面が当たっているか
-			if (boxMax.z > hexagonMin.z && boxMin.z < hexagonMax.z && range && box_.position.z > hexagonCenter.z) {
-				box_.acceleration.z = 9.8f;
-				box_.velocity = Math::Reflection(box_.velocity, obbs_[0]->GetOBBMaterial().orientations[2], box_.e);
-				box_.isHit.front = true;
-			}
-			else {
-				box_.isHit.front = false;
-				if (!box_.isHit.back) {
-					box_.acceleration.z = 0.0f;
-				}
-			}
+		if (Collision::GetInstance()->IsCollision(obbs_[0].get(), { {hexagonCenter + hexagonSize * hexagonNormal[0]},hexagonCenter})) {
+			box_.isHit.left = true;
+		}
+		else {
+			box_.isHit.left = false;
 		}
 	}
 }
