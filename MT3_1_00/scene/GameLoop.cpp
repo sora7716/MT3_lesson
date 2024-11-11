@@ -131,11 +131,10 @@ void GameLoop::Initialize() {
 	plane_->Initialize(camera_.get());
 	//三角形
 	triangleMaterial_ = {
-		{{ 0.0f,  1.0f, 0.0f },
-		{ 1.0f, -1.0f, 0.0f },
-		{ -1.0f, -1.0f, 0.0f }},
+		.center={},
+		.size={0.5f,0.5f,0.5f},
 	};
-	triangle_->Initialize(camera_.get(), kWindowWidth, kWindowHeight, move(triangleMaterial_));
+	triangle_->Initialize(camera_.get(), move(triangleMaterial_));
 	//球
 	sphereMaterial_[0] = {
 		{0,0,0},
@@ -187,7 +186,7 @@ void GameLoop::Update() {
 	//平面
 	plane_->Update();
 	//三角形
-	triangle_->Update(keys_, preKeys_);
+	triangle_->Update();
 	//球
 	for (auto& sphere : spheres_) {
 		sphere->Update();
@@ -393,9 +392,9 @@ void GameLoop::Draw() {
 	//ライン
 	//line_->DrawSegment();
 	//六角形
-	for (auto& hexagon : hexagons_) {
-		hexagon->Draw();
-	}
+	//for (auto& hexagon : hexagons_) {
+	//	hexagon->Draw();
+	//}
 	//OBB
 	for (auto& obb : obbs_) {
 		obb->Draw();
@@ -407,7 +406,7 @@ void GameLoop::Draw() {
 	//平面
 	//plane_->Draw();
 	//三角形
-	//triangle_->DrawWireFrame();
+	triangle_->Draw();
 	//球
 	/*for (auto& sphere : spheres_) {
 		sphere->Draw();

@@ -80,7 +80,11 @@ public://構造体など
 
 	//三角形の素材
 	typedef struct TriangleMaterial {
-		Vector3 kLocalVertices_[(int)Vertex::kVertexNum] = {};//ローカル座標
+		Vector3 kLocalVertices_[static_cast<int>(Vertex::kVertexNum)];
+		Vector3 center;
+		float radian;
+		Vector3 size;
+		Vector3 normal[3];
 		uint32_t color = WHITE;//色
 		bool isHit = false;//衝突したか
 	}TriangleMaterial;

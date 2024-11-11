@@ -3,6 +3,7 @@
 #include "scene/gameObject/character/OBB/OBB.h"
 #include "scene/gameObject/character/hexagon/Hexagon.h"
 #include "scene/gameObject/character/capsule/Capsule.h"
+#include "scene/gameObject/character/triangle/Triangle.h"
 #include <algorithm> 
 using namespace std;
 
@@ -554,4 +555,112 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 
 	return isHit;
 
+}
+
+bool Collision::IsCollision(Triangle* triangle, OBB* obb){
+	//分割軸の数
+	Vector3 separateAxes[19];
+
+	//面の法線
+	Vector3 normal[4];
+	normal[0] = triangle->GetTriangleMaterial().normal;
+	normal[1] = triangle->GetHexagonMaterial().normal[1];
+	normal[2] = triangle->GetHexagonMaterial().normal[2];
+	normal[3] = triangle->GetHexagonMaterial().normal[3];
+
+	//六角柱の面の法線
+	separateAxes[0] = normal[0];
+	separateAxes[1] = normal[1];
+	separateAxes[2] = normal[2];
+	separateAxes[3] = normal[3];
+	//OBBの面の法線
+	separateAxes[4] = obb->GetOBBMaterial().orientations[0];
+	separateAxes[5] = obb->GetOBBMaterial().orientations[1];
+	separateAxes[6] = obb->GetOBBMaterial().orientations[2];
+	//クロス積で求める
+	separateAxes[7] = Math::Cross(obb->GetOBBMaterial().orientations[0], normal[0]);
+	separateAxes[8] = Math::Cross(obb->GetOBBMaterial().orientations[0], normal[1]);
+	separateAxes[9] = Math::Cross(obb->GetOBBMaterial().orientations[0], normal[2]);
+	separateAxes[10] = Math::Cross(obb->GetOBBMaterial().orientations[0], normal[3]);
+	separateAxes[11] = Math::Cross(obb->GetOBBMaterial().orientations[1], normal[0]);
+	separateAxes[12] = Math::Cross(obb->GetOBBMaterial().orientations[1], normal[1]);
+	separateAxes[13] = Math::Cross(obb->GetOBBMaterial().orientations[1], normal[2]);
+	separateAxes[14] = Math::Cross(obb->GetOBBMaterial().orientations[1], normal[3]);
+	separateAxes[15] = Math::Cross(obb->GetOBBMaterial().orientations[2], normal[0]);
+	separateAxes[16] = Math::Cross(obb->GetOBBMaterial().orientations[2], normal[1]);
+	separateAxes[17] = Math::Cross(obb->GetOBBMaterial().orientations[2], normal[2]);
+	separateAxes[18] = Math::Cross(obb->GetOBBMaterial().orientations[2], normal[3]);
+
+	//半分のベクトル
+	/*obb*/
+	Vector3 obbDirection[3]{
+		obb->GetOBBMaterial().orientations[0] * obb->GetOBBMaterial().size.x,
+		obb->GetOBBMaterial().orientations[1] * obb->GetOBBMaterial().size.y,
+		obb->GetOBBMaterial().orientations[2] * obb->GetOBBMaterial().size.z,
+	};
+
+	//頂点の数
+	const int kOBBCornerNum = 8;
+	const int kHexagonCornerNum = 12;
+
+	// 点(頂点)
+	Vector3 obbCorners[kOBBCornerNum] = {
+	  obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の右上
+	  obb->GetOBBMaterial().center + obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の右上
+	  obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の右下
+	  obb->GetOBBMaterial().center + obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の右下
+	  obb->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] + obbDirection[2],//背面の左上
+	  obb->GetOBBMaterial().center - obbDirection[0] + obbDirection[1] - obbDirection[2],//正面の左上
+	  obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] + obbDirection[2],//背面の左下
+	  obb->GetOBBMaterial().center - obbDirection[0] - obbDirection[1] - obbDirection[2],//正面の左下
+	};
+	Vector3 hexagonConers[kHexagonCornerNum];
+
+	// 半径と高さ
+	Vector3 size = hexagon->GetHexagonMaterial().size;
+	// 六角形の頂点計算
+	for (int i = 0; i < 6; i++) {
+		float angle = i * (pi_f / 3.0f);  // 60度ごとに頂点がある
+		float x = size.x * cos(angle);
+		float z = size.z * sin(angle);
+
+		// 底面の頂点 (z = -height)
+		hexagonConers[i] = Vector3(x, -size.y, z) + hexagon->GetHexagonMaterial().center;
+
+		// 上面の頂点 (z = +height)
+		hexagonConers[i + 6] = Vector3(x, size.y, z) + hexagon->GetHexagonMaterial().center;
+	}
+
+	// 中心点間のベクトル
+	Vector3 centerToCenter = hexagon->GetHexagonMaterial().center - obb->GetOBBMaterial().center;
+
+	//当たったかの判定
+	bool isHit = true;
+
+	//当たり判定の計算
+	for (const auto& separateAxis : separateAxes) {
+		float minOBB = (numeric_limits<float>::max)();
+		float maxOBB = (numeric_limits<float>::lowest)();
+		float minHexagon = minOBB;
+		float maxHexagon = maxOBB;
+		for (auto obbCornerIndex = 0; obbCornerIndex < kOBBCornerNum; obbCornerIndex++) {
+			float obbDistance = Math::Dot(obbCorners[obbCornerIndex], separateAxis);
+			minOBB = (min)(obbDistance, minOBB);
+			maxOBB = (max)(obbDistance, maxOBB);
+		}
+		for (auto hexagonCornerIndex = 0; hexagonCornerIndex < kHexagonCornerNum; hexagonCornerIndex++) {
+			float hexagonDistance = Math::Dot(hexagonConers[hexagonCornerIndex], separateAxis);
+			minHexagon = (min)(hexagonDistance, minHexagon);
+			maxHexagon = (max)(hexagonDistance, maxHexagon);
+		}
+		//それぞれを射影した範囲長の合計を求める
+		float sumSpan = maxOBB - minOBB + maxHexagon - minHexagon;
+		//最大範囲を求める
+		float longSpan = (max)(maxOBB, maxHexagon) - (min)(minOBB, minHexagon);
+		if (sumSpan < longSpan) {
+			isHit = false;
+		}
+	}
+
+	return isHit;
 }

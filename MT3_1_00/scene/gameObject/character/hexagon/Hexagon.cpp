@@ -4,7 +4,6 @@
 #include <string>
 #include <cmath>
 #include <numbers>
-#define rad pi_f/180.0f
 
 //初期化
 void Hexagon::Initialize(Camera* camera, const HexagonMaterial&& hexagonMaterial) {

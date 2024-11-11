@@ -3,95 +3,74 @@
 using namespace std;
 
 //初期化
-void Triangle::Initialize(Camera* camera, int kWindowWidth, int kWindowHeight, const TriangleMaterial&& triangleMaterial) {
-	camera_ = camera;//カメラ
-	windowHeight_ = kWindowHeight;//縦幅
-	windowWidth_ = kWindowWidth;//横幅
-	camera_->Initialize(windowWidth_, windowHeight_);//カメラの初期化
-	v1_ = { 1.2f,-3.9f,2.5f };//ベクトル1
-	v2_ = { 2.8f,0.4f,-1.3f };//ベクトル2
-
-	//三角ポリゴン
-	scale_ = { 1.0f,1.0f,1.0f };        //倍率
-	translate_ = { 0.0f,1.0f,0.0f };        //ポジション
-	radian_.y = 5.0f / 60.0f;
-
+void Triangle::Initialize(Camera* camera, TriangleMaterial&& triangleMaterial){
+	camera_ = camera;
 	triangle_ = triangleMaterial;
 }
 
 //更新
-void Triangle::Update(char* keys, char* preKeys) {
-	cross_ = Math::Cross(v1_, v2_);//クロス積の計算
-
-	camera_->Update(keys, preKeys);//カメラの更新処理
-	for (uint32_t i = 0; i < 3; i++) {
-		CameraScreenTransform(camera_, triangle_.kLocalVertices_[i], screenVertices_[i]);
+void Triangle::Update(){
+	for (int i = 0; i < kVertexNum; i++) {
+		float theta = 120.0f * static_cast<float>(i);
+		float angle = theta * rad;
+		//正面
+		localVertex_[0][i].x = triangle_.size.x * std::cosf(angle) + triangle_.center.x;
+		localVertex_[0][i].y = triangle_.center.y + triangle_.size.y;
+		localVertex_[0][i].z = triangle_.size.z * std::sinf(angle) + triangle_.center.z;
+		//背面
+		localVertex_[1][i].x = triangle_.size.x * std::cosf(angle) + triangle_.center.x;
+		localVertex_[1][i].y = triangle_.center.y - triangle_.size.y;
+		localVertex_[1][i].z = triangle_.size.z * std::sinf(angle) + triangle_.center.z;
 	}
-	//Transfar(keys, preKeys);//三角形の動き
+
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 6; j++) {
+			CameraScreenTransform(camera_, localVertex_[i][j], screenVertex_[i][j]);
+		}
+	}
 }
 
-#ifdef _DEBUG
 //デバックテキスト
-void Triangle::DebugText(const char* name) {
-	string topLabel = (string)name + ".vertex.top";
-	ImGui::DragFloat2(topLabel.c_str(), &triangle_.kLocalVertices_[(int)Vertex::kTop].x, 0.01f);
-	string rightLabel = (string)name + ".vertex.right";
-	ImGui::DragFloat2(rightLabel.c_str(), &triangle_.kLocalVertices_[(int)Vertex::kRight].x, 0.01f);
-	string leftLabel = (string)name + ".vertex.left";
-	ImGui::DragFloat2(leftLabel.c_str(), &triangle_.kLocalVertices_[(int)Vertex::kLeft].x, 0.01f);
+void Triangle::DebugText(const char* label){
+	(void)label;
 }
-#endif // _DEBUG
 
 //描画
-void Triangle::Draw()const {
-	//クロス積
-	//ScreenPrintf::VectorScreenPrintf(0, 0, cross_, "Cross");
-	//三角ポリゴン
-	Novice::DrawTriangle(
-		int(screenVertices_[(int)Vertex::kTop].x), int(screenVertices_[(int)Vertex::kTop].y),
-		int(screenVertices_[(int)Vertex::kRight].x), int(screenVertices_[(int)Vertex::kRight].y),
-		int(screenVertices_[(int)Vertex::kLeft].x), int(screenVertices_[(int)Vertex::kLeft].y),
-		RED, kFillModeSolid);
-}
-
-//ワイヤーフレームで描画
-void Triangle::DrawWireFrame()const {
-	//三角ポリゴン
-	Novice::DrawTriangle(
-		int(screenVertices_[(int)Vertex::kTop].x), int(screenVertices_[(int)Vertex::kTop].y),
-		int(screenVertices_[(int)Vertex::kRight].x), int(screenVertices_[(int)Vertex::kRight].y),
-		int(screenVertices_[(int)Vertex::kLeft].x), int(screenVertices_[(int)Vertex::kLeft].y),
-		triangle_.color, kFillModeWireFrame);
-}
-
-//衝突時の判定
-void Triangle::OnCollisiton(bool isHit) {
-	triangle_.isHit = isHit;
-	if (triangle_.isHit) {
-		SetColor(RED);
+void Triangle::Draw(){
+	for (int i = 0; i < 2; i++) {
+		for (int j = 1; j < kVertexNum; j++) {
+			Novice::DrawLine((int)screenVertex_[i][j - 1].x, (int)screenVertex_[i][j - 1].y, (int)screenVertex_[i][j].x, (int)screenVertex_[i][j].y, triangle_.color);
+			Novice::DrawLine((int)screenVertex_[0][j].x, (int)screenVertex_[0][j].y, (int)screenVertex_[1][j].x, (int)screenVertex_[1][j].y, triangle_.color);
+		}
+		//Novice::DrawLine((int)screenVertex_[i][2].x, (int)screenVertex_[i][2].y, (int)screenVertex_[i][0].x, (int)screenVertex_[i][0].y, triangle_.color);
 	}
-	else {
-		SetColor(WHITE);
-	}
+	Novice::DrawLine((int)screenVertex_[0][0].x, (int)screenVertex_[0][0].y, (int)screenVertex_[1][0].x, (int)screenVertex_[1][0].y, triangle_.color);
 }
 
-//三角形のマテリアルのゲッター
-Triangle::TriangleMaterial Triangle::GetTriangleMaterial() const {
+// ローカルの頂点
+Vector3* Triangle::GetLocalVertex(int i){
+	return localVertex_[i];
+}
+
+//三角柱のゲッター
+Triangle Triangle::GetTriangleMaterial(){
 	return triangle_;
 }
 
-//カラーのセッター
-void Triangle::SetColor(uint32_t color) {
-	triangle_.color = color;
-}
+//法線ベクトルの作成
+void Triangle::CreateNormal(){
+	//面の法線を算出
+	Vector3 v01 = GetLocalVertex(0)[1] - GetLocalVertex(0)[0];
+	Vector3 v1101 = GetLocalVertex(0)[1] - GetLocalVertex(1)[1];
 
-//動き
-void Triangle::Transfar(char* keys, char* preKeys) {
-	bool left = keys[DIK_A] && preKeys[DIK_A];
-	bool right = keys[DIK_D] && preKeys[DIK_D];
-	bool front = keys[DIK_S] && preKeys[DIK_S];
-	bool behind = keys[DIK_W] && preKeys[DIK_W];
-	GameObject::Scale(behind, front);//拡縮
-	GameObject::Rotate();//回転
-	GameObject::TranslateX(left, right, 1.0f);//移動
+	Vector3 v12 = GetLocalVertex(0)[2] - GetLocalVertex(0)[1];
+	Vector3 v1202 = GetLocalVertex(0)[2] - GetLocalVertex(1)[2];
+
+	Vector3 v20 = GetLocalVertex(0)[0] - GetLocalVertex(0)[2];
+	Vector3 v1000 = GetLocalVertex(0)[0] - GetLocalVertex(1)[0];
+
+	//面の法線
+	triangle_.normal[0] = Math::Normalize(Math::Cross(v01, v1101));
+	triangle_.normal[1] = Math::Normalize(Math::Cross(v12, v1202));
+	triangle_.normal[2] = Math::Normalize(Math::Cross(v20, v1000));
 }
