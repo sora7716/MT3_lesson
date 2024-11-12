@@ -47,7 +47,7 @@ public://メンバ関数
 	/// 三角柱のゲッター
 	/// </summary>
 	/// <returns></returns>
-	Triangle GetTriangleMaterial();
+	TriangleMaterial GetTriangleMaterial();
 
 private://メンバ関数
 

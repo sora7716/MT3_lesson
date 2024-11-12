@@ -53,7 +53,7 @@ Vector3* Triangle::GetLocalVertex(int i){
 }
 
 //三角柱のゲッター
-Triangle Triangle::GetTriangleMaterial(){
+GameObject::TriangleMaterial Triangle::GetTriangleMaterial(){
 	return triangle_;
 }
 
