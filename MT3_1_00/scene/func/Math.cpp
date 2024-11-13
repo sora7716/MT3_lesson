@@ -1,3 +1,4 @@
+
 #define NOMINMAX
 #include "Math.h"
 #include <cassert>
@@ -476,73 +477,73 @@ Vector3 Math::ReflectVector(const Vector3& input, const Vector3& normal) {
 }
 
 //反発
-void Math::Reflection(Vector3& objectVelocity, const Vector3 normal, float e,bool& isFall) {
+Vector3 Math::Reflection(const Vector3& objectVelocity, const Vector3 normal, float e) {
 	Vector3 reflected = ReflectVector(objectVelocity, normal);
 	Vector3 projectToNormal = Project(reflected, normal);
 	Vector3 movingDirection = reflected - projectToNormal;
 	Vector3 refrectionVelocity = projectToNormal * e + movingDirection;
-	if (refrectionVelocity.y >= 0.1f){
-		isFall = true;
-	}
-	else{
+	return refrectionVelocity;
+}
+
+//重力のオンオフ
+bool Math::GravityOnOff(Vector3& velocity, bool isFall) {
+	if (velocity.y < 0.1f) {
 		isFall = false;
 	}
-	if (isFall) {
-		objectVelocity = refrectionVelocity;
+	if (!isFall) {
+		velocity = { velocity.x,0.0f,velocity.z };
 	}
-	else {
-		objectVelocity = { refrectionVelocity.x,0.0f,refrectionVelocity.z };
-	}
+	return isFall;
 }
 
 //空気抵抗
-Vector3 Math::AirResistance(const Ball& ball, float k) {
-	Vector3 result{};
+Vector3 Math::AirResistance(const Vector3& velocity, float mass, float k) {
+	Vector3 acceleration{};
 	// 速度の大きさ（ノルム）を計算
-	float speed = Math::Length(ball.velocity);
+	float speed = Math::Length(velocity);
 
 	// 速度がゼロでない場合のみ空気抵抗を計算
 	if (speed > 0.0f) {
 		// 空気抵抗の力を計算 (速度の二乗に比例)
-		Vector3 airResistance = -k * pow(speed, 2.0f) * Math::Normalize(ball.velocity);
+		Vector3 airResistance = -k * pow(speed, 2.0f) * Math::Normalize(velocity);
 
 		// 空気抵抗による加速度を計算
-		Vector3 airResistanceAcceleration = airResistance / ball.mass;
+		Vector3 airResistanceAcceleration = airResistance / mass;
 
 		// 総合加速度に空気抵抗と重力を加算
-		result = kGravity + airResistanceAcceleration;
+		acceleration = kGravity + airResistanceAcceleration;
 	}
-	return result;
+	return acceleration;
 }
 
 //摩擦
-Vector3 Math::Friction(const Ball& ball, float miu) {
-	Vector3 result{};
+Vector3 Math::Friction(Vector3& velocity, float mass, float miu) {
+	Vector3 acceleration{};
 	// 動いていたら
-	if (abs(ball.velocity.x) > 0.01f || abs(ball.velocity.y) > 0.01f || abs(ball.velocity.z) > 0.01f) {
+	if (fabs(velocity.x) > 0.01f || fabs(velocity.y) > 0.01f || fabs(velocity.z) > 0.01f) {
 		// 摩擦力の大きさを計算
-		float magnitude = miu * Math::Length(-ball.mass * kGravity.y);
+		float magnitude = miu * Math::Length(-mass * kGravity.y);
 
 		// 摩擦力の向き（速度の逆方向）
-		Vector3 direction = Normalize(-ball.velocity);
+		Vector3 direction = Normalize(-velocity);
 
 		// 摩擦力を計算
 		Vector3 frictionalForce = magnitude * direction;
 
 		// 加速度に摩擦力を反映（力を質量で割る）
-		result += frictionalForce / ball.mass;
+		acceleration += frictionalForce / mass;
 
 		// 摩擦力によって速度がゼロになる場合、速度と加速度を停止
-		if (abs(frictionalForce.x * deltaTime) > abs(ball.velocity.x) ||
-			abs(frictionalForce.y * deltaTime) > abs(ball.velocity.y) ||
-			abs(frictionalForce.z * deltaTime) > abs(ball.velocity.z)) {
-			result = ball.velocity * 60.0f;
+		if (fabs(frictionalForce.x * deltaTime) > fabs(velocity.x) ||
+			fabs(frictionalForce.y * deltaTime) > fabs(velocity.y) ||
+			fabs(frictionalForce.z * deltaTime) > fabs(velocity.z)) {
+			acceleration = -velocity * 60.0f;
 		}
 	}
-	return result;
+	return acceleration;
 }
 
-// リサージュ曲線(閉曲)
+// リサージュ曲線
 Vector3 Math::LissajousCurve(const Vector3& theta, const Vector3& center, const Vector3& scalar) {
 	Vector3 result{};
 	result.x = scalar.x * sin(theta.x) + center.x;
@@ -550,5 +551,3 @@ Vector3 Math::LissajousCurve(const Vector3& theta, const Vector3& center, const 
 	result.z = scalar.z * sin(theta.z) + center.z;
 	return result;
 }
-
-

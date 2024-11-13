@@ -1,6 +1,4 @@
 #include "scene/GameLoop.h"
-#include <memory>
-using namespace std;
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 

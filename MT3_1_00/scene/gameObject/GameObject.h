@@ -1,3 +1,4 @@
+
 #pragma once
 #include <Novice.h>
 #include <cmath>
@@ -80,7 +81,11 @@ public://構造体など
 
 	//三角形の素材
 	typedef struct TriangleMaterial {
-		Vector3 kLocalVertices_[(int)Vertex::kVertexNum] = {};//ローカル座標
+		Vector3 kLocalVertices_[static_cast<int>(Vertex::kVertexNum)];
+		Vector3 center;
+		float radian;
+		Vector3 size;
+		Vector3 normal[3];
 		uint32_t color = WHITE;//色
 		bool isHit = false;//衝突したか
 	}TriangleMaterial;
@@ -109,8 +114,7 @@ public://構造体など
 	//六角形を作るときに使う素材
 	typedef struct HexagonMaterial {
 		Vector3 center;//中心
-		float radius[2];//半径
-		float height = 1.0f;//座標軸方向の長さの半分。中心から面までの距離 scale
+		Vector3 size = { 1.0f,1.0f,1.0f };//座標軸方向の長さの半分。中心から面までの距離 scale
 		Vector3 normal[4];//法線ベクトル
 		Vector3 rotation = {};//回転
 		uint32_t color = WHITE;//色
@@ -228,4 +232,3 @@ protected:
 	Vector2Int mousePos_ = {};//マウスのポジション
 	Vector2Int preMousePos_ = {};//前のマウスのポジション
 };
-

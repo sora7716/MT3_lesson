@@ -41,12 +41,12 @@ public://メンバ関数
 	void Draw();
 
 	/// <summary>
-    /// 衝突したとき
-    /// </summary>
+	/// 衝突したとき
+	/// </summary>
 	/// <param name="isHit">衝突したかどうか</param>
 	void OnCollision(bool isHit);
 
-    /// <summary>
+	/// <summary>
 	/// 頂点のゲッター
 	/// </summary>
 	/// <param name="i">表か裏か</param>
@@ -76,4 +76,3 @@ private://メンバ変数
 	Vector3 vertex[Surface][kVertexNum] = {};//頂点
 	Vector3 screenVertex[Surface][kVertexNum] = {};//スクリーン座標の頂点
 };
-

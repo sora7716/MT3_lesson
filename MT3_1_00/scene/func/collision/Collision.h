@@ -15,7 +15,7 @@ class Capsule;
 /// <summary>
 /// 衝突判定達
 /// </summary>
-class Collision final{
+class Collision final {
 
 public://メンバ関数
 
@@ -88,9 +88,9 @@ public://メンバ関数
 	/// <summary>
 	/// 衝突判定(OBBと球)
 	/// </summary>
-    /// <param name="target">ターゲット</param>
+	/// <param name="target">ターゲット</param>
 	/// <param name="sphare">球</param>
-	bool IsCollision(OBB* obb,const GameObject::SphereMaterial& sphere);
+	bool IsCollision(OBB* obb, const GameObject::SphereMaterial& sphere);
 
 	/// <summary>
 	/// 衝突判定(OBBと線分)
@@ -121,7 +121,7 @@ public://メンバ関数
 	/// <param name="line">線分</param>
 	/// <param name="surface">面</param>
 	/// <returns>衝突したか</returns>
-	bool IsCollision(Hexagon*hexagon,Line*line,int surface);
+	bool IsCollision(Hexagon* hexagon, Line* line, int surface);
 
 	/// <summary>
 	/// 衝突判定(カプセルと平面)
@@ -138,6 +138,14 @@ public://メンバ関数
 	/// <param name="obb">OBB</param>
 	/// <returns>衝突したか</returns>
 	bool IsCollision(Hexagon* hexagon, OBB* obb);
+
+	/// <summary>
+	/// 衝突判定
+	/// </summary>
+	/// <param name="triangle">三角柱</param>
+	/// <param name="obb">OBB</param>
+	/// <returns>衝突したか</returns>
+	//bool IsCollision(Triangle* triangle, OBB* obb);
 
 	//コピーコンストラクタを禁止する
 	Collision(const Collision& collision) = delete;
@@ -160,4 +168,3 @@ private://静的メンバ変数
 	static inline const float kTMin = 0.0f;
 	static inline const float kTMax = 1.0f;
 };
-

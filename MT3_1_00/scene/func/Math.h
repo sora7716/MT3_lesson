@@ -1,3 +1,4 @@
+
 #pragma once
 #include "scene/func/Aithmetic.h"
 #include <vector>
@@ -8,6 +9,7 @@
 #define deltaTime 1.0f/60.0f
 #define kGravity Vector3(0.0f,-9.8f,0.0f)
 #define pi_f std::numbers::pi_v<float>
+#define rad pi_f/180.0f
 
 class Math {
 
@@ -31,6 +33,16 @@ public://構造体など
 		uint32_t color;//ボールの色
 	}Ball;
 
+	//当たった位置
+	typedef struct HitPos {
+		bool up;
+		bool under;
+		bool right;
+		bool left;
+		bool front;
+		bool back;
+	}HitPos;
+
 	//ボックス
 	typedef struct Box {
 		Vector3 position;//位置
@@ -39,6 +51,10 @@ public://構造体など
 		float mass;//ボックスの重さ
 		Vector3 size;//ボックスのサイズ
 		uint32_t color;//ボックスの色
+		float miu = 0.4f;//摩擦係数(摩擦の時)
+		float k = 0.6f;//比例定数(空気抵抗の時)
+		float e = 0.8f;//反発係数(反発の時)
+		HitPos isHit = { false };//オブジェクトに当たっているかどうか
 	}Box;
 
 	//振り子
@@ -357,10 +373,10 @@ public:
 	static void MakeConicalPendulum(ConicalPendulum& conicalPendulum, Vector3& ballPos);
 
 	/// <summary>
-    /// 反射ベクトル
-    /// </summary>
-    /// <param name="input">入射ベクトル</param>
-    /// <param name="normal">面の法線</param>
+	/// 反射ベクトル
+	/// </summary>
+	/// <param name="input">入射ベクトル</param>
+	/// <param name="normal">面の法線</param>
 	/// <returns>反射ベクトル</returns>
 	static Vector3 ReflectVector(const Vector3& input, const Vector3& normal);
 
@@ -370,32 +386,42 @@ public:
 	/// <param name="objectVelocity">オブジェクトの速度</param>
 	/// <param name="normal">衝突対象の法線ベクトル</param>
 	/// <param name="e">反発係数</param>
-	/// <param name="isFall">落ちているかどうかのフラグ</param>
-	static void Reflection(Vector3& objectVelocity,const Vector3 normal,float e,bool&isFall);
+	static Vector3 Reflection(const Vector3& objectVelocity, const Vector3 normal, float e);
+
+	/// <summary>
+	/// 重力のオンオフ
+	/// </summary>
+	/// <param name="velocity">速度</param>
+	/// <returns>ON/OFF</returns>
+	static bool GravityOnOff(Vector3& velocity, bool isFall);
 
 	/// <summary>
 	/// 空気抵抗
 	/// </summary>
-	/// <param name="ball">ボール</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="mass">質量</param>
 	/// <param name="k">比例定数</param>
-	/// <returns>空気抵抗</returns>
-	static Vector3 AirResistance(const Ball& ball, float k);
+	/// <returns>抵抗(加速度)</returns>
+	static Vector3 AirResistance(const Vector3& velocity, float mass, float k);
 
 	/// <summary>
-    /// 摩擦
-    /// </summary>
-    /// <param name="ball">ボール</param>
-    /// <param name="miu">摩擦係数</param>
-	/// <returns>摩擦</returns>
-	static Vector3 Friction(const Ball& ball, float miu);
+	/// 摩擦
+	/// </summary>
+	/// <param name="velocity">速度</param>
+	/// <param name="mass">質量</param>
+	/// <param name="miu">摩擦係数</param>
+	/// <returns>抵抗(加速度)</returns>
+	static Vector3 Friction(Vector3& velocity, float mass, float miu);
 
 	/// <summary>
-	/// リサージュ曲線(閉曲線)
+	/// リサージュ曲線
 	/// </summary>
 	/// <param name="theta">θ</param>
 	/// <param name="center">中心点</param>
 	/// <param name="scalar">スカラー</param>
 	/// <returns>閉曲線</returns>
-	static Vector3 LissajousCurve(const Vector3& theta, const Vector3& center,const Vector3& scalar={1.0f,1.0f,1.0f});
+	static Vector3 LissajousCurve(const Vector3& theta, const Vector3& center, const Vector3& scalar = { 1.0f,1.0f,1.0f });
 
+private://メンバ変数
+	static inline bool defaultFall_ = true;
 };
