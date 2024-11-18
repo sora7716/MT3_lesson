@@ -278,18 +278,18 @@ void GameLoop::DebugText() {
 	ImGui::Begin("Window");
 	//camera_->DebugText();
 	/*line_->DebugText();*/
-	//hexagons_[0]->DebugText("hexagon[0]");
+	hexagons_[0]->DebugText("hexagon[0]");
 	//hexagons_[1]->DebugText("hexagon[1]");
 	//hexagons_[2]->DebugText("hexagon[2]");
 	//hexagons_[3]->DebugText("hexagon[3]");
-	//obbs_[0]->DebagText("obb[0]");
+	obbs_[0]->DebagText("obb[0]");
 	//obbs_[1]->DebagText("obb[1]");
 	//aabbs_[0]->DebugText("aabb[0]");
 	//aabbs_[1]->DebugText("aabb[1]");
 	//plane_->DebugText();
 	//triangle_->DebugText();
-	spheres_[0]->DebugText("sphere[0]");
-	spheres_[1]->DebugText("sphere[1]");
+	//spheres_[0]->DebugText("sphere[0]");
+	//spheres_[1]->DebugText("sphere[1]");
 	//capsule_->DebugText();
 	ImGui::End();
 
@@ -393,13 +393,13 @@ void GameLoop::Draw() {
 	//ライン
 	//line_->DrawSegment();
 	//六角形
-	/*for (auto& hexagon : hexagons_) {
+	for (auto& hexagon : hexagons_) {
 		hexagon->Draw();
-	}*/
+	}
 	//OBB
-	/*for (auto& obb : obbs_) {
+	for (auto& obb : obbs_) {
 		obb->Draw();
-	}*/
+	}
 	//AABB
 	/*for (auto& aabb : aabbs_) {
 		aabb->Draw();
@@ -409,9 +409,9 @@ void GameLoop::Draw() {
 	//三角形
 	//triangle_->Draw();
 	//球
-	for (auto& sphere : spheres_) {
+	/*for (auto& sphere : spheres_) {
 		sphere->Draw();
-	}
+	}*/
 	//球の通った道を表示
 	//line_->DrawObjectRoad(spheres_[0]->GetSphereMaterial().center);
 	//line_->DrawObjectRoad(box_.position);
