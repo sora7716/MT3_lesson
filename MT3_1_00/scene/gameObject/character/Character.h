@@ -40,6 +40,14 @@ protected://メンバ関数
 	void WvpMatrix(Camera* camera, Vector3& scale, Vector3& rotate, Vector3& translate);
 
 	/// <summary>
+	/// WvpMatrix(scale無いバージョン)
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="rotate">回転</param>
+	/// <param name="translate">移動</param>
+	void WvpMatrix(const Camera* camera, const Vector3& rotate, const Vector3 translate);
+
+	/// <summary>
     /// ワールドビュープロジェクションだけの計算
     /// </summary>
 	/// <param name="camera">カメラ</param>
@@ -69,6 +77,16 @@ protected://メンバ関数
 	/// <param name="kLocalVertices">ローカル座標</param>
 	/// <param name="screenVertices">スクリーン座標</param>
 	void ScreenTransform(Camera* camera, const Vector3& kLocalVertices, Vector3& screenVertices);
+
+	/// <summary>
+	/// ローカル座標からスクリーン座標に変換
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="kLocalVertices">ローカルの頂点</param>
+	/// <param name="rotate"><回転/param>
+	/// <param name="translate">移動</param>
+	/// <returns>スクリーン座標</returns>
+	Vector3 ScreenTransform(const Camera* camera, const Vector3& kLocalVertices,const Vector3& rotate, const Vector3& translate);
 
 	/// <summary>
 	/// ローカル座標をスクリーン座標に変換

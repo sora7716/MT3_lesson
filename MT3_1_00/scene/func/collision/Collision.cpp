@@ -509,6 +509,7 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 
 	// 半径と高さ
 	Vector3 size = hexagon->GetHexagonMaterial().size;
+
 	// 六角形の頂点計算
 	for (int i = 0; i < 6; i++) {
 		float angle = i * (pi_f / 3.0f);  // 60度ごとに頂点がある
@@ -516,10 +517,12 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 		float z = size.z * sin(angle);
 
 		// 底面の頂点 (z = -height)
-		hexagonConers[i] = Vector3(x, -size.y, z) + hexagon->GetHexagonMaterial().center;
+		hexagonConers[i] = Math::Transform(Vector3(x, -size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
 
 		// 上面の頂点 (z = +height)
-		hexagonConers[i + 6] = Vector3(x, size.y, z) + hexagon->GetHexagonMaterial().center;
+		hexagonConers[i + 6] = Math::Transform(Vector3(x, size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
+
+		
 	}
 
 	// 中心点間のベクトル
@@ -620,7 +623,7 @@ bool Collision::IsCollision(Triangle* triangle, OBB* obb) {
 	Vector3 size = triangle->GetTriangleMaterial().size;
 	// 六角形の頂点計算
 	for (int i = 0; i < 6; i++) {
-		float angle = i * (2*pi_f / 3.0f);  // 60度ごとに頂点がある
+		float angle = i * (2*pi_f / 3.0f);  // 120度ごとに頂点がある
 		float x = size.x * cos(angle);
 		float z = size.z * sin(angle);
 

@@ -4,6 +4,7 @@
 #include <string>
 #include <cmath>
 #include <numbers>
+#define rad pi_f/180.0f
 
 //初期化
 void Hexagon::Initialize(Camera* camera, const HexagonMaterial&& hexagonMaterial) {
@@ -19,18 +20,18 @@ void Hexagon::Update() {
 		float theta = 60.0f * static_cast<float>(i);
 		float angle = theta * rad;
 		//正面
-		vertex[0][i].x = hexagon_.size.x * std::cosf(angle) + hexagon_.center.x;
-		vertex[0][i].y = hexagon_.center.y + hexagon_.size.y;
-		vertex[0][i].z = hexagon_.size.z * std::sinf(angle) + hexagon_.center.z;
+		vertex[0][i].x = hexagon_.size.x * std::cosf(angle);
+		vertex[0][i].y = hexagon_.size.y;
+		vertex[0][i].z = hexagon_.size.z * std::sinf(angle);
 		//背面
-		vertex[1][i].x = hexagon_.size.x * std::cosf(angle) + hexagon_.center.x;
-		vertex[1][i].y = hexagon_.center.y - hexagon_.size.y;
-		vertex[1][i].z = hexagon_.size.z * std::sinf(angle) + hexagon_.center.z;
+		vertex[1][i].x = hexagon_.size.x * std::cosf(angle);
+		vertex[1][i].y = -hexagon_.size.y;
+		vertex[1][i].z = hexagon_.size.z * std::sinf(angle);
 	}
 
 	for (int i = 0; i < Surface; i++) {
 		for (int j = 0; j < 6; j++) {
-			CameraScreenTransform(camera_, vertex[i][j], screenVertex[i][j]);
+			screenVertex[i][j] = ScreenTransform(camera_, vertex[i][j], rotate_, hexagon_.center);
 		}
 	}
 }
@@ -41,6 +42,8 @@ void Hexagon::DebugText(const char* name) {
 	ImGui::DragFloat3(centerText.c_str(), &hexagon_.center.x, 0.1f);
 	std::string radiusText = static_cast<std::string>(name) + ".size";
 	ImGui::SliderFloat3(radiusText.c_str(), &hexagon_.size.x, 0.0f, 2.0f);
+	std::string rotateText = static_cast<std::string>(name) + ".rotate";
+	ImGui::DragFloat3(rotateText.c_str(), &rotate_.x, 0.1f);
 }
 
 //描画
@@ -74,6 +77,11 @@ Vector3* Hexagon::GetVertex(int i) {
 // 六角形の素材のゲッター
 GameObject::HexagonMaterial Hexagon::GetHexagonMaterial() {
 	return hexagon_;
+}
+
+//回転のゲッター
+Vector3 Hexagon::GetRotate() {
+	return rotate_;
 }
 
 //法線ベクトルを作成

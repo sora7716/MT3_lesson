@@ -23,6 +23,14 @@ void Character::WvpMatrix(Camera* camera, Vector3& scale, Vector3& rotate, Vecto
 	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
 }
 
+// WvpMatrix(scale無いバージョン)
+void Character::WvpMatrix(const Camera* camera, const Vector3& rotate, const Vector3 translate){
+	//ワールド座標系
+	worldMatrix_ = Math::MakeAffineMatrix(rotate, translate);
+	//wvpマトリックス
+	worldViewProjectionMatrix_ = worldMatrix_ * camera->GetViewProjectionMatrix();
+}
+
 //ワールドビュープロジェクションだけの計算
 void Character::WorldViewProjection(Camera* camera){
 	//wvpマトリックス
@@ -58,6 +66,16 @@ void Character::ScreenTransform(Camera* camera, const Vector3& kLocalVertices, V
 	ndcVertex_ = Math::Transform(kLocalVertices, worldViewProjectionMatrix_);
 	//スクリーン座標
 	screenVertices = Math::Transform(ndcVertex_, camera->GetViewportMatrix());
+}
+
+// ローカル座標からスクリーン座標に変換
+Vector3 Character::ScreenTransform(const Camera* camera, const Vector3& kLocalVertices, const Vector3& rotate, const Vector3& translate){
+	//ワールドとワールドビュープロジェクションを求める
+	WvpMatrix(camera, rotate, translate);
+	//正規化デバイス座標系
+	ndcVertex_ = Math::Transform(kLocalVertices, worldViewProjectionMatrix_);
+	//スクリーン座標
+	return Math::Transform(ndcVertex_, camera->GetViewportMatrix());
 }
 
 //ローカルをスクリーンに座標変換

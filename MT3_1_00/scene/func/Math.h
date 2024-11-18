@@ -165,6 +165,14 @@ public:
 	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate);
 
 	/// <summary>
+	/// アフィン関数
+	/// </summary>
+	/// <param name="rotate">回転</param>
+	/// <param name="translate">移動</param>
+	/// <returns></returns>
+	static Matrix4x4 MakeAffineMatrix(const Vector3& rotate, const Vector3& translate);
+	
+	/// <summary>
 	/// STRの変換
 	/// </summary>
 	/// <param name="scale">倍率</param>

@@ -143,6 +143,11 @@ Matrix4x4 Math::MakeAffineMatrix(const Vector3& scale, const Vector3& radian, co
 	return (MakeScaleMatrix(scale) * MakeRotateXYZMatrix(radian)) * MakeTranslateMatrix(translate);
 }
 
+//アフィン関数
+Matrix4x4 Math::MakeAffineMatrix(const Vector3& rotate, const Vector3& translate) {
+	return (MakeRotateXYZMatrix(rotate) * MakeTranslateMatrix(translate));
+}
+
 //STRの変換
 Matrix4x4 Math::MakeSTRMatrix(const Vector3& scale, const Vector3& radian, const Vector3& translate) {
 	return MakeScaleMatrix(scale) * MakeTranslateMatrix(translate) * MakeRotateXYZMatrix(radian);

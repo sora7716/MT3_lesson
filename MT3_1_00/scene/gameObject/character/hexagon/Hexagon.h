@@ -58,6 +58,12 @@ public://メンバ関数
 	/// </summary>
 	HexagonMaterial GetHexagonMaterial();
 
+	/// <summary>
+	/// 回転のゲッター
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetRotate();
+
 private://メンバ関数
 
 	/// <summary>

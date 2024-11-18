@@ -88,7 +88,7 @@ void GameLoop::Initialize() {
 	};
 	line_->Initialize(camera_.get(), move(segment_));
 	//六角形
-	hexagonMaterials_[0] = { .center = {0.0f, 0.0f,0.0f},.size = {4.0f,0.1f,4.0f} };
+	hexagonMaterials_[0] = { .center = {0.0f, 0.0f,0.0f},.size = {1.0f,0.1f,1.0f} };
 	hexagonMaterials_[1] = { .center = {2.0f, 0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
 	//hexagonMaterials_[2] = { .center = {-2.0f,0.2f,0.0f},.size = {1.0f,0.1f,1.0f} };
 	//hexagonMaterials_[3] = { .center = {0.0f, 0.2f,2.0f},.size = {1.0f,0.1f,1.0f} };
@@ -269,7 +269,7 @@ void GameLoop::Update() {
 	if (isFall_) {
 		box_.acceleration = Math::AirResistance(box_.velocity, box_.mass, box_.k);
 	}
-	obbs_[0]->SetPosition(box_.position);
+	//obbs_[0]->SetPosition(box_.position);
 }
 
 #ifdef _DEBUG
@@ -279,7 +279,7 @@ void GameLoop::DebugText() {
 	//camera_->DebugText();
 	/*line_->DebugText();*/
 	hexagons_[0]->DebugText("hexagon[0]");
-	hexagons_[1]->DebugText("hexagon[1]");
+	//hexagons_[1]->DebugText("hexagon[1]");
 	//hexagons_[2]->DebugText("hexagon[2]");
 	//hexagons_[3]->DebugText("hexagon[3]");
 	obbs_[0]->DebagText("obb[0]");

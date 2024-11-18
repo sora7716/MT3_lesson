@@ -85,7 +85,7 @@ public://構造体など
 		Vector3 center;
 		float radian;
 		Vector3 size;
-		Vector3 normal[3];
+		Vector3 normal[4];
 		uint32_t color = WHITE;//色
 		bool isHit = false;//衝突したか
 	}TriangleMaterial;
