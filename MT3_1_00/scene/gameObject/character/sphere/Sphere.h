@@ -48,7 +48,8 @@ public://メンバ関数
 	/// <summary>
 	/// 当たった時の判定
 	/// </summary>
-	void OnCollision();
+	/// <param name="isHit">衝突判定</param>
+	void OnCollision(bool isHit);
 
 	/// <summary>
 	/// カラーのセッター

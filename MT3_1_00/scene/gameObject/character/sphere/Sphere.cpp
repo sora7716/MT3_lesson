@@ -31,17 +31,17 @@ void Sphere::Initialize(Camera* camera, const SphereMaterial&& sphereMaterial) {
 
 //更新処理
 void Sphere::Update() {
-	theta_ += 0.1f;
-	lissajousPos_ = { sqrt(2.0f) * theta_ + pi_f / 6.0f,theta_ + pi_f / 4.0f,2.0f * theta_ };
-	// sphereの中心をリサージュ曲線上に移動させる
-	sphere_.center = Math::LissajousCurve(lissajousPos_, lissajousCenter_, { 2.0f,1.0f,1.0f });
+	//theta_ += 0.1f;
+	//lissajousPos_ = { sqrt(2.0f) * theta_ + pi_f / 6.0f,theta_ + pi_f / 4.0f,2.0f * theta_ };
+	//// sphereの中心をリサージュ曲線上に移動させる
+	//sphere_.center = Math::LissajousCurve(lissajousPos_, lissajousCenter_, { 2.0f,1.0f,1.0f });
 }
 
 #ifdef _DEBUG
 //デバックテキスト
 void Sphere::DebugText(const char* name) {
-	/*string rotateLabel = string(label) + ".rotate";
-	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.1f);*/
+	string rotateLabel = string(name) + ".rotate";
+	ImGui::DragFloat3(rotateLabel.c_str(), &rotate_.x, 0.1f);
 
 	string centerLabel = string(name) + ".center";
 	ImGui::DragFloat3(centerLabel.c_str(), &sphere_.center.x, 0.01f);
@@ -49,7 +49,7 @@ void Sphere::DebugText(const char* name) {
 	string radiusLabel = string(name) + ".radius";
 	ImGui::DragFloat(radiusLabel.c_str(), &sphere_.radius, 0.01f);
 
-	ImGui::DragFloat3("ce", &lissajousCenter_.x, 0.1f);
+	/*ImGui::DragFloat3("ce", &lissajousCenter_.x, 0.1f);*/
 }
 #endif // _DEBUG
 
@@ -65,35 +65,26 @@ void Sphere::Draw() {
 			float lon = lonIndex * kLonEvery;//φ
 			Vector3 a, b, c;//ローカル座標
 			a = {
-				sphere_.center.x + sphere_.radius * cos(lat) * cos(lon),
-				sphere_.center.y + sphere_.radius * sin(lat),
-				sphere_.center.z + sphere_.radius * cos(lat) * sin(lon)
+				sphere_.radius * cos(lat) * cos(lon),
+				sphere_.radius * sin(lat),
+				sphere_.radius * cos(lat) * sin(lon)
 			};
 
 			b = {
-				sphere_.center.x + sphere_.radius * cos(lat + kLatEvery) * cos(lon),
-				sphere_.center.y + sphere_.radius * sin(lat + kLatEvery),
-				sphere_.center.z + sphere_.radius * cos(lat + kLatEvery) * sin(lon)
+				sphere_.radius * cos(lat + kLatEvery) * cos(lon),
+				sphere_.radius * sin(lat + kLatEvery),
+				sphere_.radius * cos(lat + kLatEvery) * sin(lon)
 			};
 
 			c = {
-				sphere_.center.x + sphere_.radius * cos(lat + kLatEvery) * cos(lon + kLonEvery),
-				sphere_.center.y + sphere_.radius * sin(lat + kLatEvery),
-				sphere_.center.z + sphere_.radius * cos(lat + kLatEvery) * sin(lon + kLonEvery)
+				sphere_.radius * cos(lat + kLatEvery) * cos(lon + kLonEvery),
+				sphere_.radius * sin(lat + kLatEvery),
+				sphere_.radius * cos(lat + kLatEvery) * sin(lon + kLonEvery)
 			};
-
-			////ワールド座標系
-			//worldMatrix_ = Math::MakeOBBWorldMatrix(o, sphere_.center);
-			////wvpマトリックス
-			//worldViewProjectionMatrix_ = worldMatrix_ * camera_->GetViewMatrix() * camera_->GetProjctionMatrix();
-			//screenA_ = Math::Transform(Math::Transform(a, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
-			//screenB_ = Math::Transform(Math::Transform(b, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
-			//screenC_ = Math::Transform(Math::Transform(c, worldViewProjectionMatrix_), camera_->GetViewportMatrix());
-			//translate_ = sphere_.center;
 			//スクリーン座標を求める
-			CameraScreenTransform(camera_, a, screenA_);
-			CameraScreenTransform(camera_, b, screenB_);
-			CameraScreenTransform(camera_, c, screenC_);
+			screenA_ = ScreenTransform(camera_, a, rotate_,sphere_.center);
+			screenB_ = ScreenTransform(camera_, b, rotate_,sphere_.center);
+			screenC_ = ScreenTransform(camera_, c, rotate_,sphere_.center);
 
 			//縦の線の描画
 			Novice::DrawLine(
@@ -116,8 +107,8 @@ void Sphere::Draw() {
 
 
 //当たった時の判定
-void Sphere::OnCollision() {
-
+void Sphere::OnCollision(bool isHit) {
+	sphere_.isHit = isHit;
 	ChangeColor();//色を変える
 }
 
