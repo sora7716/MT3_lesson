@@ -392,9 +392,9 @@ void GameLoop::Draw() {
 	//ライン
 	//line_->DrawSegment();
 	//六角形
-	//for (auto& hexagon : hexagons_) {
-	//	hexagon->Draw();
-	//}
+	for (auto& hexagon : hexagons_) {
+		hexagon->Draw();
+	}
 	//OBB
 	for (auto& obb : obbs_) {
 		obb->Draw();
@@ -406,7 +406,7 @@ void GameLoop::Draw() {
 	//平面
 	//plane_->Draw();
 	//三角形
-	triangle_->Draw();
+	//triangle_->Draw();
 	//球
 	/*for (auto& sphere : spheres_) {
 		sphere->Draw();

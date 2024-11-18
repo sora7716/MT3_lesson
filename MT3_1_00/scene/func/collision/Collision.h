@@ -145,7 +145,7 @@ public://メンバ関数
 	/// <param name="triangle">三角柱</param>
 	/// <param name="obb">OBB</param>
 	/// <returns>衝突したか</returns>
-	//bool IsCollision(Triangle* triangle, OBB* obb);
+	bool IsCollision(Triangle* triangle, OBB* obb);
 
 	//コピーコンストラクタを禁止する
 	Collision(const Collision& collision) = delete;
