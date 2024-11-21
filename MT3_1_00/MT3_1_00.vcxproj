@@ -123,6 +123,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="scene\GameLoop.cpp" />
     <ClCompile Include="scene\gameObject\camera\Camera.cpp" />
     <ClCompile Include="scene\gameObject\character\Character.cpp" />
+    <ClCompile Include="scene\gameObject\character\grid\Grid.cpp" />
+    <ClCompile Include="scene\gameObject\character\plane\Plane.cpp" />
+    <ClCompile Include="scene\gameObject\character\point\Point.cpp" />
+    <ClCompile Include="scene\gameObject\character\sphere\Sphere.cpp" />
     <ClCompile Include="scene\gameObject\character\triangle\Triangle.cpp" />
     <ClCompile Include="scene\gameObject\GameObject.cpp" />
   </ItemGroup>
@@ -160,6 +164,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="scene\GameLoop.h" />
     <ClInclude Include="scene\gameObject\camera\Camera.h" />
     <ClInclude Include="scene\gameObject\character\Character.h" />
+    <ClInclude Include="scene\gameObject\character\grid\Grid.h" />
+    <ClInclude Include="scene\gameObject\character\plane\Plane.h" />
+    <ClInclude Include="scene\gameObject\character\point\Point.h" />
+    <ClInclude Include="scene\gameObject\character\sphere\Sphere.h" />
     <ClInclude Include="scene\gameObject\character\triangle\Triangle.h" />
     <ClInclude Include="scene\gameObject\GameObject.h" />
   </ItemGroup>

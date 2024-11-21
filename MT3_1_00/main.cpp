@@ -3,7 +3,7 @@
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
-	GameLoop* gameLoop = new GameLoop;
+	GameLoop* gameLoop = new GameLoop();
 	
 	gameLoop->Loop();
 	
