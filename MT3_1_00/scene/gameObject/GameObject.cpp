@@ -1,13 +1,13 @@
 ﻿#include"GameObject.h"
 
 //倍率
-void GameObject::Scale(char front, char preFront, char behind, char preBehind){
-	scale_.SetVector({ scale_.GetVector().x+velocity_.z,scale_.GetVector().y + velocity_.z,scale_.GetVector().z + velocity_.z });
+void GameObject::Scale(bool front,bool behind){
+	scale_.z += velocity_.z;
 	//キー入力
-	if (front && preFront) {
+	if (behind) {
 		velocity_.z = 5.0f / 60.0f;
 	}
-	else if (behind && preBehind && scale_.GetVector().x > 0.5f) {
+	else if (front && scale_.x > 0.5f) {
 		velocity_.z = -5.0f / 60.0f;
 	}
 	else { velocity_.z = 0.0f; }
@@ -17,17 +17,17 @@ void GameObject::Scale(char front, char preFront, char behind, char preBehind){
 //回転
 void GameObject::Rotate(){
 	rotate_ += radian_;//回転
-	Novice::ScreenPrintf(0, 20, "%f", rotate_.GetVector().y);
+	//Novice::ScreenPrintf(0, 20, "%f", rotate_.GetVector().y);
 }
 
 //移動
-void GameObject::Translate(char left, char preLeft,char right,char preRight,float direction){
+void GameObject::Translate(bool left,bool right,float direction){
 	translate_ += velocity_;//移動
 	//キー入力
-	if (left && preLeft) {
+	if (left) {
 		velocity_.x = -5.0f / 60.0f * direction;
 	}
-	else if (right && preRight) {
+	else if (right) {
 		velocity_.x = 5.0f / 60.0f * direction;
 	}
 	else { velocity_.x = 0.0f; }
