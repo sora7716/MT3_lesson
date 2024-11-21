@@ -5,13 +5,6 @@ using namespace std;
 #endif // _DEBUG
 
 #pragma region 基本いじらないやつ
-//コンストラクター
-GameLoop::GameLoop() {
-}
-
-//デストラクター
-GameLoop::~GameLoop() {
-}
 
 //ゲームループ
 void GameLoop::Loop() {
@@ -320,7 +313,7 @@ void GameLoop::Collider() {
 	spheres_[0]->OnCollision(Collision::GetInstance()->IsCollision(spheres_[0]->GetSphereMaterial(), spheres_[1]->GetSphereMaterial()));
 	for (auto& hexagon : hexagons_) {
 		//hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
-		if (Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get())) {
+		if (*hexagon.get() == *obbs_[0].get()) {
 			//OBBの下の面が当たったかどうか
 			if (box_.position.y - box_.size.y > hexagon->GetHexagonMaterial().center.y) {
 				box_.isHit.under = true;//当たっている

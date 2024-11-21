@@ -19,12 +19,12 @@ public://メンバ関数
 	/// <summary>
 	/// コンストラクター
 	/// </summary>
-	GameLoop();
+	GameLoop() = default;
 
 	/// <summary>
 	/// デストラクター
 	/// </summary>
-	~GameLoop();
+	~GameLoop() = default;
 
 	/// <summary>
 	/// ゲームループ
