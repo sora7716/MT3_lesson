@@ -518,10 +518,10 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 		float z = size.z * sin(angle);
 
 		// 上面の頂点 (z = +height)
-		hexagonConers[i] = Vector3(x, -size.y, z) + hexagon->GetHexagonMaterial().center;
+		hexagonConers[i] = Math::Transform(Vector3(x, -size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
 
 		// 上面の頂点 (z = +height)
-		hexagonConers[i + 6] = Vector3(x, size.y, z) + hexagon->GetHexagonMaterial().center;
+		hexagonConers[i + 6] = Math::Transform(Vector3(x, size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
 	}
 
 	// 中心点間のベクトル
