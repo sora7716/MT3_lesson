@@ -512,7 +512,8 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 
 	// 六角形の頂点計算
 	for (int i = 0; i < 6; i++) {
-		float angle = i * (pi_f / 3.0f);  // 60度ごとに頂点がある
+		float theta = 60.0f * static_cast<float>(i);
+		float angle = theta * rad;		
 		float x = size.x * cos(angle);
 		float z = size.z * sin(angle);
 

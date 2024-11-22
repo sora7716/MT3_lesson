@@ -47,11 +47,18 @@ public://メンバ関数
 	void OnCollision(bool isHit);
 
 	/// <summary>
-	/// 頂点のゲッター
+	/// 頂点のゲッター(local)
 	/// </summary>
 	/// <param name="i">表か裏か</param>
 	/// <returns></returns>
 	Vector3* GetVertex(int i);
+
+	/// <summary>
+	/// 頂点のゲッター(screen)
+	/// </summary>
+	/// <param name="i">表か裏か</param>
+	/// <returns></returns>
+	Vector3* GetScreenVertex(int i);
 
 	/// <summary>
 	/// 六角形の素材のゲッター

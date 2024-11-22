@@ -69,9 +69,14 @@ void Hexagon::OnCollision(bool isHit) {
 	}
 }
 
-//頂点のゲッター
+//頂点のゲッター(local)
 Vector3* Hexagon::GetVertex(int i) {
 	return vertex[i];
+}
+
+//頂点のゲッター(screen)
+Vector3* Hexagon::GetScreenVertex(int i){
+	return screenVertex[i];
 }
 
 // 六角形の素材のゲッター
