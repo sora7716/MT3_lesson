@@ -1,6 +1,6 @@
-﻿#pragma once
+#pragma once
 #include "scene/gameObject/GameObject.h"
-class Camera:public GameObject{
+class Camera :public GameObject {
 
 public://メンバ関数
 	/// <summary>
@@ -18,9 +18,10 @@ public://メンバ関数
 	void Update(char* keys, char* preKeys);
 
 	/// <summary>
-	/// レンダリングパイプライン
+	/// デバックテキスト
 	/// </summary>
-	void RenderingPipeline();
+	/// <param name="name">名前</param>
+	void DebugText(const char* name="camera");
 
 	/// <summary>
 	/// 描画処理
@@ -31,39 +32,56 @@ public://メンバ関数
 	/// ビュープロジェクションマトリックスのゲッター
 	/// </summary>
 	/// <returns></returns>
-	MyMatrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; };
+	Matrix4x4 GetViewProjectionMatrix()const;
 
 	/// <summary>
 	/// ビューポートマトリックスのゲッター
 	/// </summary>
 	/// <returns></returns>
-	MyMatrix4x4 GetViewportMatrix() { return viewportMatrix_; };
+	Matrix4x4 GetViewportMatrix()const;
 
 	/// <summary>
 	/// scale_のゲッター
 	/// </summary>
 	/// <returns></returns>
-	MyVector3 GetScale() { return scale_; };
+	Vector3 GetScale();
 
 	/// <summary>
 	/// rotate_のゲッター
 	/// </summary>
 	/// <returns></returns>
-	MyVector3 GetRotate() { return rotate_; };
+	Vector3 GetRotate();
 
 	/// <summary>
 	/// translate_のゲッター
 	/// </summary>
 	/// <returns></returns>
-	MyVector3 GetTranslate() { return translate_; };
+	Vector3 GetTranslate();
+
+	/// <summary>
+	/// 同次クリップ空間のゲッター
+	/// </summary>
+	/// <returns></returns>
+	Matrix4x4 GetProjctionMatrix()const;
+
+	/// <summary>
+	/// ビューマトリックスのゲッター
+	/// </summary>
+	/// <returns></returns>
+	Matrix4x4 GetViewMatrix()const;
 
 private://メンバ変数
 
-	MyMatrix4x4 cameraMatrix_         = {};//カメラマトリックス
-	MyMatrix4x4 viewMatrix_           = {};//ビューマトリックス
-	MyMatrix4x4 projectionMatrix_     = {};//同次クリップ空間
-	MyMatrix4x4 viewProjectionMatrix_ = {};//wvpマトリックス
-	MyMatrix4x4 viewportMatrix_       = {};//ビューポートマトリックス
+	Matrix4x4 cameraMatrix_ = {};//カメラマトリックス
+	Matrix4x4 viewMatrix_ = {};//ビューマトリックス
+	Matrix4x4 projectionMatrix_ = {};//同次クリップ空間
+	Matrix4x4 viewProjectionMatrix_ = {};//wvpマトリックス
+	Matrix4x4 viewportMatrix_ = {};//ビューポートマトリックス
 
+private://メンバ変数
+	/// <summary>
+	/// レンダリングパイプライン
+	/// </summary>
+	void RenderingPipeline();
 };
 
