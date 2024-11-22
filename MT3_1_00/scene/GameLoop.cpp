@@ -310,7 +310,7 @@ void GameLoop::Collider() {
 	hexagon_->OnCollision(Collision::GetInstance()->IsCollision(hexagon_.get(), line_.get(),1));*/
 	//aabbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(aabbs_[0]->GetAABBMaterial(),plane_->GetPlaneMaterial()));
 	//obbs_[0]->OnCollision(Collision::GetInstance()->IsCollision(obbs_[0].get(), plane_->GetPlaneMaterial()));
-	spheres_[0]->OnCollision(Collision::GetInstance()->IsCollision(spheres_[0]->GetSphereMaterial(), spheres_[1]->GetSphereMaterial()));
+	//spheres_[0]->OnCollision(Collision::GetInstance()->IsCollision(spheres_[0]->GetSphereMaterial(), spheres_[1]->GetSphereMaterial()));
 	for (auto& hexagon : hexagons_) {
 		//hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
 		if (*hexagon.get() == *obbs_[0].get()) {
@@ -345,7 +345,7 @@ void GameLoop::Collider() {
 	ImGui::Checkbox("isHitLeft", &box_.isHit.left);
 	//ImGui::Checkbox("isHitBack", &box_.isHit.back);
 	for (auto& hexagon : hexagons_) {
-		hexagon->OnCollision(Collision::GetInstance()->IsCollision(hexagon.get(), obbs_[0].get()));
+		hexagon->OnCollision(*hexagon.get() == *obbs_[0].get());
 		Vector3 hexagonSize = hexagon->GetHexagonMaterial().size;
 		Vector3 hexagonCenter = hexagon->GetHexagonMaterial().center;//六角柱の中心
 		Vector3 hexagonNormal[4];
