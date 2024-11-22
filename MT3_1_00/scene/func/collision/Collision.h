@@ -152,7 +152,7 @@ public://メンバ関数
 
 	//代入演算子を禁止する
 	Collision& operator=(const Collision& collision) = delete;
-
+	
 private://静的メンバ変数
 
 	/// <summary>
@@ -168,3 +168,6 @@ private://静的メンバ変数
 	static inline const float kTMin = 0.0f;
 	static inline const float kTMax = 1.0f;
 };
+
+//六角柱とOBBの当たり判定
+bool operator==(Hexagon&hexagon,OBB&obb);

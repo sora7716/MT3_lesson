@@ -668,3 +668,8 @@ bool Collision::IsCollision(Triangle* triangle, OBB* obb) {
 
 	return isHit;
 }
+
+//六角柱とOBBの当たり判定
+bool operator==(Hexagon& hexagon, OBB& obb){
+	return Collision::GetInstance()->IsCollision(&hexagon,&obb);
+}
