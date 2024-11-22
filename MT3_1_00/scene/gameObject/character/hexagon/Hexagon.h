@@ -51,7 +51,7 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="i">表か裏か</param>
 	/// <returns></returns>
-	Vector3* GetVertex(int i);
+	Vector3* GetLocalVertex(int i);
 
 	/// <summary>
 	/// 頂点のゲッター(screen)
@@ -86,6 +86,6 @@ public://静的メンバ変数
 private://メンバ変数
 	Camera* camera_ = nullptr;//カメラ
 	HexagonMaterial hexagon_;//六角形を作成の素材
-	Vector3 vertex[Surface][kVertexNum] = {};//頂点
+	Vector3 localVertex[Surface][kVertexNum] = {};//頂点
 	Vector3 screenVertex[Surface][kVertexNum] = {};//スクリーン座標の頂点
 };

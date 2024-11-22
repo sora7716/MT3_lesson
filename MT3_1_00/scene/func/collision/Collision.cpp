@@ -338,12 +338,12 @@ bool Collision::IsCollision(OBB* obb, const GameObject::PlaneMaterial& plane) {
 bool Collision::IsCollision(Hexagon* hexagon, Line* line, int surface) {
 	// 六角形の各辺
 	Vector3 edge[6]{
-		hexagon->GetVertex(surface)[1] - hexagon->GetVertex(surface)[0],
-		hexagon->GetVertex(surface)[2] - hexagon->GetVertex(surface)[1],
-		hexagon->GetVertex(surface)[3] - hexagon->GetVertex(surface)[2],
-		hexagon->GetVertex(surface)[4] - hexagon->GetVertex(surface)[3],
-		hexagon->GetVertex(surface)[5] - hexagon->GetVertex(surface)[4],
-		hexagon->GetVertex(surface)[0] - hexagon->GetVertex(surface)[5],
+		hexagon->GetLocalVertex(surface)[1] - hexagon->GetLocalVertex(surface)[0],
+		hexagon->GetLocalVertex(surface)[2] - hexagon->GetLocalVertex(surface)[1],
+		hexagon->GetLocalVertex(surface)[3] - hexagon->GetLocalVertex(surface)[2],
+		hexagon->GetLocalVertex(surface)[4] - hexagon->GetLocalVertex(surface)[3],
+		hexagon->GetLocalVertex(surface)[5] - hexagon->GetLocalVertex(surface)[4],
+		hexagon->GetLocalVertex(surface)[0] - hexagon->GetLocalVertex(surface)[5],
 	};
 
 	//衝突したかどうか
@@ -354,7 +354,7 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line, int surface) {
 
 
 	//疑似的に平面を作成
-	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetVertex(surface)[0],normal) };
+	GameObject::PlaneMaterial plane = { .normal = normal,.distance = Math::Dot(hexagon->GetLocalVertex(surface)[0],normal) };
 
 	//平面の法線とラインの差分が向き合っているかどうか
 	float dot = Math::Dot(plane.normal, line->GetSegment().diff);
@@ -369,12 +369,12 @@ bool Collision::IsCollision(Hexagon* hexagon, Line* line, int surface) {
 
 	//六角形の各辺に重なっているかの計算
 	Vector3 intersect = line->GetSegment().origin + t * line->GetSegment().diff;
-	Vector3 v0p = intersect - hexagon->GetVertex(0)[0];
-	Vector3 v1p = intersect - hexagon->GetVertex(0)[1];
-	Vector3 v2p = intersect - hexagon->GetVertex(0)[2];
-	Vector3 v3p = intersect - hexagon->GetVertex(0)[3];
-	Vector3 v4p = intersect - hexagon->GetVertex(0)[4];
-	Vector3 v5p = intersect - hexagon->GetVertex(0)[5];
+	Vector3 v0p = intersect - hexagon->GetLocalVertex(0)[0];
+	Vector3 v1p = intersect - hexagon->GetLocalVertex(0)[1];
+	Vector3 v2p = intersect - hexagon->GetLocalVertex(0)[2];
+	Vector3 v3p = intersect - hexagon->GetLocalVertex(0)[3];
+	Vector3 v4p = intersect - hexagon->GetLocalVertex(0)[4];
+	Vector3 v5p = intersect - hexagon->GetLocalVertex(0)[5];
 
 
 	//平面の中にある六角形に線が当たっているかの判定
@@ -513,17 +513,15 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	// 六角形の頂点計算
 	for (int i = 0; i < 6; i++) {
 		float theta = 60.0f * static_cast<float>(i);
-		float angle = theta * rad;		
+		float angle = theta * rad;
 		float x = size.x * cos(angle);
 		float z = size.z * sin(angle);
 
-		// 底面の頂点 (z = -height)
-		hexagonConers[i] = Math::Transform(Vector3(x, -size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
+		// 上面の頂点 (z = +height)
+		hexagonConers[i] = Vector3(x, -size.y, z) + hexagon->GetHexagonMaterial().center;
 
 		// 上面の頂点 (z = +height)
-		hexagonConers[i + 6] = Math::Transform(Vector3(x, size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
-
-		
+		hexagonConers[i + 6] = Vector3(x, size.y, z) + hexagon->GetHexagonMaterial().center;
 	}
 
 	// 中心点間のベクトル
@@ -548,6 +546,7 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 			minHexagon = (min)(hexagonDistance, minHexagon);
 			maxHexagon = (max)(hexagonDistance, maxHexagon);
 		}
+
 		//それぞれを射影した範囲長の合計を求める
 		float sumSpan = maxOBB - minOBB + maxHexagon - minHexagon;
 		//最大範囲を求める
@@ -624,7 +623,7 @@ bool Collision::IsCollision(Triangle* triangle, OBB* obb) {
 	Vector3 size = triangle->GetTriangleMaterial().size;
 	// 六角形の頂点計算
 	for (int i = 0; i < 6; i++) {
-		float angle = i * (2*pi_f / 3.0f);  // 120度ごとに頂点がある
+		float angle = i * (2 * pi_f / 3.0f);  // 120度ごとに頂点がある
 		float x = size.x * cos(angle);
 		float z = size.z * sin(angle);
 
@@ -670,6 +669,6 @@ bool Collision::IsCollision(Triangle* triangle, OBB* obb) {
 }
 
 //六角柱とOBBの当たり判定
-bool operator==(Hexagon& hexagon, OBB& obb){
-	return Collision::GetInstance()->IsCollision(&hexagon,&obb);
+bool operator==(Hexagon& hexagon, OBB& obb) {
+	return Collision::GetInstance()->IsCollision(&hexagon, &obb);
 }

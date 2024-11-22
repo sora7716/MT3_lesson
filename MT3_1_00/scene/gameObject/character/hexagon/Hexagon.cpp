@@ -20,18 +20,18 @@ void Hexagon::Update() {
 		float theta = 60.0f * static_cast<float>(i);
 		float angle = theta * rad;
 		//正面
-		vertex[0][i].x = hexagon_.size.x * std::cosf(angle);
-		vertex[0][i].y = hexagon_.size.y;
-		vertex[0][i].z = hexagon_.size.z * std::sinf(angle);
+		localVertex[0][i].x = hexagon_.size.x * std::cosf(angle);
+		localVertex[0][i].y = hexagon_.size.y;
+		localVertex[0][i].z = hexagon_.size.z * std::sinf(angle);
 		//背面
-		vertex[1][i].x = hexagon_.size.x * std::cosf(angle);
-		vertex[1][i].y = -hexagon_.size.y;
-		vertex[1][i].z = hexagon_.size.z * std::sinf(angle);
+		localVertex[1][i].x = hexagon_.size.x * std::cosf(angle);
+		localVertex[1][i].y = -hexagon_.size.y;
+		localVertex[1][i].z = hexagon_.size.z * std::sinf(angle);
 	}
 
 	for (int i = 0; i < Surface; i++) {
 		for (int j = 0; j < 6; j++) {
-			screenVertex[i][j] = ScreenTransform(camera_, vertex[i][j], rotate_, hexagon_.center);
+			screenVertex[i][j] = ScreenTransform(camera_, localVertex[i][j], rotate_, hexagon_.center);
 		}
 	}
 }
@@ -70,8 +70,8 @@ void Hexagon::OnCollision(bool isHit) {
 }
 
 //頂点のゲッター(local)
-Vector3* Hexagon::GetVertex(int i) {
-	return vertex[i];
+Vector3* Hexagon::GetLocalVertex(int i) {
+	return localVertex[i];
 }
 
 //頂点のゲッター(screen)
@@ -92,14 +92,14 @@ Vector3 Hexagon::GetRotate() {
 //法線ベクトルを作成
 void Hexagon::CreateNormal() {
 	//面の法線を算出
-	Vector3 v01 = GetVertex(0)[1] - GetVertex(0)[0];
-	Vector3 v111 = GetVertex(0)[1] - GetVertex(1)[1];
+	Vector3 v01 = GetLocalVertex(0)[1] - GetLocalVertex(0)[0];
+	Vector3 v111 = GetLocalVertex(0)[1] - GetLocalVertex(1)[1];
 
-	Vector3 v12 = GetVertex(0)[2] - GetVertex(0)[1];
-	Vector3 v112 = GetVertex(0)[2] - GetVertex(1)[2];
+	Vector3 v12 = GetLocalVertex(0)[2] - GetLocalVertex(0)[1];
+	Vector3 v112 = GetLocalVertex(0)[2] - GetLocalVertex(1)[2];
 
-	Vector3 v23 = GetVertex(0)[3] - GetVertex(0)[2];
-	Vector3 v113 = GetVertex(0)[3] - GetVertex(1)[3];
+	Vector3 v23 = GetLocalVertex(0)[3] - GetLocalVertex(0)[2];
+	Vector3 v113 = GetLocalVertex(0)[3] - GetLocalVertex(1)[3];
 
 	//面の法線
 	hexagon_.normal[0] = Math::Normalize(Math::Cross(v01, v111));
