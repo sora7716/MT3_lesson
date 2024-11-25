@@ -450,7 +450,8 @@ bool Collision::IsCollision(const GameObject::CapsuleMaterial& capsule, const Ga
 //衝突判定(六角形とOBB)
 bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 	//分割軸の数
-	Vector3 separateAxes[19];
+	std::vector<Vector3> separateAxes;
+	separateAxes.resize(19);
 
 	//面の法線
 	Vector3 normal[4];
@@ -518,10 +519,30 @@ bool Collision::IsCollision(Hexagon* hexagon, OBB* obb) {
 		float z = size.z * sin(angle);
 
 		// 上面の頂点 (z = +height)
-		hexagonConers[i] = Math::Transform(Vector3(x, -size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
+		hexagonConers[i] = Math::Transform(Vector3(x, -size.y, z), Math::MakeRotateXYZMatrix(hexagon->GetRotate()) * Math::MakeTranslateMatrix(hexagon->GetHexagonMaterial().center));
 
 		// 上面の頂点 (z = +height)
-		hexagonConers[i + 6] = Math::Transform(Vector3(x, size.y, z),Math::MakeRotateXYZMatrix(hexagon->GetRotate())) + hexagon->GetHexagonMaterial().center;
+		hexagonConers[i + 6] = Math::Transform(Vector3(x, size.y, z), Math::MakeRotateXYZMatrix(hexagon->GetRotate()) * Math::MakeTranslateMatrix(hexagon->GetHexagonMaterial().center));
+	}
+
+	//分離軸を増やす(六角形を回転させると高さが合わなくなるから)
+	for (int i = 0; i < 6; i++) {
+		int next = (i + 1) % 6;
+		// 六角柱の辺
+		Vector3 edgeTop = hexagonConers[next] - hexagonConers[i];
+		Vector3 edgeBottom = hexagonConers[next + 6] - hexagonConers[i + 6];
+		// OBB の辺
+		Vector3 obbEdges[3] = {
+			obbDirection[0], obbDirection[1], obbDirection[2]
+		};
+
+		// 辺同士のクロス積を分離軸に追加
+		for (int j = 0; j < 3; j++) {
+			Vector3 crossAxisTop = Math::Cross(edgeTop, obbEdges[j]);
+			separateAxes.push_back(Math::Normalize(crossAxisTop));
+			Vector3 crossAxisBottom = Math::Cross(edgeBottom, obbEdges[j]);
+			separateAxes.push_back(Math::Normalize(crossAxisBottom));
+		}
 	}
 
 	// 中心点間のベクトル
