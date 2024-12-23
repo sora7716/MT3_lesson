@@ -77,7 +77,7 @@ void GameLoop::Create() {
 	/*hexagon_ = std::make_unique<Hexagon>();*/
 
 	sphreBall_ = std::make_unique<Sphere>();
-	//wire_ = std::make_unique<Line>();
+	wire_ = std::make_unique<Line>();
 }
 
 //初期化処理
@@ -154,7 +154,7 @@ void GameLoop::Initialize() {
 	ball_.color = BLUE;
 
 	sphreBall_->Initialize(camera_);
-	/*wireSegment_.origin = spring_.anchor;
+	wireSegment_.origin = spring_.anchor;
 	wireSegment_.diff = ball_.position - wireSegment_.origin;
 	wire_->Initialize(camera_, std::move(wireSegment_));
 
@@ -163,11 +163,11 @@ void GameLoop::Initialize() {
 
 	pendulum_.anchor = { 0.0f,1.0f,0.0f };
 	pendulum_.length = 0.8f;
-	pendulum_.angle = 0.7f;
+	pendulum_.angle = 0.0f;
 	pendulum_.angularVelocity = 0.0f;
 	pendulum_.angularaAcceleration = 0.0f;
 
-	conicalPendulum_.anchor = { 0.0f,1.0f,0.0f };
+	/*conicalPendulum_.anchor = { 0.0f,1.0f,0.0f };
 	conicalPendulum_.length = 0.8f;
 	conicalPendulum_.halfApexAngle = 0.7f;
 	conicalPendulum_.angle = 0.0f;
@@ -217,12 +217,12 @@ void GameLoop::Update() {
 	//円運動
 	//Math::CircularMoveZY(centerPos_, ball_.position, centerRadius_);
 	//振り子
-	//Math::MakePendulum(pendulum_, ball_.position);
+	Math::MakePendulum(pendulum_, ball_.position);
 	//フックの法則
 	//Math::Hooklaw(spring_,ball_,true);
 	//円錐状に動く振り子
 	//Math::MakeConicalPendulum(conicalPendulum_, ball_.position);
-	ball_.acceleration = kGravity;
+//	ball_.acceleration = kGravity;
 	ball_.velocity += ball_.acceleration * deltaTime;
 	ball_.position += ball_.velocity * deltaTime;
 	//スフィアの素材に代入
@@ -240,9 +240,9 @@ void GameLoop::Update() {
 	wireSegment_.diff = ball_.position - wireSegment_.origin;
 	wire_->SetSegment(wireSegment_);*/
 	//振り子用
-	/*wireSegment_.origin = pendulum_.anchor;
+	wireSegment_.origin = pendulum_.anchor;
 	wireSegment_.diff = ball_.position - wireSegment_.origin;
-	wire_->SetSegment(wireSegment_);*/
+	wire_->SetSegment(wireSegment_);
 	//円錐の振り子用
 	/*wireSegment_.origin = conicalPendulum_.anchor;
 	wireSegment_.diff = ball_.position - wireSegment_.origin;
@@ -297,15 +297,16 @@ void GameLoop::DebugText() {
 	ImGui::SliderFloat2("centerRadius", &centerRadius_.x, 0.0f, 2.0f);
 	ImGui::End();*/
 
-	//ImGui::Begin("Pendulum");
-	//ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
-	//ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
-	//ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
-	//ImGui::DragFloat("mass", &ball_.mass, 0.1f);
-	//ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
-	//ImGui::DragFloat3("anchor", &pendulum_.anchor.x, 0.1f);
-	//ImGui::SliderFloat("length", &pendulum_.length, -1.0f, 2.0f);
-	//ImGui::End();
+	ImGui::Begin("Pendulum");
+	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
+	ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
+	ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
+	ImGui::DragFloat("mass", &ball_.mass, 0.1f);
+	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
+	ImGui::DragFloat3("anchor", &pendulum_.anchor.x, 0.1f);
+	ImGui::SliderFloat("length", &pendulum_.length, -1.0f, 2.0f);
+	ImGui::DragFloat("angle", &pendulum_.angle,0.1f);
+	ImGui::End();
 
 	/*ImGui::Begin("ConicalPendulum");
 	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
@@ -317,13 +318,13 @@ void GameLoop::DebugText() {
 	ImGui::SliderFloat("length", &conicalPendulum_.length, 0.1f, 2.0f);
 	ImGui::End();*/
 
-	ImGui::Begin("Reflect");
+	/*ImGui::Begin("Reflect");
 	ImGui::DragFloat3("position", &ball_.position.x, 0.01f);
 	ImGui::DragFloat3("velocity", &ball_.velocity.x, 0.01f);
 	ImGui::DragFloat3("acceleration", &ball_.acceleration.x, 0.01f);
 	ImGui::DragFloat("mass", &ball_.mass, 0.1f);
 	ImGui::SliderFloat("radius", &ball_.radius, 0.0f, 2.0f);
-	ImGui::End();
+	ImGui::End();*/
 }
 #endif // _DEBUG
 
@@ -340,12 +341,12 @@ void GameLoop::Collider() {
 	//collision_->IsCollision(obb_.get(), line_->GetSegment());
 	//collision_->IsCollision(obbs_[0].get(), obbs_[1].get());
 	//hexagon_->OnCollision(collision_->IsCollision(hexagon_.get(), line_.get()));
-	if (collision_->IsCollision(sphereBallMaterial_, plane_->GetPlaneMaterial())) {
-		Math::Reflection(ball_.velocity, plane_->GetPlaneMaterial().normal, 0.8f);
-		if (collision_->IsCollision(capsuleMaterial_, plane_->GetPlaneMaterial())) {
-			ball_.position.y += 0.1f;//少し上げる
-		}
-	}
+	//if (collision_->IsCollision(sphereBallMaterial_, plane_->GetPlaneMaterial())) {
+	//	Math::Reflection(ball_.velocity, plane_->GetPlaneMaterial().normal, 0.8f);
+	//	if (collision_->IsCollision(capsuleMaterial_, plane_->GetPlaneMaterial())) {
+	//		ball_.position.y += 0.1f;//少し上げる
+	//	}
+	//}
 	//capsule_->OnCollision(collision_->IsCollision(capsule_.get()->GetCapsuleMaterial(), plane_->GetPlaneMaterial()));
 }
 
@@ -380,5 +381,5 @@ void GameLoop::Draw() {
 	//hexagon_->Draw();
 
 	sphreBall_->Draw();
-	//wire_->DrawSegment();
+	wire_->DrawSegment();
 }
