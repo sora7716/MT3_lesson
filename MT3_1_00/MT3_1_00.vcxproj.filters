@@ -80,8 +80,35 @@
     <ClCompile Include="scene\gameObject\character\Character.cpp">
       <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="scene\gameObject\character\grid\Grid.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
     <ClCompile Include="scene\func\Aithmetic.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>scene\cppファイル\process</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\sphere\Sphere.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\plane\Plane.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\func\collision\Collision.cpp">
+      <Filter>scene\cppファイル\process</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\line\Line.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\AABB\AABB.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\OBB\OBB.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\hexagon\Hexagon.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\gameObject\character\capsule\Capsule.cpp">
+      <Filter>scene\cppファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,5 +209,35 @@
     <ClInclude Include="scene\gameObject\character\Character.h">
       <Filter>scene\ヘッダーファイル\gameObject</Filter>
     </ClInclude>
+    <ClInclude Include="scene\gameObject\character\grid\Grid.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\sphere\Sphere.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\plane\Plane.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\func\collision\Collision.h">
+      <Filter>scene\ヘッダーファイル\process</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\line\Line.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\AABB\AABB.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\capsule\Capsule.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\hexagon\Hexagon.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\gameObject\character\OBB\OBB.h">
+      <Filter>scene\ヘッダーファイル\gameObject</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
 </Project>
